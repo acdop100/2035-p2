@@ -126,6 +126,18 @@ struct _HashTableEntry
 */
 static HashTableEntry *createHashTableEntry(unsigned int key, void *value)
 {
+  node *this_node;
+  if(this_node = find(key)) {
+    this_node -> value = value;
+    return(this_node);
+  };
+  this_node = (node*)malloc(sizeof(node));
+  if(!this_node) {
+    return(this_node);
+  };
+  this_node -> value = value;
+  this_node -> key = key; // stores the values
+
 }
 
 /**
@@ -140,6 +152,14 @@ static HashTableEntry *createHashTableEntry(unsigned int key, void *value)
 */
 static HashTableEntry *findItem(HashTable *hashTable, unsigned int key)
 {
+  while(node) {
+    if(node.key == key) {
+      break;
+    } else {
+      node = node -> next;
+    }
+  }
+  return(node);
 }
 
 /****************************************************************************
@@ -179,23 +199,60 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
   return newTable;
 }
 
+// Done?
 void destroyHashTable(HashTable *hashTable)
 {
   free(hashTable);
 }
 
+// NOT Done
 void *insertItem(HashTable *hashTable, unsigned int key, void *value)
 {
+findItem(hashTable, key);
+  if(node != NULL) {
+    node -> value = value;
+  } else {
+    printf("Node does not exist for given key, creating node.\n");
+    createHashTableEntry(key, value);
+  }
+  return(-1);
 }
 
+// NOT Done
 void *getItem(HashTable *hashTable, unsigned int key)
 {
+findItem(hashTable, key);
+  if(node != NULL) {
+    value = node -> value;
+    return(value);
+  } else {
+    printf("Node does not exist for given key, returned NULL.\n");
+  }
+  return(-1);
 }
 
+// NOT Done
 void *removeItem(HashTable *hashTable, unsigned int key)
 {
+  findItem(hashTable, key);
+  if(node != NULL) {
+    value = node -> value;
+    free(node);
+    return(value);
+  } else {
+    printf("Node does not exist for given key, nothing deleted.\n");
+  }
+  return(-1);
 }
 
+// NOT Done
 void deleteItem(HashTable *hashTable, unsigned int key)
 {
+  findItem(hashTable, key);
+  if(node != NULL) {
+    free(node);
+  } else {
+    printf("Node does not exist for given key, nothing deleted.\n");
+  }
+  return(-1);
 }
