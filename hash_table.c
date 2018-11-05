@@ -199,10 +199,15 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
   return newTable;
 }
 
-// Done?
+// NOT Done
 void destroyHashTable(HashTable *hashTable)
 {
-  free(hashTable);
+  while(this_node) {
+    tmp = this_node -> next;
+    this_node -> next = this_node -> next -> next;
+    free(tmp);
+    return(0);
+  }
 }
 
 // NOT Done
@@ -251,6 +256,12 @@ void deleteItem(HashTable *hashTable, unsigned int key)
   findItem(hashTable, key);
   if(node != NULL) {
     free(node);
+    while(this_node -> next) {
+      tmp = this_node -> next;
+      this_node -> next = this_node -> next -> next;
+      free(tmp);
+      return(0);
+    }
   } else {
     printf("Node does not exist for given key, nothing deleted.\n");
   }
