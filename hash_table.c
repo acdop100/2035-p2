@@ -126,6 +126,7 @@ struct _HashTableEntry
 */
 static HashTableEntry *createHashTableEntry(unsigned int key, void *value)
 {
+  node = hashTable -> buckets[hashTable -> hash(key)];
   node *this_node;
   if(this_node = find(key)) {
     this_node -> value = value;
@@ -152,6 +153,7 @@ static HashTableEntry *createHashTableEntry(unsigned int key, void *value)
 */
 static HashTableEntry *findItem(HashTable *hashTable, unsigned int key)
 {
+  node = hashTable -> buckets[hashTable -> hash(key)];
   while(node) {
     if(node.key == key) {
       break;
@@ -199,11 +201,15 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
   return newTable;
 }
 
+
+
 // Done?
 void destroyHashTable(HashTable *hashTable)
 {
   free(hashTable);
 }
+
+
 
 // NOT Done
 void *insertItem(HashTable *hashTable, unsigned int key, void *value)
