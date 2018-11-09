@@ -72,7 +72,7 @@ Naming conventions in this file:
 * available everywhere and user code can hold pointers to these structs.
 ***************************************************************************/
 /**
- * This structure represents an a hash table.
+ * This structure represents a hash table.
  * Use "HashTable" instead when you are creating a new variable. [See top comments]
  */
 struct _HashTable
@@ -87,6 +87,11 @@ struct _HashTable
   /** The number of buckets in the hash table */
   unsigned int num_buckets;
 };
+
+HashTableEntry *tmp; 
+void *value;
+void *tmpVal;
+int *MallTmp;
 
 /**
  * This structure represents a hash table entry.
@@ -124,21 +129,18 @@ struct _HashTableEntry
 * @param value The value stored in the hash table entry
 * @return The pointer to the hash table entry
 */
+
+//node = hashTable -> buckets[hashTable -> hash(key)];
+
+// NOT Done
 static HashTableEntry *createHashTableEntry(unsigned int key, void *value)
 {
-  node = hashTable -> buckets[hashTable -> hash(key)];
-  node *this_node;
-  if(this_node = find(key)) {
-    this_node -> value = value;
-    return(this_node);
-  };
-  this_node = (node*)malloc(sizeof(node));
-  if(!this_node) {
-    return(this_node);
-  };
+  HashTableEntry *this_node;
+  this_node = (HashTableEntry *)malloc(sizeof(HashTableEntry));
   this_node -> value = value;
   this_node -> key = key; // stores the values
-
+  this_node -> next = ++this_node;
+  return(this_node);
 }
 
 /**
@@ -151,17 +153,36 @@ static HashTableEntry *createHashTableEntry(unsigned int key, void *value)
 * @param key The key corresponds to the hash table entry
 * @return The pointer to the hash table entry, or NULL if key does not exist
 */
+
+// Done??
 static HashTableEntry *findItem(HashTable *hashTable, unsigned int key)
 {
-  node = hashTable -> buckets[hashTable -> hash(key)];
-  while(node) {
-    if(node.key == key) {
-      break;
+
+  int index = hashTable -> hash(key);
+  HashTableEntry *this_node = hashTable -> buckets[index];
+
+  while(this_node != NULL) {
+    if(this_node -> key == key) {
+      return(this_node);
     } else {
-      node = node -> next;
+      this_node = this_node -> next;
     }
   }
-  return(node);
+  return(0);
+}
+
+// Freedom - frees the correct node and corrects the next pointers 
+static void *freedom(HashTableEntry *this_node) {
+  value = this_node -> value;
+  tmp = this_node -> next;
+  free(this_node);
+  this_node = tmp;
+  while(this_node -> next) {
+    tmp = this_node -> next;
+    this_node -> next = this_node -> next -> next;
+    free(tmp);
+  }
+  return(value);
 }
 
 /****************************************************************************
@@ -196,84 +217,72 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
   {
     newTable->buckets[i] = NULL;
   }
-
   // Return the new HashTable struct.
   return newTable;
 }
 
-<<<<<<< HEAD
-
 
 // Done?
-=======
-// NOT Done
->>>>>>> b8d24308c9c44a2f12863981b85f84b532853feb
 void destroyHashTable(HashTable *hashTable)
 {
+  HashTableEntry *this_node = hashTable -> buckets[0];
   while(this_node) {
     tmp = this_node -> next;
     this_node -> next = this_node -> next -> next;
     free(tmp);
+  }
+}
+
+// Done??
+void *insertItem(HashTable *hashTable, unsigned int key, void *value)
+{
+  HashTableEntry *this_node = findItem(hashTable, key);
+
+  if(this_node != NULL) {
+    tmpVal = this_node -> value;
+    this_node -> value = value;
+    return(tmpVal);
+  } else {
+    printf("Node does not exist for given key, creating node.\n");
+    createHashTableEntry(key, value);
     return(0);
   }
 }
 
-
-
-// NOT Done
-void *insertItem(HashTable *hashTable, unsigned int key, void *value)
-{
-findItem(hashTable, key);
-  if(node != NULL) {
-    node -> value = value;
-  } else {
-    printf("Node does not exist for given key, creating node.\n");
-    createHashTableEntry(key, value);
-  }
-  return(-1);
-}
-
-// NOT Done
+// Done??
 void *getItem(HashTable *hashTable, unsigned int key)
 {
-findItem(hashTable, key);
-  if(node != NULL) {
-    value = node -> value;
+  HashTableEntry *this_node = findItem(hashTable, key);
+  
+  if(this_node != NULL) {
+    value = this_node -> value;
     return(value);
   } else {
-    printf("Node does not exist for given key, returned NULL.\n");
+    //printf("Node does not exist for given key, returned NULL.\n");
+    return(0);
   }
-  return(-1);
 }
 
 // NOT Done
 void *removeItem(HashTable *hashTable, unsigned int key)
 {
-  findItem(hashTable, key);
-  if(node != NULL) {
-    value = node -> value;
-    free(node);
-    return(value);
+  HashTableEntry *this_node = findItem(hashTable, key);
+
+  if(this_node != NULL) {
+    return(freedom(this_node));
   } else {
-    printf("Node does not exist for given key, nothing deleted.\n");
+    //printf("Node does not exist for given key, nothing deleted/returned.\n");
+    return(0);
   }
-  return(-1);
+
 }
 
 // NOT Done
 void deleteItem(HashTable *hashTable, unsigned int key)
 {
-  findItem(hashTable, key);
-  if(node != NULL) {
-    free(node);
-    while(this_node -> next) {
-      tmp = this_node -> next;
-      this_node -> next = this_node -> next -> next;
-      free(tmp);
-      return(0);
-    }
-  } else {
-    printf("Node does not exist for given key, nothing deleted.\n");
+  HashTableEntry *this_node = findItem(hashTable, key);
+  
+  if(this_node != NULL) {
+    value = freedom(this_node);
   }
-  return(-1);
 }
