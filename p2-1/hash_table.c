@@ -139,9 +139,7 @@ static HashTableEntry *createHashTableEntry(HashTable *hashTable, int index, uns
     if(this_node != NULL && this_node -> next != NULL) {
       this_node = this_node -> next;
     }
-    printf("this_node = %p\n", this_node);
     HashTableEntry *next_node = (HashTableEntry *)malloc(sizeof(HashTableEntry));
-    printf("next_node = %p\n", next_node);
     this_node -> next = next_node;
     
     next_node -> value = value;
@@ -195,20 +193,14 @@ static void *freedom(HashTableEntry *this_node, HashTable *hashTable, int index)
 
   if (check_node == this_node) {
     hashTable->buckets[index] = this_node->next;
+    printf("removing head thing\n");
   } else if (this_node -> next != NULL) {
     check_node -> next = check_node -> next -> next;
   }
-
+  
   free(this_node);
+  
   this_node = tmp;
-  
-  // if ((this_node == check_node) || (this_node == NULL)) { // Is the node at the front or back of the line?
-  //   return(val);
-  // } else if(check_node != NULL && check_node -> next != NULL) { // Is there another node at all?
-  //   check_node = check_node -> next;
-  // }
-  //check_node -> next = this_node;
-  
   return(val);
 }
 
@@ -252,29 +244,33 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
 // Done?
 void destroyHashTable(HashTable *hashTable)
 {
-  HashTableEntry *this_node = hashTable -> buckets[0];
-  if(this_node != NULL) {
-    free(this_node);
+  int count = 0;
+  HashTableEntry *this_node = hashTable -> buckets[count];
+  
+  while(count <= hashTable -> num_buckets){
+    while (this_node != NULL) {
+      //printf("going to free now\n");
+      HashTableEntry *tmp = this_node->next;
+      freedom(this_node, hashTable, count);
+      this_node = tmp;
+    }
+    count++;
   }
-  // while(this_node) {
-  //   tmp = this_node -> next;
-  //   this_node -> next = this_node -> next -> next;
-  //   free(tmp);
-  // }
 }
 
 // Done??
 void *insertItem(HashTable *hashTable, unsigned int key, void *value)
 {
   HashTableEntry *this_node = findItem(hashTable, key);
+  int index = hashTable -> hash(key);
 
-  if(this_node != NULL) {
+  if (this_node != NULL) {
     tmpVal = this_node -> value;
     this_node -> value = value;
-    return(tmpVal);
+    return (tmpVal);
   } else {
     //printf("Node does not exist for given key, creating node.\n");
-    int index = hashTable -> hash(key);
+    
     hashTable -> buckets[index] = createHashTableEntry(hashTable, index, key, value);
 
     return(0);
