@@ -1,5 +1,4 @@
 #include "map.h"
-
 #include "globals.h"
 #include "graphics.h"
 
@@ -26,6 +25,8 @@ static int active_map;
  * This function should uniquely map (x,y) onto the space of unsigned integers.
  */
 static unsigned XY_KEY(int X, int Y) {
+
+    return(key);
     // TODO: Fix me!
 }
 
@@ -36,6 +37,7 @@ static unsigned XY_KEY(int X, int Y) {
  */
 unsigned map_hash(unsigned key)
 {
+    
     // TODO: Fix me!
 }
 
@@ -44,6 +46,10 @@ void maps_init()
     // TODO: Implement!    
     // Initialize hash table
     // Set width & height
+    map.items = createHashTable(50);
+    map.h = 50;
+    map.w = 50;
+
 }
 
 Map* get_active_map()
@@ -76,39 +82,85 @@ void print_map()
 
 int map_width()
 {
+    return(map.w);
 }
 
 int map_height()
 {
+    return(map.h);
 }
 
 int map_area()
 {
+    int h = map.h;
+    int w = map.w;
+    return(w*h);
 }
 
 MapItem* get_north(int x, int y)
 {
+    void *item = map(map_hash(XY_KEY(x, y+1)));
+    if (!item) {
+        printf("Location at given coordinates does not exist (Index OOB)");
+        return(NULL);
+    } else {
+        return(item)
+    }
 }
 
 MapItem* get_south(int x, int y)
 {
+    void *item = map(map_hash(XY_KEY(x, y-1)));
+    if (!item) {
+        printf("Location at given coordinates does not exist (Index OOB)");
+        return(NULL);
+    } else {
+        return(item)
+    }
 }
 
 MapItem* get_east(int x, int y)
 {
+    void *item = map(map_hash(XY_KEY(x+1, y)));
+    if (!item) {
+        printf("Location at given coordinates does not exist (Index OOB)");
+        return(NULL);
+    } else {
+        return(item)
+    }
 }
 
-MapItem* get_west(int x, int y)
+MapItem* get_west(int x-1, int y)
 {
+    void *item = map(map_hash(XY_KEY(x-1, y)));
+    if (!item) {
+        printf("Location at given coordinates does not exist (Index OOB)");
+        return(NULL);
+    } else {
+        return(item)
+    }
 }
 
 MapItem* get_here(int x, int y)
 {
+    void *item = map(map_hash(XY_KEY(x, y)));
+    if (!item) {
+        printf("Location at given coordinates does not exist (Index OOB)");
+        return(NULL);
+    } else {
+        return(item)
+    }
 }
 
 
 void map_erase(int x, int y)
 {
+    int location = map_hash(XY_KEY(x, y));
+    if (!location) {
+        printf("Location at given coordinates does not exist (Index OOB)");
+    } else {
+        map ->location = NULL;
+    }
 }
 
 void add_wall(int x, int y, int dir, int len)
