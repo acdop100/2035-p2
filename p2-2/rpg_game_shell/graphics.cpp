@@ -1,5 +1,5 @@
 #include "graphics.h"
-
+#include "map.h"
 #include "globals.h"
 
 
@@ -45,12 +45,13 @@ void draw_plant(int u, int v)
     uLCD.filled_rectangle(u, v, u+10, v+10, GREEN);
 }
 
-void draw_upper_status()
+void draw_upper_status(int u, int v)
 {
     // Draw bottom border of status bar
     uLCD.line(0, 9, 127, 9, GREEN);
     
     // Add other status info drawing code here
+    
 }
 
 void draw_lower_status()

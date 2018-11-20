@@ -26,8 +26,8 @@ static int active_map;
  */
 static unsigned XY_KEY(int X, int Y) {
 
+    unsigned int key = (X*50) + Y;
     return(key);
-    // TODO: Fix me!
 }
 
 /**
@@ -37,19 +37,17 @@ static unsigned XY_KEY(int X, int Y) {
  */
 unsigned map_hash(unsigned key)
 {
-    
-    // TODO: Fix me!
+    unsigned int tableKey = key % 50;
+    return(tableKey)
 }
 
 void maps_init()
-{
-    // TODO: Implement!    
+{ 
     // Initialize hash table
     // Set width & height
     map.items = createHashTable(50);
     map.h = 50;
     map.w = 50;
-
 }
 
 Map* get_active_map()
@@ -67,7 +65,7 @@ Map* set_active_map(int m)
 void print_map()
 {
     // As you add more types, you'll need to add more items to this array.
-    char lookup[] = {'W', 'P'};
+    char lookup[] = {'W', 'T', 'G', 'N'};
     for(int y = 0; y < map_height(); y++)
     {
         for (int x = 0; x < map_width(); x++)
@@ -181,7 +179,7 @@ void add_wall(int x, int y, int dir, int len)
 void add_plant(int x, int y)
 {
     MapItem* w1 = (MapItem*) malloc(sizeof(MapItem));
-    w1->type = PLANT;
+    w1->type = GRASS;
     w1->draw = draw_plant;
     w1->walkable = true;
     w1->data = NULL;

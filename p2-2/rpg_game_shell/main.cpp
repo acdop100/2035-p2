@@ -107,7 +107,7 @@ void draw_game(int init)
             {
                 draw_player(u, v, Player.has_key);
                 continue;
-            }
+            } 
             else if (x >= 0 && y >= 0 && x < map_width() && y < map_height()) // Current (i,j) in the map
             {
                 MapItem* curr_item = get_here(x, y);
@@ -194,10 +194,18 @@ int main()
         
         // Actuall do the game update:
         // 1. Read inputs        
-        // 2. Determine action (get_action)        
-        // 3. Update game (update_game)
-        // 3b. Check for game over
-        // 4. Draw frame (draw_game)
+
+        int actions = get_action(inputs);  
+
+        int update = update_game(action);
+
+        if (!update) {
+            draw_game();
+        } else {
+            draw_game(false);
+        }
+
+        
         
         // 5. Frame delay
         t.stop();
@@ -205,3 +213,9 @@ int main()
         if (dt < 100) wait_ms(100 - dt);
     }
 }
+
+/**
+1) Map.cpp (display something)
+2) Hardware.cpp (use buttons and accelerometer)
+3) Speech.cpp / graphics.cpp (way down the road when things actually work, get creative)
+*/

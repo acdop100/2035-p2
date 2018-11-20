@@ -41,6 +41,10 @@ void draw_speech_line(const char* line, int which)
 
 void speech_bubble_wait()
 {
+    Timer t; t.start();
+    t.stop();
+    int dt = t.read_ms();
+    if (dt < 100) wait_ms(100 - dt);
 }
 
 void speech(const char* line1, const char* line2)
@@ -54,4 +58,17 @@ void speech(const char* line1, const char* line2)
 
 void long_speech(const char* lines[], int n)
 {
+    int q = 0;
+    while (q <= n) {
+        draw_speech_bubble();
+        draw_speech_line(lines[q], TOP);
+        q++;
+        if (q <= n) {
+            draw_speech_line(lines[q], BOTTOM);
+            speech_bubble_wait();
+            erase_speech_bubble();
+            q++;
+        }
+    }
+    
 }

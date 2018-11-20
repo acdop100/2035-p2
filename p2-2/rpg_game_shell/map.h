@@ -54,7 +54,9 @@ typedef struct {
 // MapItem types
 // Define more of these!
 #define WALL    0
-#define PLANT   1
+#define TREE    1
+#define GRASS   2
+#define NOTHING 10
 
 /**
  * Initializes the internal structures for all maps. This does not populate
