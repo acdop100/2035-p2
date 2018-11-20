@@ -5,10 +5,10 @@
  * Structure that represents all the inputs to the game.
  * If additional hardware is added, new elements should be added to this struct.
  */
-struct GameInputs {
-    int b1, b2, b3;     // Button presses
+typedef struct GameInputs {
+    int b1, b2, b3, b4;     // Button presses
     double ax, ay, az;  // Accelerometer readings
-};
+} GameInputs;
 
 /**
  * Initialize all the hardware.

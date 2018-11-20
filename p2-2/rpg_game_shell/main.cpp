@@ -139,6 +139,36 @@ void draw_game(int init)
     draw_lower_status();
 }
 
+void draw_game_end()
+{
+    // Iterate over all visible map tiles
+    for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
+    {
+        for (int j = -4; j <= 4; j++) // Iterate over one column of tiles
+        {
+            // Here, we have a given (i,j)
+            
+            // Compute the current map (x,y) of this tile
+            int x = i + Player.x;
+            int y = j + Player.y;
+            
+            // Compute the previous map (px, py) of this tile
+            int px = i + Player.px;
+            int py = j + Player.py;
+                        
+            // Compute u,v coordinates for drawing
+            int u = (i+5)*11 + 3;
+            int v = (j+4)*11 + 15;
+            
+            // Actually draw the tile
+            draw_end(u, v);
+        }
+    }
+
+    // Draw status bars    
+    draw_upper_status();
+    draw_lower_status();
+}
 
 /**
  * Initialize the main world map. Add walls around the edges, interior chambers,
@@ -197,10 +227,10 @@ int main()
 
         int actions = get_action(inputs);  
 
-        int update = update_game(action);
+        int update = update_game(actions);
 
         if (!update) {
-            draw_game();
+            draw_game_end();
         } else {
             draw_game(false);
         }
@@ -218,4 +248,8 @@ int main()
 1) Map.cpp (display something)
 2) Hardware.cpp (use buttons and accelerometer)
 3) Speech.cpp / graphics.cpp (way down the road when things actually work, get creative)
+
+piskelapp.com
+https://os.mbed.com/users/Ivannrush/code/MMA8452_Demo/file/46eab8a51f91/main.cpp/
+https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html
 */

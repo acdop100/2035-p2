@@ -1,7 +1,7 @@
 #include "graphics.h"
 #include "map.h"
 #include "globals.h"
-
+#include "speech.h"
 
 
 void draw_player(int u, int v, int key)
@@ -43,6 +43,14 @@ void draw_wall(int u, int v)
 void draw_plant(int u, int v)
 {
     uLCD.filled_rectangle(u, v, u+10, v+10, GREEN);
+}
+
+void draw_end(int u, int v)
+{
+    uLCD.filled_rectangle(u, v, u+10, v+10, YELLOW);
+    const char* line1 = "GAME OVER";
+    const char* line2 = "YOU WIN!";
+    speech(line1, line2);
 }
 
 void draw_upper_status(int u, int v)
