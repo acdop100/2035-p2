@@ -38,7 +38,7 @@ void draw_end(int u, int v);
 /**
  * Draw the upper status bar.
  */
-void draw_upper_status();
+void draw_upper_status(int x, int y);
 
 /**
  * Draw the lower status bar.

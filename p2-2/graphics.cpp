@@ -87,13 +87,14 @@ void draw_end()
     speech(line1, line2);
 }
 
-void draw_upper_status(int u, int v)
+void draw_upper_status(int x, int y)
 {
     // Draw bottom border of status bar
     uLCD.line(0, 9, 127, 9, GREEN);
     
     // Add other status info drawing code here
-    
+    uLCD.locate(0, 0);
+    uLCD.printf("X coord = %d, Y coord = %d\n", x, y);
 }
 
 void draw_lower_status()
@@ -102,6 +103,7 @@ void draw_lower_status()
     uLCD.line(0, 118, 127, 118, GREEN);
     
     // Add other status info drawing code here
+    
 }
 
 void draw_border()

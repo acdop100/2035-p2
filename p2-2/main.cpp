@@ -92,6 +92,13 @@ int update_game(int action)
 
         case ACTION_BUTTON: 
             item = get_west(Player.x, Player.y);
+            if (item == NULL) {
+                item = get_east(Player.x, Player.y);
+            } else if (item == NULL) {
+                item = get_south(Player.x, Player.y);
+            } else if (item == NULL) {
+                item = get_north(Player.x, Player.y);
+            } 
             if (item -> type == 3) {
                 pc.printf("Talking to Prof. Wills \n");
 
@@ -230,7 +237,7 @@ void draw_game(int init)
             DrawFunc draw = NULL;
             if (init && i == 0 && j == 0) // Only draw the player on init
             {
-                draw_player(u, v);
+                uLCD.BLIT(u, v, 11, 11, &mainChar);
                 continue;
             } 
             else if (x >= 0 && y >= 0 && x < map_width() && y < map_height()) // Current (i,j) in the map
@@ -264,7 +271,7 @@ void draw_game(int init)
     }
 
     // Draw status bars    
-    draw_upper_status();
+    draw_upper_status(Player.x, Player.y);
     draw_lower_status();
 }
 
