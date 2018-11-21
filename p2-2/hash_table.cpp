@@ -1,6 +1,6 @@
 /*
- Student Name:
- Date:
+ Student Name: James Lehman
+ Date: 9/9/18
 
 =======================
 ECE 2035 Project 2-1:
@@ -15,19 +15,19 @@ FOR FULL CREDIT, BE SURE TO TRY MULTIPLE TEST CASES and DOCUMENT YOUR CODE.
 Naming conventions in this file:
 ===================================
 1. All struct names use camel case where the first letter is capitalized.
-  e.g. "HashTable", or "HashTableEntry"
+  e.g. "HashTable", or "MapItem"
 
 2. Variable names with a preceding underscore "_" will not be called directly.
-  e.g. "_HashTable", "_HashTableEntry"
+  e.g. "_HashTable", "_MapItem"
 
   Recall that in C, we have to type "struct" together with the name of the struct
   in order to initialize a new variable. To avoid this, in hash_table.h
   we use typedef to provide new "nicknames" for "struct _HashTable" and
-  "struct _HashTableEntry". As a result, we can create new struct variables
+  "struct _MapItem". As a result, we can create new struct variables
   by just using:
     - "HashTable myNewTable;"
      or
-    - "HashTableEntry myNewHashTableEntry;"
+    - "MapItem myNewMapItem;"
 
   The preceding underscore "_" simply provides a distinction between the names
   of the actual struct defition and the "nicknames" that we use to initialize
@@ -54,7 +54,7 @@ Naming conventions in this file:
 * correctness, but it is better than nothing!
 ***************************************************************************/
 #include "hash_table.h"
-
+#include "map.h"
 
 /****************************************************************************
 * Include other private dependencies
@@ -62,9 +62,8 @@ Naming conventions in this file:
 * These other modules are used in the implementation of the hash table module,
 * but are not required by users of the hash table.
 ***************************************************************************/
-#include <stdlib.h>   // For malloc and free
-#include <stdio.h>    // For printf
-
+#include <stdlib.h> // For malloc and free
+#include <stdio.h>  // For printf
 
 /****************************************************************************
 * Hidden Definitions
@@ -74,13 +73,14 @@ Naming conventions in this file:
 * available everywhere and user code can hold pointers to these structs.
 ***************************************************************************/
 /**
- * This structure represents an a hash table.
+ * This structure represents a hash table.
  * Use "HashTable" instead when you are creating a new variable. [See top comments]
  */
-struct _HashTable {
+struct _HashTable
+{
   /** The array of pointers to the head of a singly linked list, whose nodes
-      are HashTableEntry objects */
-  HashTableEntry** buckets;
+      are MapItem objects */
+  MapItem **buckets;
 
   /** The hash function pointer */
   HashFunction hash;
@@ -89,23 +89,9 @@ struct _HashTable {
   unsigned int num_buckets;
 };
 
-/**
- * This structure represents a hash table entry.
- * Use "HashTableEntry" instead when you are creating a new variable. [See top comments]
- */
-struct _HashTableEntry {
-  /** The key for the hash table entry */
-  unsigned int key;
-
-  /** The value associated with this hash table entry */
-  void* value;
-
-  /**
-  * A pointer pointing to the next hash table entry
-  * NULL means there is no next entry (i.e. this is the tail)
-  */
-  HashTableEntry* next;
-};
+MapItem *tmp; 
+void *val;
+void *tmpVal;
 
 
 /****************************************************************************
@@ -115,7 +101,7 @@ struct _HashTableEntry {
 * declared in hash_table.h.
 ***************************************************************************/
 /**
-* createHashTableEntry
+* createMapItem
 *
 * Helper function that creates a hash table entry by allocating memory for it on
 * the heap. It initializes the entry with key and value, initialize pointer to
@@ -125,8 +111,33 @@ struct _HashTableEntry {
 * @param value The value stored in the hash table entry
 * @return The pointer to the hash table entry
 */
-static HashTableEntry* createHashTableEntry(unsigned int key, void* value) {
 
+//node = hashTable -> buckets[hashTable -> hash(key)];
+
+// NOT Done
+static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key, void *value)
+{
+  MapItem *this_node = hashTable -> buckets[index];
+  if(this_node != NULL) {
+    if(this_node != NULL && this_node -> next != NULL) {
+      this_node = this_node -> next;
+    }
+    MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
+    this_node -> next = next_node;
+    
+    next_node -> value = value;
+    next_node -> key = key; // stores the values
+    next_node -> next = NULL;
+    return(next_node);
+
+  } else {
+    MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
+
+    next_node -> value = value;
+    next_node -> key = key; // stores the values
+    next_node -> next = NULL;
+    return(next_node);
+  }
 }
 
 /**
@@ -139,8 +150,41 @@ static HashTableEntry* createHashTableEntry(unsigned int key, void* value) {
 * @param key The key corresponds to the hash table entry
 * @return The pointer to the hash table entry, or NULL if key does not exist
 */
-static HashTableEntry* findItem(HashTable* hashTable, unsigned int key) {
 
+// Done??
+static MapItem *findItem(HashTable *hashTable, unsigned int key)
+{
+  int index = hashTable -> hash(key);
+  MapItem *this_node = hashTable -> buckets[index];
+  
+  while(this_node != NULL && this_node -> key != key) {
+    this_node = this_node -> next;
+  }
+  return(this_node);
+}
+
+// Freedom - frees the correct node and corrects the next pointers 
+static void *freedom(MapItem *this_node, HashTable *hashTable, int index) 
+{
+  val = this_node -> value;
+  tmp = this_node -> next;
+
+  MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
+  while(check_node != NULL && check_node != this_node && check_node -> next != this_node) {
+    check_node = check_node -> next;
+  }
+
+  if (check_node == this_node) {
+    hashTable->buckets[index] = this_node->next;
+    printf("removing head thing\n");
+  } else if (this_node -> next != NULL) {
+    check_node -> next = check_node -> next -> next;
+  }
+  
+  free(this_node);
+  
+  this_node = tmp;
+  return(val);
 }
 
 /****************************************************************************
@@ -151,48 +195,107 @@ static HashTableEntry* findItem(HashTable* hashTable, unsigned int key) {
 * above sections.
 ****************************************************************************/
 // The createHashTable is provided for you as a starting point.
-HashTable* createHashTable(HashFunction hashFunction, unsigned int numBuckets) {
+HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
+{
   // The hash table has to contain at least one bucket. Exit gracefully if
   // this condition is not met.
-  if (numBuckets==0) {
+  if (numBuckets == 0)
+  {
     printf("Hash table has to contain at least 1 bucket...\n");
     exit(1);
   }
 
   // Allocate memory for the new HashTable struct on heap.
-  HashTable* newTable = (HashTable*)malloc(sizeof(HashTable));
+  HashTable *newTable = (HashTable *)malloc(sizeof(HashTable));
 
   // Initialize the components of the new HashTable struct.
   newTable->hash = hashFunction;
   newTable->num_buckets = numBuckets;
-  newTable->buckets = (HashTableEntry**)malloc(numBuckets*sizeof(HashTableEntry*));
+  newTable->buckets = (MapItem **)malloc(numBuckets * sizeof(MapItem *));
 
-  // As the new buckets are empty, init each bucket as NULL.
+  // As the new buckets contain indeterminant values, init each bucket as NULL.
   unsigned int i;
-  for (i=0; i<numBuckets; ++i) {
+  for (i = 0; i < numBuckets; ++i)
+  {
     newTable->buckets[i] = NULL;
   }
-
   // Return the new HashTable struct.
   return newTable;
 }
 
-void destroyHashTable(HashTable* hashTable) {
+
+// Done?
+void destroyHashTable(HashTable *hashTable)
+{
+  int count = 0;
+  MapItem *this_node = hashTable -> buckets[count];
+  
+  while(count <= hashTable -> num_buckets){
+    while (this_node != NULL) {
+      //printf("going to free now\n");
+      MapItem *tmp = this_node->next;
+      freedom(this_node, hashTable, count);
+      this_node = tmp;
+    }
+    count++;
+  }
+}
+
+// Done??
+void *insertItem(HashTable *hashTable, unsigned int key, void *value)
+{
+  MapItem *this_node = findItem(hashTable, key);
+  int index = hashTable -> hash(key);
+
+  if (this_node != NULL) {
+    tmpVal = this_node -> value;
+    this_node -> value = value;
+    return (tmpVal);
+  } else {
+    //printf("Node does not exist for given key, creating node.\n");
+    
+    hashTable -> buckets[index] = createMapItem(hashTable, index, key, value);
+
+    return(0);
+  }
+}
+
+// Done??
+void *getItem(HashTable *hashTable, unsigned int key)
+{
+  MapItem *this_node = findItem(hashTable, key);
+
+  if(this_node != NULL && this_node -> key == key) {
+    return(this_node -> value);
+  } else {
+    //printf("Node does not exist for given key, returned NULL.\n");
+    return(0);
+  }
+}
+
+// NOT Done
+void *removeItem(HashTable *hashTable, unsigned int key)
+{
+  MapItem *this_node = findItem(hashTable, key);
+
+  if(this_node != NULL) {
+    int index = hashTable -> hash(key);
+    val = freedom(this_node, hashTable, index);
+    return(val);
+  } else {
+    //printf("Node does not exist for given key, nothing deleted/returned.\n");
+    return(0);
+  }
 
 }
 
-void* insertItem(HashTable* hashTable, unsigned int key, void* value) {
-
-}
-
-void* getItem(HashTable* hashTable, unsigned int key) {
-
-}
-
-void* removeItem(HashTable* hashTable, unsigned int key) {
-
-}
-
-void deleteItem(HashTable* hashTable, unsigned int key) {
-
+// NOT Done
+void deleteItem(HashTable *hashTable, unsigned int key)
+{
+  MapItem *this_node = findItem(hashTable, key);
+  
+  if(this_node != NULL) {
+    int index = hashTable -> hash(key);
+    freedom(this_node, hashTable, index);
+  }
 }

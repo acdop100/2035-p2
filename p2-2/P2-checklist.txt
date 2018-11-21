@@ -5,53 +5,53 @@ Student Name: ____________________________________________
 
 ﻿BASIC GAME FUNCTIONALITY
 
-____  Accelerometer moves the player
+___  Accelerometer moves the player
 
-____  Walls block character motion
+___  Walls block character motion
 
-____  Omnipotent mode button walks through walls
+_Y_  Omnipotent mode button walks through walls
 
-____  The first Map must be bigger than the screen (at least 50*50 tiles)
+___  The first Map must be bigger than the screen (at least 50*50 tiles)
 
-____  Stairs/ladders/portals/the door go between the first and the second Map
+___  Stairs/ladders/portals/the door go between the first and the second Map
 
-____  Quest works (key & door work)
+___  Quest works (key & door work)
 
-____  Display Game Over when quest complete
+_T_  Display Game Over when quest complete
 
-____  Status bar shows player coordinates
+___  Status bar shows player coordinates
 
-____  Speech bubbles used in quest
+___  Speech bubbles used in quest
 
-____  Art include at least one sprite
+_T_  Art include at least one sprite
 
 
 EXTRA FEATURES
 
-____  Start page
+___  Start page
 
-____  Sound effects or background music
+___  Sound effects or background music
 
-____  Different modes of locomotion
+___  Different modes of locomotion
 
-____  Animation for interactions with things in the Map
+___  Animation for interactions with things in the Map
 
-____  Include a Game Menu for configuring the game
+___  Include a Game Menu for configuring the game
 
-____  Multiple lives and the possibility to lose
+___  Multiple lives and the possibility to lose
 
-____  Additional items that can be collected
+___  Additional items that can be collected
 
-____  Manipulate map/move objects
+___  Manipulate map/move objects
 
-____  Mobile (walking) NPCs
+___  Mobile (walking) NPCs
 
-____  Player plays against an intelligent opponent in a game 
+___  Player plays against an intelligent opponent in a game 
 
-____  Save the game (persistent)
+___  Save the game (persistent)
 
-____  Multiple quests (>=2) / extra characters relevant to the quest(s) (>=5)
+___  Multiple quests (>=2) / extra characters relevant to the quest(s) (>=5)
 
-____  Larger objects that can occlude the character
+___  Larger objects that can occlude the character
 
-____  Other: (please describe)
+___  Other: (please describe)

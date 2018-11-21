@@ -17,7 +17,8 @@ typedef void (*DrawFunc)(int u, int v);
  * The data for elements in the map. Each item in the map HashTable is a
  * MapItem.
  */
-typedef struct {
+typedef struct MapItem{
+
     /**
      * Indicates the "type" of the MapItem: WALL, DOOR, PLANT, etc. This is
      * useful for determining how to interact with the object when updating the
@@ -43,7 +44,9 @@ typedef struct {
      * a WALL probably doesn't need to use this (it can be NULL), where an NPC
      * might use it to store game state (have I given the player the key yet?).
      */
-    void* data;
+    int data;
+    int data2;
+    
 } MapItem;
 
 typedef struct {
@@ -55,7 +58,8 @@ typedef struct {
 // Define more of these!
 #define WALL    0
 #define TREE    1
-#define GRASS   2s
+#define GRASS   2
+#define NPC     3
 #define NOTHING 10
 
 /**
@@ -151,6 +155,12 @@ void add_wall(int x, int y, int dir, int len);
  * Add a PLANT item at (x,y). If there is already a MapItem at (x,y), erase it
  * before adding the plant.
  */
-void add_plant(int x, int y);
+void add_plant(int x, int y, int img);
+
+void add_grass(int x, int y, int img);
+void add_pWills(int x, int y, int img);
+void add_pSchimmel(int x, int y, int img);
+void add_door(int x, int y, int img);
+
 
 #endif //MAP_H

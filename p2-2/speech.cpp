@@ -29,6 +29,7 @@ static void speech_bubble_wait();
 
 void draw_speech_bubble()
 {
+    uLCD.filled_rectangle(Player.x, Player.y, Player.x+10, Player.y+10, 0xFF0000);
 }
 
 void erase_speech_bubble()

@@ -1,11 +1,12 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+int* img;
 
 /**
  * Draws the player. This depends on the player state, so it is not a DrawFunc.
  */
-void draw_player(int u, int v, int key);
+void draw_player(int u, int v);
 
 /**
  * Takes a string image and draws it to the screen. The string is 121 characters
@@ -20,7 +21,7 @@ void draw_player(int u, int v, int key);
  *      Any other character is black
  * More colors can be easily added by following the pattern already given.
  */
-void draw_img(int u, int v, const char* img);
+void draw_img(int u, int v, const int img);
 
 /**
  * DrawFunc functions. 
@@ -28,7 +29,10 @@ void draw_img(int u, int v, const char* img);
  */
 void draw_nothing(int u, int v);
 void draw_wall(int u, int v);
-void draw_plant(int u, int v);
+void draw_grass(int u, int v);
+void draw_pWills(int u, int v);
+void draw_pSchimmel(int u, int v);
+void draw_door(int u, int v);
 void draw_end(int u, int v);
 
 /**

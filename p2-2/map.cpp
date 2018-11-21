@@ -1,15 +1,20 @@
 #include "map.h"
 #include "globals.h"
 #include "graphics.h"
+#include "hash_table.h"
+#include "hash_table.cpp"
 
 /**
  * The Map structure. This holds a HashTable for all the MapItems, along with
  * values for the width and height of the Map.
  */
 struct Map {
-    HashTable* items;
-    int w, h;
-};
+
+    HashTable* items;   // HashTable of MapItems
+
+    int w, h;           // Ints for width and height
+
+} map;
 
 /**
  * Storage area for the maps.
@@ -26,8 +31,10 @@ static int active_map;
  */
 static unsigned XY_KEY(int X, int Y) {
 
-    unsigned int key = (X*50) + Y;
+    unsigned int key = (X*50) + Y;  // Get the 1-D coordinate for the HT
+
     return(key);
+
 }
 
 /**
@@ -38,14 +45,16 @@ static unsigned XY_KEY(int X, int Y) {
 unsigned map_hash(unsigned key)
 {
     unsigned int tableKey = key % 50;
-    return(tableKey)
+
+    return(tableKey);
+
 }
 
 void maps_init()
 { 
     // Initialize hash table
     // Set width & height
-    map.items = createHashTable(50);
+    map.items = createHashTable(map_hash, 50);
     map.h = 50;
     map.w = 50;
 }
@@ -97,67 +106,76 @@ int map_area()
 
 MapItem* get_north(int x, int y)
 {
-    void *item = map(map_hash(XY_KEY(x, y+1)));
+    MapItem* item = get_here(x, y+1); // Gets the correct MapItem from the item HashTable
+
     if (!item) {
-        printf("Location at given coordinates does not exist (Index OOB)");
+        pc.printf("Location at given coordinates does not exist (Index OOB)"); // If the MapItem doesn't exist, it returns this
         return(NULL);
     } else {
-        return(item)
+        return(item);
     }
 }
 
 MapItem* get_south(int x, int y)
 {
-    void *item = map(map_hash(XY_KEY(x, y-1)));
+    MapItem* item = get_here(x, y-1);
+
     if (!item) {
-        printf("Location at given coordinates does not exist (Index OOB)");
+        pc.printf("Location at given coordinates does not exist (Index OOB)");
         return(NULL);
     } else {
-        return(item)
+        return(item);
     }
 }
 
 MapItem* get_east(int x, int y)
 {
-    void *item = map(map_hash(XY_KEY(x+1, y)));
+    MapItem* item = get_here(x+1, y);
+
     if (!item) {
-        printf("Location at given coordinates does not exist (Index OOB)");
+        pc.printf("Location at given coordinates does not exist (Index OOB)");
         return(NULL);
     } else {
-        return(item)
+        return(item);
     }
 }
 
-MapItem* get_west(int x-1, int y)
+MapItem* get_west(int x, int y)
 {
-    void *item = map(map_hash(XY_KEY(x-1, y)));
+    MapItem* item = get_here(x-1, y);
+
     if (!item) {
-        printf("Location at given coordinates does not exist (Index OOB)");
+        pc.printf("Location at given coordinates does not exist (Index OOB)");
         return(NULL);
     } else {
-        return(item)
+        return(item);
     }
 }
 
 MapItem* get_here(int x, int y)
 {
-    void *item = map(map_hash(XY_KEY(x, y)));
+    Map* map = get_active_map();
+    MapItem* item = map -> items -> buckets[map_hash(XY_KEY(x, y+1))];
+
     if (!item) {
-        printf("Location at given coordinates does not exist (Index OOB)");
+        pc.printf("Location at given coordinates does not exist (Index OOB)");
         return(NULL);
     } else {
-        return(item)
+        return(item);
     }
 }
 
 
 void map_erase(int x, int y)
 {
-    int location = map_hash(XY_KEY(x, y));
-    if (!location) {
-        printf("Location at given coordinates does not exist (Index OOB)");
+    MapItem* item = get_here(x, y);
+
+    if (!item) {
+        pc.printf("Location at given coordinates does not exist (Index OOB)");
     } else {
-        map ->location = NULL;
+        item -> type = NULL;
+        item -> draw = draw_nothing;
+        item -> walkable = 1;
     }
 }
 
@@ -168,7 +186,6 @@ void add_wall(int x, int y, int dir, int len)
         MapItem* w1 = (MapItem*) malloc(sizeof(MapItem));
         w1->type = WALL;
         w1->draw = draw_wall;
-        w1->walkable = false;
         w1->data = NULL;
         unsigned key = (dir == HORIZONTAL) ? XY_KEY(x+i, y) : XY_KEY(x, y+i);
         void* val = insertItem(get_active_map()->items, key, w1);
@@ -180,7 +197,7 @@ void add_plant(int x, int y)
 {
     MapItem* w1 = (MapItem*) malloc(sizeof(MapItem));
     w1->type = GRASS;
-    w1->draw = draw_plant;
+    w1->draw = draw_grass;
     w1->walkable = true;
     w1->data = NULL;
     void* val = insertItem(get_active_map()->items, XY_KEY(x, y), w1);

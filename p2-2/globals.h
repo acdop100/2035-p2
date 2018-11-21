@@ -16,12 +16,11 @@
 extern uLCD_4DGL uLCD;      // LCD Screen
 extern SDFileSystem sd;     // SD Card
 extern Serial pc;           // USB Console output
-extern MMA8452 acc;       // Accelerometer
+extern MMA8452 acc;         // Accelerometer
 extern DigitalIn button1;   // Pushbuttons
 extern DigitalIn button2;
 extern DigitalIn button3;
-extern AnalogOut DACout;    // Speaker
-extern PwmOut speaker;
+extern DigitalIn button4;
 extern wave_player waver;
 
 // === [define the macro of error heandle function] ===

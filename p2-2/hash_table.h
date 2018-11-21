@@ -38,22 +38,14 @@ typedef unsigned int (*HashFunction)(unsigned int key);
  */
 typedef struct _HashTable HashTable;
 
-/**
- * This defines a type that is a _HashTableEntry struct. The definition for
- * _HashTableEntry is implemented in hash_table.c.
- *
- * In other words, "HashTableEntry" is an alternative name for "struct _HashTableEntry".
- * "HashTableEntry" can be used to create a new struct variable.
- */
-typedef struct _HashTableEntry HashTableEntry;
 
 /**
  * createHashTable
  *
  * Creates a hash table by allocating memory for it on the heap. Initialize num_buckets
  * and hash based on function arguments. Allocate memory for buckets as an array of
- * pointers to HashTableEntry objects based on the number of buckets available.
- * Each bucket contains a singly linked list, whose nodes are HashTableEntry objects.
+ * pointers to MapItem objects based on the number of buckets available.
+ * Each bucket contains a singly linked list, whose nodes are MapItem objects.
  *
  * @param myHashFunc The pointer to the custom hash function.
  * @param numBuckets The number of buckets available in the hash table.
@@ -64,7 +56,7 @@ HashTable* createHashTable(HashFunction myHashFunc, unsigned int numBuckets);
 /**
  * destroyHashTable
  *
- * Destroy the hash table. The nodes (HashTableEntry objects) of singly linked
+ * Destroy the hash table. The nodes (MapItem objects) of singly linked
  * list, the values stored on the linked list, the buckets, and the hashtable
  * itself are freed from the heap. In other words, free all the allocated memory
  * on heap that is associated with heap, including the values that users store in

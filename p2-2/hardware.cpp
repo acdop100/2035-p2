@@ -9,12 +9,13 @@
 // without the extern keyword). That's what this file does!
 
 // Hardware initialization: Instantiate all the things!
+
 uLCD_4DGL uLCD(p9,p10,p11);             // LCD Screen (tx, rx, reset)
-//SDFileSystem sd(p5, p6, p7, p8, "sd");  // SD Card(mosi, miso, sck, cs)
 Serial pc(USBTX,USBRX);                 // USB Console (tx, rx)
 MMA8452 acc(p28, p27, 100000);          // Accelerometer (sda, sdc, rate)
+double ax, ay, az;                  
 
-PwmOut pwm_pin(p20);                    // Auxillary output
+PwmOut pwm_pin(p20);                    // AUX output
 void playNote(float frequency, float duration, float volume) {
     pwm_pin.period(1.0/frequency);
     pwm_pin = volume/2.0;
@@ -22,19 +23,16 @@ void playNote(float frequency, float duration, float volume) {
     pwm_pin = 0.0;
 }
 
-// SD card (SPI pins)
-SDFileSystem sd(p5, p6, p7, p8, "sd");
+SDFileSystem sd(p5, p6, p7, p8, "sd");  // SD Card(mosi, miso, sck, cs)
 
 DigitalIn button1(p21);                 // Pushbuttons (pin)
 DigitalIn button2(p22);
 DigitalIn button3(p23);
 DigitalIn button4(p24);
-AnalogOut DACout(p18);                  // Speaker (pin)
-wave_player waver(&DACout);
-double ax, ay, az;
 
+// wave_player waver(&DACout);
 
-PwmOut redpin(p12);
+PwmOut redpin(p12);                     // RGB LED
 PwmOut greenpin(p13);
 PwmOut bluepin(p14);
 
@@ -74,14 +72,20 @@ int hardware_init()
 
 GameInputs read_inputs() 
 {
-    acc.readXYZGravity(&ax,&ay,&az);
-    GameInputs newInputs;
+    // Read accelerometer values
+    acc.readXYZGravity(&ax,&ay,&az);    
+    pc.printf("x:%lf   y:%lf z:%lf\r\n",ax,ay,az);
+
+    GameInputs newInputs; // Initialize new input struct
+
     newInputs.b1 = button1;
     newInputs.b2 = button2;
     newInputs.b3 = button3;
     newInputs.b4 = button4;
+
     newInputs.ax = ax;
     newInputs.ay = ay;
     newInputs.az = az;
+
     return(newInputs);
 }

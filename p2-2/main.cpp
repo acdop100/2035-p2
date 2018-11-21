@@ -4,19 +4,23 @@
 #include "map.h"
 #include "graphics.h"
 #include "speech.h"
+#include "sprites.h"
 
 // Functions in this file
+int godMode = 0;
+MapItem* item;
 int get_action (GameInputs inputs);
 int update_game (int action);
 void draw_game (int init);
-void init_main_map ();
+void init_main_map (int godMode);
 int main ();
+
 
 /**
  * The main game state. Must include Player locations and previous locations for
  * drawing to work properly. Other items can be added as needed.
  */
-struct {
+struct Player {
     int x,y;    // Current locations
     int px, py; // Previous locations
     int has_key;
@@ -33,9 +37,27 @@ struct {
 #define GO_RIGHT 4
 #define GO_UP 5
 #define GO_DOWN 6
+
 int get_action(GameInputs inputs)
 {
-    return NO_ACTION;
+    if (inputs.b1 == 1) {
+        return MENU_BUTTON;
+    } 
+    else if (inputs.b2 == 1) {
+        return ACTION_BUTTON;
+    } 
+    else if (inputs.ax > 0 && inputs.ax > inputs.ay) {
+        return GO_RIGHT;
+    } 
+    else if (inputs.ax < 0 && inputs.ax > inputs.ay) {
+        return GO_LEFT;
+    } 
+    else if (inputs.ay > 0 && inputs.ax < inputs.ay) {
+        return GO_UP;
+    } 
+    else if (inputs.ay < 0 && inputs.ax < inputs.ay) {
+        return GO_DOWN;
+    }
 }
 
 /**
@@ -50,6 +72,10 @@ int get_action(GameInputs inputs)
 #define NO_RESULT 0
 #define GAME_OVER 1
 #define FULL_DRAW 2
+#define HALFDRAW 3
+#define GODMODE 4
+
+
 int update_game(int action)
 {
     // Save player previous location before updating
@@ -60,15 +86,114 @@ int update_game(int action)
     // You can define functions like "go_up()" that get called for each case.
     switch(action)
     {
-        case GO_UP:     break;
-        case GO_LEFT:   break;            
-        case GO_DOWN:   break;
-        case GO_RIGHT:  break;
-        case ACTION_BUTTON: break;
-        case MENU_BUTTON: break;
-        default:        break;
+        case MENU_BUTTON: 
+            return GODMODE;
+            break;
+
+        case ACTION_BUTTON: 
+            item = get_west(Player.x, Player.y);
+            if (item -> type == 3) {
+                pc.printf("Talking to Prof. Wills \n");
+
+                if (item -> data == 0) {        // Talking to the NPC before finishing the quest
+                    if (item -> data2 == 0) {   // You haven't started the quest
+                        const char* line1 = "You want to pass this Class?";
+                        const char* line2 = "Bring me a project worthy of an A!";
+                        speech(line1, line2);
+                    } else {                    // You haven't completed the after it was given quest
+                        const char* line1 = "Oof, sorry. You don't have a good";
+                        const char* line2 = "project yet. Come back when you do.";
+                        speech(line1, line2);
+                    }
+                } else {
+                    if (item -> data2 == 0) {   // You have just finished the quest
+                        const char* line1 = "Hey now, this isn't too bad!";
+                        const char* line2 = "Here is my signiture. Now you need Schimmel's.";
+                        speech(line1, line2);
+                    } else if (item -> data2 == 1){ // You have finished the quest, but have not gone through the door
+                        const char* line1 = "What are you waitnig for?";
+                        const char* line2 = "Get Schimmel's signiture!";
+                        speech(line1, line2);
+                    } else {                    // You have finished the quest and have gone through the door
+                        const char* line1 = "Congrats on passing the class!";
+                        const char* line2 = "Now get out of here!";
+                        speech(line1, line2);
+                    }
+                }
+                return NO_RESULT;
+            } else if (item -> type == 4) {
+                pc.printf("Talking to Prof. Schimmel \n");
+
+                if (item -> data == 0) {        // Talking to the NPC before finishing the quest
+                    if (item -> data2 == 0) {   // You haven't started the quest
+                        const char* line1 = "You want to pass this Class? Bring me Prof.";
+                        const char* line2 = "Will's signiture for me to even consider it!";
+                        speech(line1, line2);
+                    } else {                    // You haven't completed the after it was given quest
+                        const char* line1 = "HAHAHA, You don't have a good";
+                        const char* line2 = "project yet! Come back when you do!";
+                        speech(line1, line2);
+                    }
+                } else {
+                    if (item -> data2 == 0) {   // You have just finished the quest
+                        const char* line1 = "Finally, what took you so long?";
+                        const char* line2 = "Here is my signiture. Now you need Schimmel's.";
+                        speech(line1, line2);
+                    }
+                }
+            }
+            
+            
+            break;
+
+        case GO_UP:     
+            item = get_north(Player.x, Player.y);
+            if (item -> walkable == false) {
+                pc.printf("Hit wall, cannot walk. \n");
+                return NO_RESULT;
+            } else {
+                Player.y = Player.y + 1;
+                return HALFDRAW;
+            }
+            break;
+
+        case GO_LEFT:   
+            item = get_west(Player.x, Player.y);
+            if (item -> walkable == false) {
+                pc.printf("Hit wall, cannot walk. \n");
+                return NO_RESULT;
+            } else {
+                Player.x = Player.x - 1;
+                return HALFDRAW;
+            }
+            break;    
+
+        case GO_DOWN:   
+            item = get_south(Player.x, Player.y);
+            if (item -> walkable == false) {
+                pc.printf("Hit wall, cannot walk. \n");
+                return NO_RESULT;
+            } else {
+                Player.y = Player.y - 1;
+                return HALFDRAW;
+            }
+            break;
+
+        case GO_RIGHT:  
+            item = get_east(Player.x, Player.y);
+            if (item -> walkable == false) {
+                pc.printf("Hit wall, cannot walk. \n");
+                return NO_RESULT;
+            } else {
+                Player.x = Player.x + 1;
+                return HALFDRAW;
+            }
+            break;
+
+        default:        
+            return NO_RESULT;
+            break;
     }
-    return NO_RESULT;
 }
 
 /**
@@ -105,7 +230,7 @@ void draw_game(int init)
             DrawFunc draw = NULL;
             if (init && i == 0 && j == 0) // Only draw the player on init
             {
-                draw_player(u, v, Player.has_key);
+                draw_player(u, v);
                 continue;
             } 
             else if (x >= 0 && y >= 0 && x < map_width() && y < map_height()) // Current (i,j) in the map
@@ -116,6 +241,10 @@ void draw_game(int init)
                 {
                     if (curr_item) // There's something here! Draw it
                     {
+                        if (init == 4) {
+                            item = get_here(x, y);
+                            item -> walkable = true;
+                        }
                         draw = curr_item->draw;
                     }
                     else // There used to be something, but now there isn't
@@ -124,10 +253,10 @@ void draw_game(int init)
                     }
                 }
             }
-            else if (init) // If doing a full draw, but we're out of bounds, draw the walls.
+            else if (init == 2) // If doing a full draw, but we're out of bounds, draw the walls.
             {
                 draw = draw_wall;
-            }
+            } 
 
             // Actually draw the tile
             if (draw) draw(u, v);
@@ -180,11 +309,10 @@ void init_main_map()
     Map* map = set_active_map(0);
     for(int i = map_width() + 3; i < map_area(); i += 39)
     {
-        add_plant(i % map_width(), i / map_width());
+        add_plant(i % map_width(), i / map_width(), grass);
     }
-    pc.printf("plants\r\n");
-        
-    pc.printf("Adding walls!\r\n");
+    pc.printf("grass added \r\n");
+    
     add_wall(0,              0,              HORIZONTAL, map_width());
     add_wall(0,              map_height()-1, HORIZONTAL, map_width());
     add_wall(0,              0,              VERTICAL,   map_height());
@@ -222,21 +350,20 @@ int main()
         // Timer to measure game update speed
         Timer t; t.start();
         
-        // Actuall do the game update:
-        // 1. Read inputs        
+        // Actually do the game update:
+      
+        GameInputs inputs = read_inputs();
 
         int actions = get_action(inputs);  
 
         int update = update_game(actions);
 
-        if (!update) {
+        if (update == 1) {
             draw_game_end();
         } else {
-            draw_game(false);
+            draw_game(update);
         }
-
-        
-        
+      
         // 5. Frame delay
         t.stop();
         int dt = t.read_ms();
@@ -250,6 +377,7 @@ int main()
 3) Speech.cpp / graphics.cpp (way down the road when things actually work, get creative)
 
 piskelapp.com
+
 https://os.mbed.com/users/Ivannrush/code/MMA8452_Demo/file/46eab8a51f91/main.cpp/
 https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html
 */
