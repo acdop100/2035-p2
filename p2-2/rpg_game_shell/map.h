@@ -55,7 +55,7 @@ typedef struct {
 // Define more of these!
 #define WALL    0
 #define TREE    1
-#define GRASS   2
+#define GRASS   2s
 #define NOTHING 10
 
 /**
