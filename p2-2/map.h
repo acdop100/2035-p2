@@ -160,6 +160,8 @@ void add_wall(int x, int y, int dir, int len);
  */
 void add_plant(int x, int y, int img);
 
+void add_NPC(int x, int y, int type, DrawFunc draw);
+
 void add_grass(int x, int y, int img);
 void add_pWills(int x, int y, int img);
 void add_pSchimmel(int x, int y, int img);

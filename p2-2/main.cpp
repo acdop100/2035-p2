@@ -149,50 +149,57 @@ int update_game(int action)
         {
             item = get_north(Player.x, Player.y);
         }
-        if (item->type == 3)
-        { // Prof. Wills
+        if (item->type == 3)        // Prof. Wills
+        { 
             pc.printf("Talking to Prof. Wills \n");
 
-            if (item->data == 0)
+            if (item->data < 2)
             { // Talking to the NPC before finishing the quest
                 if (item->data2 == 0)
                 { // You haven't started the quest
                     const char *line1 = "You want to pass this Class?";
                     const char *line2 = "Bring me a project worthy of an A!";
                     speech(line1, line2);
+                    item -> data2 = 1;
+                    return HALFDRAW;
                 }
                 else
                 { // You haven't completed the after it was given quest
                     const char *line1 = "Oof, sorry. You don't have a good";
                     const char *line2 = "project yet. Come back when you do.";
                     speech(line1, line2);
+                    return HALFDRAW;
                 }
             }
             else
             {
-                if (item->data2 == 0)
+                if (item->data2 == 1)
                 { // You have just finished the quest
                     const char *line1 = "Hey now, this isn't too bad!";
                     const char *line2 = "Here is my signiture. Now you need Schimmel's.";
                     speech(line1, line2);
+                    item -> data2 = 2;
+                    return HALFDRAW;
                 }
-                else if (item->data2 == 1)
+                else if (item->data2 == 2)
                 { // You have finished the quest, but have not gone through the door
                     const char *line1 = "What are you waitnig for?";
                     const char *line2 = "Get Schimmel's signiture!";
                     speech(line1, line2);
+                    return HALFDRAW;
                 }
                 else
                 { // You have finished the quest and have gone through the door
-                    const char *line1 = "Congrats on passing the class!";
-                    const char *line2 = "Now get out of here!";
+                    const char *line1 = "Congrats on finishing my tasks!";
+                    const char *line2 = "Here's my sig, now get out of here!";
                     speech(line1, line2);
+                    return HALFDRAW;
                 }
             }
             return NO_RESULT;
         }
-        else if (item->type == 4)
-        { // Prof. Schimmel
+        else if (item->type == 4)   // Prof. Schimmel
+        { 
             pc.printf("Talking to Prof. Schimmel \n");
 
             if (item->data == 0)
@@ -202,12 +209,14 @@ int update_game(int action)
                     const char *line1 = "You want to pass this Class? Bring me Prof.";
                     const char *line2 = "Will's signiture for me to even consider it!";
                     speech(line1, line2);
+                    return HALFDRAW;
                 }
                 else
                 { // You haven't completed the after it was given quest
                     const char *line1 = "HAHAHA, You don't have a good";
                     const char *line2 = "project yet! Come back when you do!";
                     speech(line1, line2);
+                    return HALFDRAW;
                 }
             }
             else
@@ -215,13 +224,14 @@ int update_game(int action)
                 if (item->data2 == 0)
                 { // You have just finished the quest
                     const char *line1 = "Finally, what took you so long?";
-                    const char *line2 = "Here is my signiture. Now you need Schimmel's.";
+                    const char *line2 = "Here is my signiture. Congrats on passing!";
                     speech(line1, line2);
+                    return GAME_OVER;
                 }
             }
         }
-        else if (item->type == 5)
-        { // F project
+        else if (item->type == 5)   // F project
+        { 
             const char *lines[] = {"You come upon an enemey, an F on a 2035 project!", "How do you respond?", "(BTN3) Go to office hours and see where you messed up", "(BTN4) Tell yourself everyone else did just as bad and forget about it"};
             long_speech(&lines[4], 4);
 
@@ -248,9 +258,10 @@ int update_game(int action)
                     x == NULL;
                 }
             }
+            return HALFDRAW;
         }
-        else if (item->type == 6)
-        { // Crippling depression
+        else if (item->type == 6)   // Crippling depression
+        { 
             const char *lines[] = {"You come upon an enemey, Crippling Depression!", "How do you respond?", "(BTN3) Seek therapy and take meds to fight it", "(BTN4) Lie in bed all day and binge watch Brooklyn 99"};
             long_speech(&lines[4], 4);
 
@@ -279,6 +290,7 @@ int update_game(int action)
                     x == NULL;
                 }
             }
+            return HALFDRAW;
         }
         break;
 
@@ -353,8 +365,7 @@ int update_game(int action)
 void draw_game(int init)
 {
     // Draw game border first
-    if (init)
-        draw_border();
+    if (init) draw_border();
 
     // Iterate over all visible map tiles
     for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
@@ -382,26 +393,6 @@ void draw_game(int init)
                 if (i == 0 && j == 0)
                 {
                     uLCD.BLIT(u, v, 11, 11, &mainChar);
-                    continue;
-                }
-                else if (i == 7 && j == 7)
-                {
-                    uLCD.BLIT(u, v, 11, 11, &pWills);
-                    continue;
-                }
-                else if (i == 100 && j == 100)
-                {
-                    uLCD.BLIT(u, v, 11, 11, &pSchimmel);
-                    continue;
-                }
-                else if (i == 80 && j == 80)
-                {
-                    uLCD.BLIT(u, v, 11, 11, &door);
-                    continue;
-                }
-                else if (i == 50 && j == 50)
-                {
-                    uLCD.BLIT(u, v, 11, 11, &wall);
                     continue;
                 }
             }
@@ -451,7 +442,7 @@ void draw_game(int init)
     }
 }
 
-void draw_game_end()
+void draw_game_end() // Used for when the game is over
 {
     // Iterate over all visible map tiles
     for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
@@ -490,6 +481,7 @@ void init_main_map()
     for (int i = map_width() + 3; i < map_area(); i += 39)
     {
         add_plant(i % map_width(), i / map_width(), grass);
+
     }
     pc.printf("grass added \r\n");
 
@@ -498,6 +490,11 @@ void init_main_map()
     add_wall(0, 0, VERTICAL, map_height());
     add_wall(map_width() - 1, 0, VERTICAL, map_height());
     pc.printf("Walls done!\r\n");
+
+    add_NPC(10, 20, 3, draw_pWills);
+    add_NPC(100, 100, 4, draw_pSchimmel);
+    add_NPC(75, 60, 5, draw_depression);
+    add_NPC(30, 80, 6, draw_failure);
 
     print_map();
 }
@@ -512,6 +509,9 @@ int main()
 {
     // First things first: initialize hardware
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
+
+    // Initial splash screen
+    
 
     // Initialize the maps
     maps_init();
