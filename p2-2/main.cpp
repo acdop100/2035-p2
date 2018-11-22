@@ -5,6 +5,8 @@
 #include "graphics.h"
 #include "speech.h"
 #include "sprites.h"
+#include "extraFuncs.h"
+#include "update_game.h"
 
 // Functions in this file
 int godMode = 0;
@@ -14,6 +16,7 @@ int update_game(int action);
 void draw_game(int init);
 void init_main_map(int godMode);
 int main();
+
 
 /**
  * The main game state. Must include Player locations and previous locations for
@@ -25,29 +28,8 @@ struct Player
     int px, py;  // Previous locations
     int has_key; // Does the player have the key (Sign off from Prof. Wills)?
     int lives = 3;
+    int depressions_scythe, failures_resolve, UGA_tears, future_anxiety;
 } Player;
-
-void lostlife()
-{ // Runs when the player loses a life
-    // Actually removes the life from the player
-    Player.lives = Player.lives - 1;
-
-    // Plays lost life sound
-    FILE *wave_file;
-    wave_file = fopen("/sd/roblox_death_sound.wav", "r");
-    waver.play(wave_file);
-    fclose(wave_file);
-    int lives = Player.lives;
-
-    // Show text
-    uLCD.filled_rectangle(Player.x, Player.y, Player.x + 10, Player.y + 10, 0xFF0000);
-    uLCD.filled_rectangle(Player.x + 1, Player.y + 1, Player.x + 9, Player.y + 9, 0x000000);
-    uLCD.locate(Player.x + 2, Player.y + 2);
-    uLCD.printf("You lost a life!");
-    uLCD.locate(Player.x + 6, Player.y + 6);
-    uLCD.printf("Only %d lives remaining", lives);
-    draw_game(true);
-}
 
 /**
  * Given the game inputs, determine what kind of update needs to happen.
@@ -73,6 +55,14 @@ int get_action(GameInputs inputs) // Decides game movement and interaction
     {
         return ACTION_BUTTON;
     }
+    else if (inputs.b3 == 1)
+    {
+        return BUTTON3;
+    }
+    else if (inputs.b4 == 1)
+    {
+        return BUTTON4;
+    }
     else if (inputs.ax > 0.26 && inputs.ax > inputs.ay)
     {
         return GO_RIGHT;
@@ -93,7 +83,15 @@ int get_action(GameInputs inputs) // Decides game movement and interaction
 
 int get_minor_action(GameInputs inputs) // Decides actions between NPCs
 {
-    if (inputs.b3 == 1)
+    if (inputs.b1 == 1)
+    {
+        return MENU_BUTTON;
+    }
+    else if (inputs.b2 == 1)
+    {
+        return ACTION_BUTTON;
+    }
+    else if (inputs.b3 == 1)
     {
         return BUTTON3;
     }
@@ -120,241 +118,6 @@ int get_minor_action(GameInputs inputs) // Decides actions between NPCs
 #define FULL_DRAW 2
 #define HALFDRAW 3
 #define GODMODE 4
-
-int update_game(int action)
-{
-    // Save player previous location before updating
-    Player.px = Player.x;
-    Player.py = Player.y;
-
-    // Do different things based on the each action.
-    // You can define functions like "go_up()" that get called for each case.
-    switch (action)
-    {
-    case MENU_BUTTON:
-        return GODMODE;
-        break;
-
-    case ACTION_BUTTON:
-        item = get_west(Player.x, Player.y);
-        if (item == NULL)
-        {
-            item = get_east(Player.x, Player.y);
-        }
-        else if (item == NULL)
-        {
-            item = get_south(Player.x, Player.y);
-        }
-        else if (item == NULL)
-        {
-            item = get_north(Player.x, Player.y);
-        }
-        if (item->type == 3)        // Prof. Wills
-        { 
-            pc.printf("Talking to Prof. Wills \n");
-
-            if (item->data < 2)
-            { // Talking to the NPC before finishing the quest
-                if (item->data2 == 0)
-                { // You haven't started the quest
-                    const char *line1 = "You want to pass this Class?";
-                    const char *line2 = "Bring me a project worthy of an A!";
-                    speech(line1, line2);
-                    item -> data2 = 1;
-                    return HALFDRAW;
-                }
-                else
-                { // You haven't completed the after it was given quest
-                    const char *line1 = "Oof, sorry. You don't have a good";
-                    const char *line2 = "project yet. Come back when you do.";
-                    speech(line1, line2);
-                    return HALFDRAW;
-                }
-            }
-            else
-            {
-                if (item->data2 == 1)
-                { // You have just finished the quest
-                    const char *line1 = "Hey now, this isn't too bad!";
-                    const char *line2 = "Here is my signiture. Now you need Schimmel's.";
-                    speech(line1, line2);
-                    item -> data2 = 2;
-                    return HALFDRAW;
-                }
-                else if (item->data2 == 2)
-                { // You have finished the quest, but have not gone through the door
-                    const char *line1 = "What are you waitnig for?";
-                    const char *line2 = "Get Schimmel's signiture!";
-                    speech(line1, line2);
-                    return HALFDRAW;
-                }
-                else
-                { // You have finished the quest and have gone through the door
-                    const char *line1 = "Congrats on finishing my tasks!";
-                    const char *line2 = "Here's my sig, now get out of here!";
-                    speech(line1, line2);
-                    return HALFDRAW;
-                }
-            }
-            return NO_RESULT;
-        }
-        else if (item->type == 4)   // Prof. Schimmel
-        { 
-            pc.printf("Talking to Prof. Schimmel \n");
-
-            if (item->data == 0)
-            { // Talking to the NPC before finishing the quest
-                if (item->data2 == 0)
-                { // You haven't started the quest
-                    const char *line1 = "You want to pass this Class? Bring me Prof.";
-                    const char *line2 = "Will's signiture for me to even consider it!";
-                    speech(line1, line2);
-                    return HALFDRAW;
-                }
-                else
-                { // You haven't completed the after it was given quest
-                    const char *line1 = "HAHAHA, You don't have a good";
-                    const char *line2 = "project yet! Come back when you do!";
-                    speech(line1, line2);
-                    return HALFDRAW;
-                }
-            }
-            else
-            {
-                if (item->data2 == 0)
-                { // You have just finished the quest
-                    const char *line1 = "Finally, what took you so long?";
-                    const char *line2 = "Here is my signiture. Congrats on passing!";
-                    speech(line1, line2);
-                    return GAME_OVER;
-                }
-            }
-        }
-        else if (item->type == 5)   // F project
-        { 
-            const char *lines[] = {"You come upon an enemey, an F on a 2035 project!", "How do you respond?", "(BTN3) Go to office hours and see where you messed up", "(BTN4) Tell yourself everyone else did just as bad and forget about it"};
-            long_speech(&lines[4], 4);
-
-            GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
-            int x = NULL;
-            while (!x)
-            {
-                if (actions == 7)
-                { // You went to office hours!
-                    const char *lines[] = {"...", "   ", "Hmm, it looks like you just missed a semicolon here.", "Since it was a dumb mistake, i'll regrade it. Cheers!"};
-                    long_speech(&lines[4], 4);
-                    x == 1;
-                }
-                else if (actions == 8)
-                { // You told yourself it was fine
-                    const char *lines[] = {"Time passes, and the end of the semester is here.", "The project brought your final grade down to a 68", "You didn't pass the class with the minimum required grade!", "Fat L's for days. Too bad, so sad."};
-                    long_speech(&lines[4], 4);
-                    lostlife();
-                    x == 1;
-                }
-                else
-                {
-                    x == NULL;
-                }
-            }
-            return HALFDRAW;
-        }
-        else if (item->type == 6)   // Crippling depression
-        { 
-            const char *lines[] = {"You come upon an enemey, Crippling Depression!", "How do you respond?", "(BTN3) Seek therapy and take meds to fight it", "(BTN4) Lie in bed all day and binge watch Brooklyn 99"};
-            long_speech(&lines[4], 4);
-
-            GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
-            int x = NULL;
-            while (!x)
-            {
-                if (actions == 7)
-                { // You fought depression!
-                    const char *line1 = "You got the help you needed to not drop out.";
-                    const char *line2 = "Prof. Wills will admire your resolve, congrats!";
-                    speech(line1, line2);
-                    x == 1;
-                }
-                else if (actions == 8)
-                { // You lost to depression...
-                    const char *line1 = "Even STAMP's meager mental health offerings couldn't help...";
-                    const char *line2 = "You end up not even finishing the project, too bad!";
-                    speech(line1, line2);
-                    lostlife();
-                    x == 1;
-                }
-                else
-                {
-                    x == NULL;
-                }
-            }
-            return HALFDRAW;
-        }
-        break;
-
-    case GO_UP:
-        item = get_north(Player.x, Player.y);
-        if (item->walkable == false)
-        {
-            pc.printf("Hit wall, cannot walk. \n");
-            return NO_RESULT;
-        }
-        else
-        {
-            Player.y = Player.y + 1;
-            return HALFDRAW;
-        }
-        break;
-
-    case GO_LEFT:
-        item = get_west(Player.x, Player.y);
-        if (item->walkable == false)
-        {
-            pc.printf("Hit wall, cannot walk. \n");
-            return NO_RESULT;
-        }
-        else
-        {
-            Player.x = Player.x - 1;
-            return HALFDRAW;
-        }
-        break;
-
-    case GO_DOWN:
-        item = get_south(Player.x, Player.y);
-        if (item->walkable == false)
-        {
-            pc.printf("Hit wall, cannot walk. \n");
-            return NO_RESULT;
-        }
-        else
-        {
-            Player.y = Player.y - 1;
-            return HALFDRAW;
-        }
-        break;
-
-    case GO_RIGHT:
-        item = get_east(Player.x, Player.y);
-        if (item->walkable == false)
-        {
-            pc.printf("Hit wall, cannot walk. \n");
-            return NO_RESULT;
-        }
-        else
-        {
-            Player.x = Player.x + 1;
-            return HALFDRAW;
-        }
-        break;
-
-    default:
-        return NO_RESULT;
-        break;
-    }
-}
 
 /**
  * Entry point for frame drawing. This should be called once per iteration of
@@ -470,6 +233,28 @@ void draw_game_end() // Used for when the game is over
     }
 }
 
+void draw_game_pause() // Used for when the game is over
+{
+    *img = pause;
+    uLCD.BLIT(0, 0, 128, 128, img);
+    GameInputs inputs = read_inputs();
+    int actions = get_minor_action(inputs);
+    int w;
+    while (!w) {
+        if (actions == 7) {
+            w = GODMODE;
+        } else if (actions == 8) {
+            w = NO_RESULT;
+        } else if (actions == 1) {
+            save_game();
+            w = NO_RESULT;
+        } else {
+            w = 0;
+        }
+    }
+   draw_game(w);
+}
+
 /**
  * Initialize the main world map. Add walls around the edges, interior chambers,
  * and plants in the background so you can see motion.
@@ -511,7 +296,23 @@ int main()
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
-    
+    *img = splash;
+    uLCD.BLIT(0, 0, 128, 128, img);
+    GameInputs inputs = read_inputs();
+    int actions = get_minor_action(inputs);
+    int w;
+    while (!w) {
+        if (actions == 7) {
+            w = GODMODE;
+        } else if (actions == 8) {
+            w = NO_RESULT;
+        } else if (actions == 1) {
+            load_game();
+            w = NO_RESULT;
+        } else {
+            w = 0;
+        }
+    }
 
     // Initialize the maps
     maps_init();
@@ -542,6 +343,9 @@ int main()
         if (update == 1)
         {
             draw_game_end();
+        }
+        else if (update = 8){
+            draw_game_pause();
         }
         else
         {

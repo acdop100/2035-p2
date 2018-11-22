@@ -63,6 +63,8 @@ typedef struct {
 #define PSCHIM  4
 #define ENEMEY1 5
 #define ENEMEY2 6
+#define ENEMEY3 7
+#define ENEMEY4 8
 #define NOTHING 10
 
 /**
@@ -161,11 +163,6 @@ void add_wall(int x, int y, int dir, int len);
 void add_plant(int x, int y, int img);
 
 void add_NPC(int x, int y, int type, DrawFunc draw);
-
-void add_grass(int x, int y, int img);
-void add_pWills(int x, int y, int img);
-void add_pSchimmel(int x, int y, int img);
-void add_door(int x, int y, int img);
 
 
 #endif //MAP_H

@@ -19,4 +19,8 @@ int depression;
 
 int failure;
 
+int pause;
+
+int splash;
+
 #endif //MAP_H

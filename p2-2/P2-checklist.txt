@@ -1,46 +1,46 @@
 		GTLegend FEATURE CHECKLIST
 
 
-Student Name: ____________________________________________
+Student Name: James Lehman
 
 ﻿BASIC GAME FUNCTIONALITY
 
-___  Accelerometer moves the player
+_T_  Accelerometer moves the player
 
-___  Walls block character motion
+_T_  Walls block character motion
 
-_Y_  Omnipotent mode button walks through walls
+_T_  Omnipotent mode button walks through walls
 
-___  The first Map must be bigger than the screen (at least 50*50 tiles)
+_T_  The first Map must be bigger than the screen (at least 50*50 tiles)
 
-___  Stairs/ladders/portals/the door go between the first and the second Map
+_T_  Stairs/ladders/portals/the door go between the first and the second Map
 
-___  Quest works (key & door work)
+_T_  Quest works (key & door work)
 
 _T_  Display Game Over when quest complete
 
-___  Status bar shows player coordinates
+_T_  Status bar shows player coordinates
 
-___  Speech bubbles used in quest
+_T_  Speech bubbles used in quest
 
 _T_  Art include at least one sprite
 
 
 EXTRA FEATURES
 
-___  Start page
+_T_  Start page
 
-___  Sound effects or background music
+_Y_  Sound effects or background music
 
 ___  Different modes of locomotion
 
 ___  Animation for interactions with things in the Map
 
-___  Include a Game Menu for configuring the game
+_T_  Include a Game Menu for configuring the game
 
-___  Multiple lives and the possibility to lose
+_Y_  Multiple lives and the possibility to lose
 
-___  Additional items that can be collected
+_Y_  Additional items that can be collected
 
 ___  Manipulate map/move objects
 
@@ -50,7 +50,7 @@ ___  Player plays against an intelligent opponent in a game
 
 ___  Save the game (persistent)
 
-___  Multiple quests (>=2) / extra characters relevant to the quest(s) (>=5)
+_T_  Multiple quests (>=2) / extra characters relevant to the quest(s) (>=5)
 
 ___  Larger objects that can occlude the character
 

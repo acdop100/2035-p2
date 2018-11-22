@@ -46,7 +46,6 @@ static unsigned XY_KEY(int X, int Y)
 unsigned map_hash(unsigned key)
 {
     unsigned int tableKey = key % 50;
-
     return (tableKey);
 }
 
@@ -226,7 +225,6 @@ void add_plant(int x, int y)
     if (val)
         free(val); // If something is already there, free it
 }
-
 
 void add_NPC(int x, int y, int type, DrawFunc draw)
 {
