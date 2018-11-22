@@ -59,7 +59,10 @@ typedef struct {
 #define WALL    0
 #define TREE    1
 #define GRASS   2
-#define NPC     3
+#define PWILLS  3
+#define PSCHIM  4
+#define ENEMEY1 5
+#define ENEMEY2 6
 #define NOTHING 10
 
 /**

@@ -10,34 +10,26 @@
 
 // Hardware initialization: Instantiate all the things!
 
-uLCD_4DGL uLCD(p9,p10,p11);             // LCD Screen (tx, rx, reset)
-Serial pc(USBTX,USBRX);                 // USB Console (tx, rx)
-MMA8452 acc(p28, p27, 100000);          // Accelerometer (sda, sdc, rate)
-double ax, ay, az;                  
+uLCD_4DGL uLCD(p9, p10, p11);  // LCD Screen (tx, rx, reset)
+Serial pc(USBTX, USBRX);       // USB Console (tx, rx)
+MMA8452 acc(p28, p27, 100000); // Accelerometer (sda, sdc, rate)
+double ax, ay, az;
 
-PwmOut pwm_pin(p20);                    // AUX output
-void playNote(float frequency, float duration, float volume) {
-    pwm_pin.period(1.0/frequency);
-    pwm_pin = volume/2.0;
-    wait(duration);
-    pwm_pin = 0.0;
-}
+AnalogOut DACout(p20); // AUX output
+wave_player waver(&DACout);
 
-SDFileSystem sd(p5, p6, p7, p8, "sd");  // SD Card(mosi, miso, sck, cs)
+SDFileSystem sd(p5, p6, p7, p8, "sd"); // SD Card(mosi, miso, sck, cs)
 
-DigitalIn button1(p21);                 // Pushbuttons (pin)
+DigitalIn button1(p21); // Pushbuttons (pin)
 DigitalIn button2(p22);
 DigitalIn button3(p23);
 DigitalIn button4(p24);
 
 // wave_player waver(&DACout);
 
-PwmOut redpin(p12);                     // RGB LED
+PwmOut redpin(p12); // RGB LED
 PwmOut greenpin(p13);
 PwmOut bluepin(p14);
-
-
-
 
 // Some hardware also needs to have functions called before it will set up
 // properly. Do that here.
@@ -46,8 +38,10 @@ int hardware_init()
 
     FILE *file;
     // Access sounds file on SD card
+
     file = fopen("/sd/temp_data.txt", "w");
-    if ( file == NULL ) {
+    if (file == NULL)
+    {
         error("ERROR: Could not open file!\n\r");
         return -1;
     }
@@ -60,21 +54,21 @@ int hardware_init()
     redpin = 1;
     greenpin = 0;
     bluepin = 0;
-        
+
     //Initialize pushbuttons
-    button1.mode(PullUp); 
+    button1.mode(PullUp);
     button2.mode(PullUp);
     button3.mode(PullUp);
     button4.mode(PullUp);
-    
+
     return ERROR_NONE;
 }
 
-GameInputs read_inputs() 
+GameInputs read_inputs()
 {
     // Read accelerometer values
-    acc.readXYZGravity(&ax,&ay,&az);    
-    pc.printf("x:%lf   y:%lf z:%lf\r\n",ax,ay,az);
+    acc.readXYZGravity(&ax, &ay, &az);
+    pc.printf("x:%lf   y:%lf z:%lf\r\n", ax, ay, az);
 
     GameInputs newInputs; // Initialize new input struct
 
@@ -87,5 +81,5 @@ GameInputs read_inputs()
     newInputs.ay = ay;
     newInputs.az = az;
 
-    return(newInputs);
+    return (newInputs);
 }

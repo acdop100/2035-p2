@@ -4,14 +4,13 @@
 #include "speech.h"
 #include "sprites.h"
 
-
 #define YELLOW 0xFFFF00
-#define BROWN  0xD2691E
-#define HAIR   0xff182932
-#define BLUE   0x16164e
-#define GOLD   0xf5e01b
-#define SKIN   0xffe796
-#define DIRT   BROWN
+#define BROWN 0xD2691E
+#define HAIR 0xff182932
+#define BLUE 0x16164e
+#define GOLD 0xf5e01b
+#define SKIN 0xffe796
+#define DIRT BROWN
 
 void draw_player(int u, int v)
 {
@@ -40,12 +39,12 @@ void draw_player(int u, int v)
 void draw_nothing(int u, int v)
 {
     // Fill a tile with blackness
-    uLCD.filled_rectangle(u, v, u+10, v+10, BLACK);
+    uLCD.filled_rectangle(u, v, u + 10, v + 10, BLACK);
 }
 
 void draw_wall(int u, int v)
 {
-    *img = wall; 
+    *img = wall;
     uLCD.BLIT(u, v, 11, 11, img);
     //wait_us(250); // Recovery time!
 }
@@ -68,6 +67,18 @@ void draw_door(int u, int v)
     uLCD.BLIT(u, v, 11, 11, img);
 }
 
+void draw_depression(int u, int v)
+{
+    *img = depression;
+    uLCD.BLIT(u, v, 11, 11, img);
+}
+
+void draw_failure(int u, int v)
+{
+    *img = failure;
+    uLCD.BLIT(u, v, 11, 11, img);
+}
+
 void draw_pWills(int u, int v)
 {
     *img = pWills;
@@ -80,38 +91,47 @@ void draw_pSchimmel(int u, int v)
     uLCD.BLIT(u, v, 11, 11, img);
 }
 
-void draw_end()
+void draw_end(int status)
 {
-    const char* line1 = "GAME OVER";
-    const char* line2 = "YOU WIN!";
-    speech(line1, line2);
+    const char *line1 = "GAME OVER";
+    if (!status)
+    {
+        const char *line2 = "YOU LOST!";
+        speech(line1, line2);
+    }
+    else
+    {
+        const char *line2 = "YOU WIN!";
+        speech(line1, line2);
+    }
 }
 
 void draw_upper_status(int x, int y)
 {
     // Draw bottom border of status bar
     uLCD.line(0, 9, 127, 9, GREEN);
-    
+
     // Add other status info drawing code here
     uLCD.locate(0, 0);
     uLCD.printf("X coord = %d, Y coord = %d\n", x, y);
 }
 
-void draw_lower_status()
+void draw_lower_status(char *line, int lives)
 {
     // Draw top border of status bar
     uLCD.line(0, 118, 127, 118, GREEN);
-    
+
     // Add other status info drawing code here
-    
+    uLCD.locate(0, 122);
+    uLCD.printf(line); // Information on whether the player has the key (sign off) yet
+    uLCD.locate(90, 122);
+    uLCD.printf("Lives: %d", lives); // Information on whether the player has the key (sign off) yet
 }
 
 void draw_border()
 {
-    uLCD.filled_rectangle(0,     9, 127,  14, WHITE); // Top
-    uLCD.filled_rectangle(0,    13,   2, 114, WHITE); // Left
-    uLCD.filled_rectangle(0,   114, 127, 117, WHITE); // Bottom
-    uLCD.filled_rectangle(124,  14, 127, 117, WHITE); // Right
+    uLCD.filled_rectangle(0, 9, 127, 14, WHITE);     // Top
+    uLCD.filled_rectangle(0, 13, 2, 114, WHITE);     // Left
+    uLCD.filled_rectangle(0, 114, 127, 117, WHITE);  // Bottom
+    uLCD.filled_rectangle(124, 14, 127, 117, WHITE); // Right
 }
-
-

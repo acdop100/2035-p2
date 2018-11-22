@@ -32,8 +32,10 @@ void draw_wall(int u, int v);
 void draw_grass(int u, int v);
 void draw_pWills(int u, int v);
 void draw_pSchimmel(int u, int v);
+void draw_depression(int u, int v);
+void draw_failure(int u, int v);
 void draw_door(int u, int v);
-void draw_end(int u, int v);
+void draw_end(int status);
 
 /**
  * Draw the upper status bar.
@@ -43,7 +45,7 @@ void draw_upper_status(int x, int y);
 /**
  * Draw the lower status bar.
  */ 
-void draw_lower_status();
+void draw_lower_status(char* line, int lives);
 
 /**
  * Draw the border for the map.

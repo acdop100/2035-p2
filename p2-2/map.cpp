@@ -8,11 +8,12 @@
  * The Map structure. This holds a HashTable for all the MapItems, along with
  * values for the width and height of the Map.
  */
-struct Map {
+struct Map
+{
 
-    HashTable* items;   // HashTable of MapItems
+    HashTable *items; // HashTable of MapItems
 
-    int w, h;           // Ints for width and height
+    int w, h; // Ints for width and height
 
 } map;
 
@@ -29,12 +30,12 @@ static int active_map;
  * key information (x, y) into a one-dimensional unsigned integer.
  * This function should uniquely map (x,y) onto the space of unsigned integers.
  */
-static unsigned XY_KEY(int X, int Y) {
+static unsigned XY_KEY(int X, int Y)
+{
 
-    unsigned int key = (X*50) + Y;  // Get the 1-D coordinate for the HT
+    unsigned int key = (X * 50) + Y; // Get the 1-D coordinate for the HT
 
-    return(key);
-
+    return (key);
 }
 
 /**
@@ -46,12 +47,11 @@ unsigned map_hash(unsigned key)
 {
     unsigned int tableKey = key % 50;
 
-    return(tableKey);
-
+    return (tableKey);
 }
 
 void maps_init()
-{ 
+{
     // Initialize hash table
     // Set width & height
     map.items = createHashTable(map_hash, 50);
@@ -59,13 +59,13 @@ void maps_init()
     map.w = 50;
 }
 
-Map* get_active_map()
+Map *get_active_map()
 {
     // There's only one map
     return &map;
 }
 
-Map* set_active_map(int m)
+Map *set_active_map(int m)
 {
     active_map = m;
     return &map;
@@ -75,13 +75,15 @@ void print_map()
 {
     // As you add more types, you'll need to add more items to this array.
     char lookup[] = {'W', 'T', 'G', 'N'};
-    for(int y = 0; y < map_height(); y++)
+    for (int y = 0; y < map_height(); y++)
     {
         for (int x = 0; x < map_width(); x++)
         {
-            MapItem* item = get_here(x,y);
-            if (item) pc.printf("%c", lookup[item->type]);
-            else pc.printf(" ");
+            MapItem *item = get_here(x, y);
+            if (item)
+                pc.printf("%c", lookup[item->type]);
+            else
+                pc.printf(" ");
         }
         pc.printf("\r\n");
     }
@@ -89,117 +91,136 @@ void print_map()
 
 int map_width()
 {
-    return(map.w);
+    return (map.w);
 }
 
 int map_height()
 {
-    return(map.h);
+    return (map.h);
 }
 
 int map_area()
 {
     int h = map.h;
     int w = map.w;
-    return(w*h);
+    return (w * h);
 }
 
-MapItem* get_north(int x, int y)
+MapItem *get_north(int x, int y)
 {
-    MapItem* item = get_here(x, y+1); // Gets the correct MapItem from the item HashTable
+    MapItem *item = get_here(x, y + 1); // Gets the correct MapItem from the item HashTable
 
-    if (!item) {
+    if (!item)
+    {
         pc.printf("Location at given coordinates does not exist (Index OOB)"); // If the MapItem doesn't exist, it returns this
-        return(NULL);
-    } else {
-        return(item);
+        return (NULL);
+    }
+    else
+    {
+        return (item);
     }
 }
 
-MapItem* get_south(int x, int y)
+MapItem *get_south(int x, int y)
 {
-    MapItem* item = get_here(x, y-1);
+    MapItem *item = get_here(x, y - 1);
 
-    if (!item) {
+    if (!item)
+    {
         pc.printf("Location at given coordinates does not exist (Index OOB)");
-        return(NULL);
-    } else {
-        return(item);
+        return (NULL);
+    }
+    else
+    {
+        return (item);
     }
 }
 
-MapItem* get_east(int x, int y)
+MapItem *get_east(int x, int y)
 {
-    MapItem* item = get_here(x+1, y);
+    MapItem *item = get_here(x + 1, y);
 
-    if (!item) {
+    if (!item)
+    {
         pc.printf("Location at given coordinates does not exist (Index OOB)");
-        return(NULL);
-    } else {
-        return(item);
+        return (NULL);
+    }
+    else
+    {
+        return (item);
     }
 }
 
-MapItem* get_west(int x, int y)
+MapItem *get_west(int x, int y)
 {
-    MapItem* item = get_here(x-1, y);
+    MapItem *item = get_here(x - 1, y);
 
-    if (!item) {
+    if (!item)
+    {
         pc.printf("Location at given coordinates does not exist (Index OOB)");
-        return(NULL);
-    } else {
-        return(item);
+        return (NULL);
+    }
+    else
+    {
+        return (item);
     }
 }
 
-MapItem* get_here(int x, int y)
+MapItem *get_here(int x, int y)
 {
-    Map* map = get_active_map();
-    MapItem* item = map -> items -> buckets[map_hash(XY_KEY(x, y+1))];
+    Map *map = get_active_map();
+    MapItem *item = map->items->buckets[map_hash(XY_KEY(x, y + 1))];
 
-    if (!item) {
+    if (!item)
+    {
         pc.printf("Location at given coordinates does not exist (Index OOB)");
-        return(NULL);
-    } else {
-        return(item);
+        return (NULL);
+    }
+    else
+    {
+        return (item);
     }
 }
-
 
 void map_erase(int x, int y)
 {
-    MapItem* item = get_here(x, y);
+    MapItem *item = get_here(x, y);
 
-    if (!item) {
+    if (!item)
+    {
         pc.printf("Location at given coordinates does not exist (Index OOB)");
-    } else {
-        item -> type = NULL;
-        item -> draw = draw_nothing;
-        item -> walkable = 1;
+    }
+    else
+    {
+        item->type = NULL;
+        item->draw = draw_nothing;
+        item->walkable = 1;
     }
 }
 
 void add_wall(int x, int y, int dir, int len)
 {
-    for(int i = 0; i < len; i++)
+    for (int i = 0; i < len; i++)
     {
-        MapItem* w1 = (MapItem*) malloc(sizeof(MapItem));
+        MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
         w1->type = WALL;
         w1->draw = draw_wall;
         w1->data = NULL;
-        unsigned key = (dir == HORIZONTAL) ? XY_KEY(x+i, y) : XY_KEY(x, y+i);
-        void* val = insertItem(get_active_map()->items, key, w1);
-        if (val) free(val); // If something is already there, free it
+        unsigned key = (dir == HORIZONTAL) ? XY_KEY(x + i, y) : XY_KEY(x, y + i);
+        void *val = insertItem(get_active_map()->items, key, w1);
+        if (val)
+            free(val); // If something is already there, free it
     }
 }
 
 void add_plant(int x, int y)
 {
-    MapItem* w1 = (MapItem*) malloc(sizeof(MapItem));
+    MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = GRASS;
     w1->draw = draw_grass;
     w1->walkable = true;
     w1->data = NULL;
-    void* val = insertItem(get_active_map()->items, XY_KEY(x, y), w1);
-    if (val) free(val); // If something is already there, free it
+    void *val = insertItem(get_active_map()->items, XY_KEY(x, y), w1);
+    if (val)
+        free(val); // If something is already there, free it
 }
