@@ -194,7 +194,7 @@ int anxiety[1][121] = {
 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73, 0xff238f73
 }
 };
-ß
+
 
 int splash[1][16384] = {
 {
