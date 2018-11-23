@@ -15,6 +15,12 @@ int pSchimmel;
 
 int door;
 
+int door_open;
+
+int UGA_student;
+
+int success;
+
 int depression;
 
 int failure;

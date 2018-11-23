@@ -49,13 +49,13 @@ unsigned map_hash(unsigned key)
     return (tableKey);
 }
 
-void maps_init()
+void maps_init(int numBuckets, int width, int height)
 {
     // Initialize hash table
     // Set width & height
-    map.items = createHashTable(map_hash, 50);
-    map.h = 50;
-    map.w = 50;
+    map.items = createHashTable(map_hash, numBuckets);
+    map.h = height;
+    map.w = width;
 }
 
 Map *get_active_map()

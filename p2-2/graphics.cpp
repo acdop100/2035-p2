@@ -67,6 +67,12 @@ void draw_door(int u, int v)
     uLCD.BLIT(u, v, 11, 11, img);
 }
 
+void draw_door_open(int u, int v)
+{
+    *img = door_open;
+    uLCD.BLIT(u, v, 11, 11, img);
+}
+
 void draw_depression(int u, int v)
 {
     *img = depression;
@@ -78,6 +84,13 @@ void draw_failure(int u, int v)
     *img = failure;
     uLCD.BLIT(u, v, 11, 11, img);
 }
+
+void draw_anxiety(int u, int v)
+{
+    *img = anxiety;
+    uLCD.BLIT(u, v, 11, 11, img);
+}
+
 
 void draw_pWills(int u, int v)
 {

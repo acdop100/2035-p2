@@ -34,7 +34,9 @@ void draw_pWills(int u, int v);
 void draw_pSchimmel(int u, int v);
 void draw_depression(int u, int v);
 void draw_failure(int u, int v);
+void draw_anxiety(int u, int v);
 void draw_door(int u, int v);
+void draw_door_open(int u, int v);
 void draw_end(int status);
 
 /**

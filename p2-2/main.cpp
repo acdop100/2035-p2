@@ -280,8 +280,24 @@ void init_main_map()
     add_NPC(100, 100, 4, draw_pSchimmel);
     add_NPC(75, 60, 5, draw_depression);
     add_NPC(30, 80, 6, draw_failure);
+    add_NPC(120, 40, 6, draw_anxiety);
 
     add_door(30, 0);
+
+    print_map();
+}
+
+void init_other_map()
+{
+    add_wall(0, 0, HORIZONTAL, map_width());
+    add_wall(0, map_height() - 1, HORIZONTAL, map_width());
+    add_wall(0, 0, VERTICAL, map_height());
+    add_wall(map_width() - 1, 0, VERTICAL, map_height());
+    pc.printf("Walls done!\r\n");
+
+    add_NPC(6, 10, 8, draw_depression);
+
+    add_door(6, 11);
 
     print_map();
 }
@@ -300,10 +316,10 @@ int main()
     // Initial splash screen
     *img = splash;
     uLCD.BLIT(0, 0, 128, 128, img);
-    GameInputs inputs = read_inputs();
-    int actions = get_minor_action(inputs);
     int w;
     while (!w) {
+        GameInputs inputs = read_inputs();
+        int actions = get_minor_action(inputs);
         if (actions == 7) {
             w = GODMODE;
         } else if (actions == 8) {
@@ -317,7 +333,7 @@ int main()
     }
 
     // Initialize the maps
-    maps_init();
+    maps_init(50, 50, 50);
     init_main_map();
 
     // Initialize game state
