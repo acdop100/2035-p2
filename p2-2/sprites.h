@@ -21,6 +21,8 @@ int UGA_student;
 
 int success;
 
+int anxiety;
+
 int depression;
 
 int failure;

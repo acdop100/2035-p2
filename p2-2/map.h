@@ -65,14 +65,16 @@ typedef struct {
 #define ENEMEY2 6
 #define ENEMEY3 7
 #define ENEMEY4 8
+#define DOOR 9
 #define NOTHING 10
+#define DOOROPEN 11
 
 /**
  * Initializes the internal structures for all maps. This does not populate
  * the map with items, but allocates space for them, initializes the hash tables, 
  * and sets the width and height.
  */
-void maps_init();
+void maps_init(int numBuckets, int width, int height);
 
 /**
  * Returns a pointer to the active map.
@@ -160,7 +162,9 @@ void add_wall(int x, int y, int dir, int len);
  * Add a PLANT item at (x,y). If there is already a MapItem at (x,y), erase it
  * before adding the plant.
  */
-void add_plant(int x, int y, int img);
+void add_plant(int x, int y);
+
+void add_door(int x, int y);
 
 void add_NPC(int x, int y, int type, DrawFunc draw);
 
