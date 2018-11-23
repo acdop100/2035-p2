@@ -191,7 +191,7 @@ int update_game(int action)
             }
             return HALFDRAW;
         }
-                else if (item->type == 7)   // Future anxiety
+        else if (item->type == 7)   // Future anxiety
         { 
             const char *lines[] = {"You come upon an enemey, Future Anxiety!", "How do you respond?", "(BTN3) Realize you go to a great school and you'll be okay.", "(BTN4) Tell yourself you're a giant failure of human and give up on engineering."};
             long_speech(&lines[4], 4);
@@ -245,6 +245,32 @@ int update_game(int action)
                     const char *line2 = "You end up not even finishing the project, too bad!";
                     speech(line1, line2);
                     lost_life();
+                    x == 1;
+                }
+                else
+                {
+                    x == NULL;
+                }
+            }
+            return HALFDRAW;
+        }
+        else if (item->type == 9)   // Door
+        { 
+            const char *lines[] = {"You come upon an door!", "It reads 'Entrrance to UGA'.", "(BTN3) Enter", "(BTN4) Do nothing"};
+            long_speech(&lines[4], 4);
+
+            GameInputs inputs = read_inputs();
+            int actions = get_minor_action(inputs);
+            int x = NULL;
+            while (!x)
+            {
+                if (actions == 7)
+                { // You entered
+                    
+                    x == 1;
+                }
+                else if (actions == 8)
+                { // You did nothing
                     x == 1;
                 }
                 else

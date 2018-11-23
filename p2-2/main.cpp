@@ -265,7 +265,7 @@ void init_main_map()
     Map *map = set_active_map(0);
     for (int i = map_width() + 3; i < map_area(); i += 39)
     {
-        add_plant(i % map_width(), i / map_width(), grass);
+        add_plant(i % map_width(), i / map_width());
 
     }
     pc.printf("grass added \r\n");
@@ -280,6 +280,8 @@ void init_main_map()
     add_NPC(100, 100, 4, draw_pSchimmel);
     add_NPC(75, 60, 5, draw_depression);
     add_NPC(30, 80, 6, draw_failure);
+
+    add_door(30, 0);
 
     print_map();
 }
