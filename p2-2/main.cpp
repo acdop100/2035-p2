@@ -104,7 +104,7 @@ void save_game() {
 }
 
 
-void lost_life()
+void lost_life(Player Player)
 { // Runs when the player loses a life
     // Actually removes the life from the player
     Player.lives = Player.lives - 1;
@@ -132,7 +132,7 @@ void lost_life()
  * bars. Unless init is nonzero, this function will optimize drawing by only 
  * drawing tiles that have changed from the previous frame.
  */
-void draw_game(int init)
+void draw_game(int init, Player Player)
 {
     // Draw game border first
     if (init) draw_border();
@@ -212,7 +212,7 @@ void draw_game(int init)
     }
 }
 
-void draw_game_end() // Used for when the game is over
+void draw_game_end(Player Player) // Used for when the game is over
 {
     // Iterate over all visible map tiles
     for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
@@ -343,6 +343,7 @@ int main()
 
     // Initialize game state
     set_active_map(0);
+    Player Player;
     Player.x = Player.y = 5;
     Player.lives = 3;
 
@@ -362,11 +363,11 @@ int main()
 
         int actions = get_action(inputs);
 
-        int update = update_game(actions);
+        int update = update_game(actions, Player);
 
         if (update == 1)
         {
-            draw_game_end();
+            draw_game_end(Player);
         }
         else if (update == 8){
             draw_game_pause();

@@ -3,6 +3,6 @@
 
 #include "main.h"
 
-int update_game(int action);
+int update_game(int action, struct Player Player);
 
 #endif //UPDATE_GAME_H

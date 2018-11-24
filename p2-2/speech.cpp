@@ -27,7 +27,7 @@ static void draw_speech_line_bot(const char *line, int which);
  */
 static void speech_bubble_wait();
 
-void draw_speech_bubble()
+void draw_speech_bubble(Player Player)
 {
     uLCD.filled_rectangle(Player.x, Player.y, Player.x + 10, Player.y + 10, 0xFF0000);
     uLCD.filled_rectangle(Player.x + 1, Player.y + 1, Player.x + 9, Player.y + 9, 0x000000);
@@ -38,12 +38,12 @@ void erase_speech_bubble()
     draw_game(true);
 }
 
-void draw_speech_line_top(const char *line, int which)
+void draw_speech_line_top(const char *line, int which, Player Player)
 {
     uLCD.locate(Player.x + 2, Player.y + 2);
     uLCD.printf(line);
 }
-void draw_speech_line_bot(const char *line, int which)
+void draw_speech_line_bot(const char *line, int which, Player Player)
 {
     uLCD.locate(Player.x + 6, Player.y + 6);
     uLCD.printf(line);
@@ -67,26 +67,27 @@ void speech_bubble_wait()
     }
 }
 
-void speech(const char *line1, const char *line2)
+void speech(const char *line1, const char *line2, Player Player)
 {
-    draw_speech_bubble();
-    draw_speech_line_top(line1, TOP);
-    draw_speech_line_bot(line2, BOTTOM);
+    draw_speech_bubble(Player);
+    draw_speech_line_top(line1, TOP, Player);
+    draw_speech_line_bot(line2, BOTTOM, Player);
     speech_bubble_wait();
+
     erase_speech_bubble();
 }
 
-void long_speech(const char *lines[], int n)
+void long_speech(const char *lines[], int n, Player Player)
 {
     int q = 0;
     while (q <= n)
     {
-        draw_speech_bubble();
-        draw_speech_line_top(lines[q], TOP);
+        draw_speech_bubble(Player);
+        draw_speech_line_top(lines[q], TOP, Player);
         q++;
         if (q <= n)
         {
-            draw_speech_line_bot(lines[q], BOTTOM);
+            draw_speech_line_bot(lines[q], BOTTOM, Player);
 
             q++;
         }

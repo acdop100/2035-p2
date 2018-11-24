@@ -31,13 +31,18 @@ void draw_game(int init);
 void init_main_map();
 int main();
 
-void lost_life();
+void lost_life(Player Player);
 
 void init_other_map();
 
-
-
-
+typedef struct Player
+{
+    int x, y;    // Current locations
+    int px, py;  // Previous locations
+    int has_key; // Does the player have the key (Sign off from Prof. Wills)?
+    int lives;   // Player lives
+    int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
+};
 
 
 int get_action(GameInputs inputs);
