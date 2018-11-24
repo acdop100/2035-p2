@@ -339,6 +339,7 @@ int main()
     // Initialize game state
     set_active_map(0);
     Player.x = Player.y = 5;
+    Player.lives = 3;
 
     // Initial drawing
     draw_game(true);
