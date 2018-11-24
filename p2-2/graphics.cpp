@@ -11,17 +11,27 @@
 #define SKIN 0xffe796
 #define DIRT BROWN
 
-int conv_img(int u, int v, int* img)
+int conv_img(int u, int v, int img[1][121])
 {
     int colors[11*11];
     for (int i = 0; i < 11*11; i++)
     {
-        colors[i] = img[i];
+        colors[i] = img[1][i];
     }
     uLCD.BLIT(u, v, 11, 11, colors);
     wait_us(250); // Recovery time!
 }
 
+int conv_img_2( int img[1][16384])
+{
+    int colors[128*128];
+    for (int i = 0; i < 128*128; i++)
+    {
+        colors[i] = img[1][i];
+    }
+    uLCD.BLIT(0, 0, 128, 128, colors);
+    wait_us(250); // Recovery time!
+}
 
 void draw_nothing(int u, int v)
 {
@@ -32,18 +42,18 @@ void draw_nothing(int u, int v)
 void draw_pause()
 {
     // Fill a tile with blackness
-    uLCD.BLIT(0, 0, 128, 128, &pause_screen);
+    conv_img_2(pause_screen);
 }
 
 void draw_splash()
 {
     // Fill a tile with blackness
-    uLCD.BLIT(0, 0, 128, 128, &splash);
+    conv_img_2(splash);
 }
 
 void draw_wall(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &wall);
+    conv_img(u, v, wall);
     //wait_us(250); // Recovery time!
 }
 
