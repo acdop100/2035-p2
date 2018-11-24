@@ -314,6 +314,7 @@ void init_other_map()
  * implementation should be elsewhere - this holds the game loop, and should
  * read like a road map for the rest of the code.
  */
+
 int main()
 {
     // First things first: initialize hardware

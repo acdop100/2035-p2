@@ -40,7 +40,7 @@ typedef struct Player
     int has_key; // Does the player have the key (Sign off from Prof. Wills)?
     int lives;   // Player lives
     int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
-};
+} Player;
 
 void lost_life(Player Player);
 

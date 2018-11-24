@@ -1,9 +1,12 @@
 #ifndef SPEECH_H
 #define SPEECH_H
+
 #include "main.h"
 /**
  * Display a speech bubble.
  */
+
+
 void speech(const char* line1, const char* line2, Player Player);
 
 /**

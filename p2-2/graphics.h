@@ -7,6 +7,7 @@
  */
 void draw_player(int u, int v);
 
+
 /**
  * Takes a string image and draws it to the screen. The string is 121 characters
  * long, and represents an 11x11 tile in row-major ordering (across, then down,
