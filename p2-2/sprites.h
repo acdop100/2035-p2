@@ -27,7 +27,7 @@ int depression;
 
 int failure;
 
-int pause;
+int pause_screen;
 
 int splash;
 
