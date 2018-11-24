@@ -1,8 +1,6 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
-int* img;
-
 /**
  * Draws the player. This depends on the player state, so it is not a DrawFunc.
  */
@@ -21,7 +19,7 @@ void draw_player(int u, int v);
  *      Any other character is black
  * More colors can be easily added by following the pattern already given.
  */
-void draw_img(int u, int v, const int img);
+//void draw_img(int u, int v, const int image);
 
 /**
  * DrawFunc functions. 

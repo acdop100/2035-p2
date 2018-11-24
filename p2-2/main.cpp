@@ -273,8 +273,7 @@ void draw_game_end() // Used for when the game is over
 
 void draw_game_pause() // Used for when the game is over
 {
-    *img = pause;
-    uLCD.BLIT(0, 0, 128, 128, img);
+    uLCD.BLIT(0, 0, 128, 128, &pause);
     GameInputs inputs = read_inputs();
     int actions = get_minor_action(inputs);
     int w = 0;
@@ -352,8 +351,7 @@ int main()
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
-    *img = splash;
-    uLCD.BLIT(0, 0, 128, 128, img);
+    uLCD.BLIT(0, 0, 128, 128, &splash);
     int w = 0;
     while (!w) {
         GameInputs inputs = read_inputs();

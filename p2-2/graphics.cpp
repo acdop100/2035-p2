@@ -13,8 +13,7 @@
 
 void draw_player(int u, int v)
 {
-    *img = mainChar;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &mainChar);
     wait_us(250); // Recovery time!
 }
 
@@ -43,8 +42,7 @@ void draw_nothing(int u, int v)
 
 void draw_wall(int u, int v)
 {
-    *img = wall;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &wall);
     //wait_us(250); // Recovery time!
 }
 
@@ -56,57 +54,48 @@ void draw_wall(int u, int v)
 
 void draw_grass(int u, int v)
 {
-    *img = grass;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &grass);
 }
 
 void draw_door(int u, int v)
 {
-    *img = door;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &door);
 }
 
 void draw_door_open(int u, int v)
 {
-    *img = door_open;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &door_open);
 }
 
 void draw_UGA_student(int u, int v)
 {
-    *img = UGA_student;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &UGA_student);
 }
 
 void draw_depression(int u, int v)
 {
-    *img = depression;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &depression);
 }
 
 void draw_failure(int u, int v)
 {
-    *img = failure;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &failure);
 }
 
 void draw_anxiety(int u, int v)
 {
-    *img = anxiety;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &anxiety);
 }
 
 
 void draw_pWills(int u, int v)
 {
-    *img = pWills;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &pWills);
 }
 
 void draw_pSchimmel(int u, int v)
 {
-    *img = pSchimmel;
-    uLCD.BLIT(u, v, 11, 11, img);
+    uLCD.BLIT(u, v, 11, 11, &pSchimmel);
 }
 
 void draw_end(int status)
