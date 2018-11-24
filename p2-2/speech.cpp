@@ -1,7 +1,8 @@
 #include "speech.h"
-#include "main.cpp"
 #include "globals.h"
 #include "hardware.h"
+#include "main.h"
+
 
 /**
  * Draw the speech bubble background.

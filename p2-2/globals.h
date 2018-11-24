@@ -36,4 +36,6 @@ extern wave_player waver;
 #define ERROR_NONE 0 // All good in the hood
 #define ERROR_MEH -1 // This is how errors are done
 
+
+
 #endif //GLOBAL_H

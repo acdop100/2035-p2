@@ -51,7 +51,7 @@ typedef struct HashTable
 };
 
 
-typedef struct MapItem MapItem;
+
 /**
  * createHashTable
  *
