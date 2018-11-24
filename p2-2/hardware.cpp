@@ -18,7 +18,7 @@ double ax, ay, az;
 AnalogOut DACout(p20); // AUX output
 wave_player waver(&DACout);
 
-SDFileSystem sd(p5, p6, p7, p8, "sd"); // SD Card(mosi, miso, sck, cs)
+//SDFileSystem sd(p5, p6, p7, p8, "sd"); // SD Card(mosi, miso, sck, cs)
 
 DigitalIn button1(p21); // Pushbuttons (pin)
 DigitalIn button2(p22);
@@ -36,15 +36,15 @@ PwmOut bluepin(p14);
 int hardware_init()
 {
 
-    FILE *file;
-    // Access sounds file on SD card
+    // FILE *file;
+    // // Access sounds file on SD card
 
-    file = fopen("/sd/temp_data.txt", "w");
-    if (file == NULL)
-    {
-        error("ERROR: Could not open file!\n\r");
-        return -1;
-    }
+    // file = fopen("/sd/temp_data.txt", "w");
+    // if (file == NULL)
+    // {
+    //     error("ERROR: Could not open file!\n\r");
+    //     return -1;
+    // }
 
     // Crank up the speed
     uLCD.baudrate(3000000);
