@@ -36,7 +36,20 @@ typedef unsigned int (*HashFunction)(unsigned int key);
  * In other words, "HashTable" is an alternative name for "struct _HashTable".
  * "HashTable" can be used to create a new struct variable.
  */
-typedef struct _HashTable HashTable;
+
+typedef struct HashTable
+{
+  /** The array of pointers to the head of a singly linked list, whose nodes
+      are MapItem objects */
+  MapItem **buckets;
+
+  /** The hash function pointer */
+  HashFunction hash;
+
+  /** The number of buckets in the hash table */
+  unsigned int num_buckets;
+};
+
 
 typedef struct MapItem MapItem;
 /**
@@ -79,6 +92,10 @@ void destroyHashTable(HashTable* myHashTable);
  * @return old value if it is overwritten, or NULL if not replaced
  */
 void* insertItem(HashTable* myHashTable, unsigned int key, MapItem *value);
+
+
+
+MapItem* findItem(HashTable* myHashTable, unsigned int key);
 
 /**
  * getItem

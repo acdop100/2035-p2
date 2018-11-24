@@ -2,7 +2,6 @@
 #include "globals.h"
 #include "graphics.h"
 #include "hash_table.h"
-#include "hash_table.cpp"
 
 /**
  * The Map structure. This holds a HashTable for all the MapItems, along with
@@ -10,19 +9,16 @@
  */
 struct Map
 {
-
     HashTable *items; // HashTable of MapItems
-
     int w, h; // Ints for width and height
-
-} map;
+};
 
 /**
  * Storage area for the maps.
  * This is a global variable, but can only be access from this file because it
  * is static.
  */
-//static Map map;
+static Map map;
 static int active_map;
 
 /**
@@ -167,8 +163,9 @@ MapItem *get_west(int x, int y)
 
 MapItem *get_here(int x, int y)
 {
-    Map *map = get_active_map();
-    MapItem *item = map->items->buckets[map_hash(XY_KEY(x, y + 1))];
+    Map* map = get_active_map();
+
+    MapItem *item = findItem(map -> items, XY_KEY(x, y + 1));
 
     if (!item)
     {
