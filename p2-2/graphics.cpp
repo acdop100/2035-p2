@@ -11,12 +11,12 @@
 #define SKIN 0xffe796
 #define DIRT BROWN
 
-void conv_img(int u, int v, int img[1][121])
+void conv_img(int u, int v, int image[1][121])
 {
     int colors[11*11];
     for (int i = 0; i < 11*11; i++)
     {
-        colors[i] = img[1][i];
+        colors[i] = image[1][i];
     }
     uLCD.BLIT(u, v, 11, 11, colors);
     wait_us(250); // Recovery time!
