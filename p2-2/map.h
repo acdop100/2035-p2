@@ -53,6 +53,8 @@ typedef struct MapItem{
 
 } MapItem;
 
+MapItem *item;
+
 typedef MapItem *temp; 
 typedef void *value;
 typedef void* tempVal;

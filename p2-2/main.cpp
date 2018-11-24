@@ -6,8 +6,6 @@
 // Functions in this file
 int godMode = 0;
 
-
-
 /**
  * Given the game inputs, determine what kind of update needs to happen.
  * Possbile return values are defined below.
@@ -168,6 +166,7 @@ void draw_game(int init, Player Player)
                     continue;
                 }
             }
+            
             else if (x >= 0 && y >= 0 && x < map_width() && y < map_height()) // Current (i,j) in the map
             {
                 MapItem *curr_item = get_here(x, y);
