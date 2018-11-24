@@ -11,28 +11,17 @@
 #define SKIN 0xffe796
 #define DIRT BROWN
 
-void draw_player(int u, int v)
+int conv_img(int u, int v, int* img)
 {
-    uLCD.BLIT(u, v, 11, 11, &mainChar);
+    int colors[11*11];
+    for (int i = 0; i < 11*11; i++)
+    {
+        colors[i] = img[i];
+    }
+    uLCD.BLIT(u, v, 11, 11, colors);
     wait_us(250); // Recovery time!
 }
 
-// void draw_img(int u, int v, const int* img)
-// {
-//     int colors[11*11];
-//     for (int i = 0; i < 11*11; i++)
-//     {
-//         if (img[i] == 'R') colors[i] = RED;
-//         else if (img[i] == 'Y') colors[i] = YELLOW;
-//         else if (img[i] == 'G') colors[i] = GREEN;
-//         else if (img[i] == 'D') colors[i] = DIRT;
-//         else if (img[i] == '5') colors[i] = LGREY;
-//         else if (img[i] == '3') colors[i] = DGREY;
-//         else colors[i] = BLACK;
-//     }
-//     uLCD.BLIT(u, v, 11, 11, colors);
-//     wait_us(250); // Recovery time!
-// }
 
 void draw_nothing(int u, int v)
 {
@@ -66,53 +55,54 @@ void draw_wall(int u, int v)
 
 void draw_plant(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &plant);
+    conv_img(u, v, plant);
 }
 
 void draw_mainChar(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &mainChar);
+    conv_img(u, v, mainChar);
 }
 
 void draw_door(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &door);
+    conv_img(u, v, door);
 }
 
 void draw_door_open(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &door_open);
+    //uLCD.BLIT(u, v, 11, 11, &door_open);
+    conv_img(u, v, door_open);
 }
 
 void draw_UGA_student(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &UGA_student);
+    conv_img(u, v, UGA_student);
 }
 
 void draw_depression(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &depression);
+    conv_img(u, v, depression);
 }
 
 void draw_failure(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &failure);
+    conv_img(u, v, failure);
 }
 
 void draw_anxiety(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &anxiety);
+    conv_img(u, v, anxiety);
 }
 
 
 void draw_pWills(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &pWills);
+    conv_img(u, v, pWills);
 }
 
 void draw_pSchimmel(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &pSchimmel);
+    conv_img(u, v, pSchimmel);
 }
 
 void draw_end(int status)

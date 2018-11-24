@@ -19,7 +19,7 @@ void draw_player(int u, int v);
  *      Any other character is black
  * More colors can be easily added by following the pattern already given.
  */
-//void draw_img(int u, int v, const int image);
+int conv_img(int u, int v, int image);
 
 /**
  * DrawFunc functions. 
