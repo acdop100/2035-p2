@@ -10,7 +10,7 @@ struct Map;
 // All tiles are 11x11 blocks.
 // u,v is the top left corner pixel of the block
 typedef void (*DrawFunc)(int u, int v);
-typedef MapItem *temp; 
+
 /**
  *
  * The data for elements in the map. Each item in the map HashTable is a
@@ -52,6 +52,8 @@ typedef struct MapItem{
 
 
 } MapItem;
+
+typedef MapItem *temp; 
 
 typedef struct {
     int tm;
