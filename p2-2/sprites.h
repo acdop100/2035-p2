@@ -3,11 +3,11 @@
 
 // Just a nice list of all the different sprites I have
 
-int UGA_student;
+int *UGA_student;
 
-int wall;
+int *wall;
 
-int mainChar;
+int *mainChar;
 
 int plant;
 
