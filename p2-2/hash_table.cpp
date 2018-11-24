@@ -54,7 +54,6 @@ Naming conventions in this file:
 * correctness, but it is better than nothing!
 ***************************************************************************/
 #include "hash_table.h"
-#include "map.h"
 
 /****************************************************************************
 * Include other private dependencies

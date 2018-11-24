@@ -1,4 +1,4 @@
-#include "main.h"
+#include "main.cpp"
 
 int update_game(int action)
 {

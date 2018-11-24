@@ -10,6 +10,7 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
+#include "map.h"
 /****************************************************************************
  * Forward Declarations
  *
