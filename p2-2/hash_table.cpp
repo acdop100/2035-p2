@@ -91,7 +91,7 @@ struct _HashTable
 
 MapItem *tmp; 
 void *val;
-void *tmpVal;
+void* tmpVal;
 
 
 /****************************************************************************
@@ -112,10 +112,9 @@ void *tmpVal;
 * @return The pointer to the hash table entry
 */
 
-//node = hashTable -> buckets[hashTable -> hash(key)];
+//node = hashTable -> buckets[hashTable -> hash(key)]
 
-// NOT Done
-static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key, void *value)
+static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key, void* value)
 {
   MapItem *this_node = hashTable -> buckets[index];
   if(this_node != NULL) {
@@ -125,7 +124,7 @@ static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key,
     MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
     this_node -> next = next_node;
     
-    next_node -> value = value;
+    //next_node -> data = value;
     next_node -> key = key; // stores the values
     next_node -> next = NULL;
     return(next_node);
@@ -133,7 +132,7 @@ static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key,
   } else {
     MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
 
-    next_node -> value = value;
+    //next_node -> data = value;
     next_node -> key = key; // stores the values
     next_node -> next = NULL;
     return(next_node);
@@ -151,7 +150,6 @@ static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key,
 * @return The pointer to the hash table entry, or NULL if key does not exist
 */
 
-// Done??
 static MapItem *findItem(HashTable *hashTable, unsigned int key)
 {
   int index = hashTable -> hash(key);
@@ -166,7 +164,7 @@ static MapItem *findItem(HashTable *hashTable, unsigned int key)
 // Freedom - frees the correct node and corrects the next pointers 
 static void *freedom(MapItem *this_node, HashTable *hashTable, int index) 
 {
-  val = this_node -> value;
+  //val = this_node -> value;
   tmp = this_node -> next;
 
   MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
@@ -223,8 +221,6 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
   return newTable;
 }
 
-
-// Done?
 void destroyHashTable(HashTable *hashTable)
 {
   int count = 0;
@@ -241,15 +237,14 @@ void destroyHashTable(HashTable *hashTable)
   }
 }
 
-// Done??
-void *insertItem(HashTable *hashTable, unsigned int key, void *value)
+void* insertItem(HashTable *hashTable, unsigned int key, MapItem *value)
 {
   MapItem *this_node = findItem(hashTable, key);
   int index = hashTable -> hash(key);
 
   if (this_node != NULL) {
-    tmpVal = this_node -> value;
-    this_node -> value = value;
+    tmpVal = this_node -> next;
+    this_node -> next = value;
     return (tmpVal);
   } else {
     //printf("Node does not exist for given key, creating node.\n");
@@ -260,20 +255,18 @@ void *insertItem(HashTable *hashTable, unsigned int key, void *value)
   }
 }
 
-// Done??
-void *getItem(HashTable *hashTable, unsigned int key)
+int getItem(HashTable *hashTable, unsigned int key)
 {
   MapItem *this_node = findItem(hashTable, key);
 
   if(this_node != NULL && this_node -> key == key) {
-    return(this_node -> value);
+    return(this_node -> data);
   } else {
     //printf("Node does not exist for given key, returned NULL.\n");
     return(0);
   }
 }
 
-// NOT Done
 void *removeItem(HashTable *hashTable, unsigned int key)
 {
   MapItem *this_node = findItem(hashTable, key);
@@ -289,7 +282,6 @@ void *removeItem(HashTable *hashTable, unsigned int key)
 
 }
 
-// NOT Done
 void deleteItem(HashTable *hashTable, unsigned int key)
 {
   MapItem *this_node = findItem(hashTable, key);

@@ -27,8 +27,8 @@ struct Player
     int x, y;    // Current locations
     int px, py;  // Previous locations
     int has_key; // Does the player have the key (Sign off from Prof. Wills)?
-    int lives = 3;
-    int depressions_scythe, failures_resolve, UGA_tears, future_anxiety;
+    int lives;   // Player lives
+    int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
 } Player;
 
 /**

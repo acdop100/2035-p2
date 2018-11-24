@@ -208,6 +208,7 @@ void add_wall(int x, int y, int dir, int len)
         w1->data2 = NULL;
         unsigned key = (dir == HORIZONTAL) ? XY_KEY(x + i, y) : XY_KEY(x, y + i);
         void *val = insertItem(get_active_map()->items, key, w1);
+        w1->key = XY_KEY(x, y);
         if (val)
             free(val); // If something is already there, free it
     }
@@ -222,6 +223,7 @@ void add_plant(int x, int y)
     w1->data = NULL;
     w1->data2 = NULL;
     void *val = insertItem(get_active_map()->items, XY_KEY(x, y), w1);
+    w1->key = XY_KEY(x, y);
     if (val)
         free(val); // If something is already there, free it
 }
@@ -234,6 +236,7 @@ void add_door(int x, int y)
     w1->walkable = false;
     w1->data = NULL;
     w1->data2 = NULL;
+    w1->key = XY_KEY(x, y);
     void *val = insertItem(get_active_map()->items, XY_KEY(x, y), w1);
     if (val)
         free(val); // If something is already there, free it
@@ -247,6 +250,7 @@ void add_NPC(int x, int y, int type, DrawFunc draw)
     w1->walkable = false;
     w1->data = 0;
     w1->data2 = 0;
+    w1->key = XY_KEY(x, y);
     void *val = insertItem(get_active_map()->items, XY_KEY(x, y), w1);
     if (val)
         free(val); // If something is already there, free it

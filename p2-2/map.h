@@ -47,6 +47,11 @@ typedef struct MapItem{
     int data;
     int data2;
     
+    int key;
+
+    MapItem* next;
+
+
 } MapItem;
 
 typedef struct {
