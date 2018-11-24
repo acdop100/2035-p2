@@ -52,7 +52,7 @@ void draw_speech_line_bot(const char *line, int which)
 
 void speech_bubble_wait()
 {
-    int w;
+    int w = 0;
     while (!w)
     {
         GameInputs inputs = read_inputs();
