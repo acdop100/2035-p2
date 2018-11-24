@@ -40,6 +40,12 @@ void draw_nothing(int u, int v)
     uLCD.filled_rectangle(u, v, u + 10, v + 10, BLACK);
 }
 
+void draw_pause()
+{
+    // Fill a tile with blackness
+    uLCD.BLIT(0, 0, 128, 128, &pause_screen);
+}
+
 void draw_wall(int u, int v)
 {
     uLCD.BLIT(u, v, 11, 11, &wall);

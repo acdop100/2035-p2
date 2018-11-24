@@ -271,9 +271,9 @@ void draw_game_end() // Used for when the game is over
     }
 }
 
-void draw_game_pause() // Used for when the game is over
+void draw_game_pause() // Used for when the game is paused
 {
-    uLCD.BLIT(0, 0, 128, 128, &pause_screen);
+    draw_pause();
     GameInputs inputs = read_inputs();
     int actions = get_minor_action(inputs);
     int w = 0;
