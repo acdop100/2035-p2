@@ -1,26 +1,15 @@
 // Project includes
-#include "globals.h"
-#include "hardware.h"
-#include "map.h"
-#include "graphics.h"
-#include "speech.h"
+
 #include "main.h"
 #include "update_game.h"
 
 // Functions in this file
 int godMode = 0;
-MapItem *item;
-int get_action(GameInputs inputs);
-int update_game(int action);
-void draw_game(int init);
-void init_main_map(int godMode);
-int main();
 
 /**
  * Given the game inputs, determine what kind of update needs to happen.
  * Possbile return values are defined below.
  */
-
 
 int get_action(GameInputs inputs) // Decides game movement and interaction
 {
@@ -94,11 +83,7 @@ int get_minor_action(GameInputs inputs) // Decides actions between NPCs
  * draw_game should not optimize drawing and should draw every tile, even if
  * the player has not moved.
  */
-#define NO_RESULT 0
-#define GAME_OVER 1
-#define FULL_DRAW 2
-#define HALFDRAW 3
-#define GODMODE 4
+
 
 int load_game() {
     return(0);
