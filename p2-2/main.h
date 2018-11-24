@@ -25,6 +25,7 @@
 #define GODMODE 4
 
 MapItem *item;
+
 int get_action(GameInputs inputs);
 int update_game(int action);
 void draw_game(int init);
