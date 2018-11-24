@@ -1,8 +1,5 @@
 #include "speech.h"
-#include "globals.h"
-#include "hardware.h"
 #include "main.h"
-
 
 /**
  * Draw the speech bubble background.
@@ -13,6 +10,7 @@ static void draw_speech_bubble();
  * Erase the speech bubble.
  */
 static void erase_speech_bubble();
+
 
 /**
  * Draw a single line of the speech bubble.

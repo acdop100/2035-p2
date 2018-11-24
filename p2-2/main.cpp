@@ -85,6 +85,12 @@ int get_minor_action(GameInputs inputs) // Decides actions between NPCs
  */
 
 
+/**
+ * The main game state. Must include Player locations and previous locations for
+ * drawing to work properly. Other items can be added as needed.
+ */
+
+
 int load_game() {
     return(0);
 }
