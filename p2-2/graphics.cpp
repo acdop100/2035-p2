@@ -46,6 +46,12 @@ void draw_pause()
     uLCD.BLIT(0, 0, 128, 128, &pause_screen);
 }
 
+void draw_splash()
+{
+    // Fill a tile with blackness
+    uLCD.BLIT(0, 0, 128, 128, &splash);
+}
+
 void draw_wall(int u, int v)
 {
     uLCD.BLIT(u, v, 11, 11, &wall);
@@ -61,6 +67,11 @@ void draw_wall(int u, int v)
 void draw_plant(int u, int v)
 {
     uLCD.BLIT(u, v, 11, 11, &plant);
+}
+
+void draw_mainChar(int u, int v)
+{
+    uLCD.BLIT(u, v, 11, 11, &mainChar);
 }
 
 void draw_door(int u, int v)

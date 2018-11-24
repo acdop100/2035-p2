@@ -4,7 +4,7 @@
 #include "map.h"
 #include "graphics.h"
 #include "speech.h"
-#include "sprites.h"
+//#include "sprites.h"
 #include "update_game.h"
 
 // Functions in this file
@@ -193,7 +193,7 @@ void draw_game(int init)
             { // Only draw these on init
                 if (i == 0 && j == 0)
                 {
-                    uLCD.BLIT(u, v, 11, 11, &mainChar);
+                    draw_mainChar(u, v);
                     continue;
                 }
             }
@@ -351,7 +351,7 @@ int main()
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
-    uLCD.BLIT(0, 0, 128, 128, &splash);
+    draw_splash();
     int w = 0;
     while (!w) {
         GameInputs inputs = read_inputs();
