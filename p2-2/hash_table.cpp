@@ -89,9 +89,9 @@ struct _HashTable
   unsigned int num_buckets;
 };
 
-MapItem *tmp; 
+
 void *val;
-void* tmpVal;
+void* tempVal;
 
 
 /****************************************************************************
@@ -165,7 +165,7 @@ static MapItem *findItem(HashTable *hashTable, unsigned int key)
 static void *freedom(MapItem *this_node, HashTable *hashTable, int index) 
 {
   //val = this_node -> value;
-  tmp = this_node -> next;
+  temp = this_node -> next;
 
   MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
   while(check_node != NULL && check_node != this_node && check_node -> next != this_node) {
@@ -181,7 +181,7 @@ static void *freedom(MapItem *this_node, HashTable *hashTable, int index)
   
   free(this_node);
   
-  this_node = tmp;
+  this_node = temp;
   return(val);
 }
 
@@ -229,9 +229,9 @@ void destroyHashTable(HashTable *hashTable)
   while(count <= hashTable -> num_buckets){
     while (this_node != NULL) {
       //printf("going to free now\n");
-      MapItem *tmp = this_node->next;
+      MapItem *temp = this_node->next;
       freedom(this_node, hashTable, count);
-      this_node = tmp;
+      this_node = temp;
     }
     count++;
   }
@@ -243,9 +243,9 @@ void* insertItem(HashTable *hashTable, unsigned int key, MapItem *value)
   int index = hashTable -> hash(key);
 
   if (this_node != NULL) {
-    tmpVal = this_node -> next;
+    tempVal = this_node -> next;
     this_node -> next = value;
-    return (tmpVal);
+    return (tempVal);
   } else {
     //printf("Node does not exist for given key, creating node.\n");
     

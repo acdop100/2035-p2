@@ -2,7 +2,7 @@
 // "extern" means "this is instantiated somewhere, but here's what the name
 // means.
 #include "globals.h"
-#include "SDFileSystem.h"
+//#include "SDFileSystem.h"
 #include "hardware.h"
 
 // We need to actually instantiate all of the globals (i.e. declare them once
