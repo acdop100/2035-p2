@@ -57,6 +57,12 @@ void draw_wall(int u, int v)
     //wait_us(250); // Recovery time!
 }
 
+void draw_success(int u, int v)
+{
+    conv_img(u, v, success);
+    //wait_us(250); // Recovery time!
+}
+
 // void draw_plant(int u, int v)
 // {
 //     *img = plant;
