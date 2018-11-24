@@ -581,18 +581,18 @@ void draw_pSchimmel(int u, int v)
     conv_img(u, v, pSchimmel);
 }
 
-void draw_end(int status)
+void draw_end(int status, Player Player)
 {
     const char *line1 = "GAME OVER";
     if (!status)
     {
         const char *line2 = "YOU LOST!";
-        speech(line1, line2);
+        speech(line1, line2, Player);
     }
     else
     {
         const char *line2 = "YOU WIN!";
-        speech(line1, line2);
+        speech(line1, line2, Player);
     }
 }
 

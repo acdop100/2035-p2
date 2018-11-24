@@ -31,8 +31,6 @@ void draw_game(int init);
 void init_main_map();
 int main();
 
-void lost_life(Player Player);
-
 void init_other_map();
 
 typedef struct Player
@@ -44,6 +42,7 @@ typedef struct Player
     int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
 };
 
+void lost_life(Player Player);
 
 int get_action(GameInputs inputs);
 

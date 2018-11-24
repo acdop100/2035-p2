@@ -40,7 +40,7 @@ void draw_anxiety(int u, int v);
 void draw_UGA_student(int u, int v);
 void draw_door(int u, int v);
 void draw_door_open(int u, int v);
-void draw_end(int status);
+void draw_end(int status, Player Player);
 
 /**
  * Draw the upper status bar.

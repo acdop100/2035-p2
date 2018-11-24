@@ -235,7 +235,7 @@ void draw_game_end(Player Player) // Used for when the game is over
 
             // Actually draw the tile
 
-            draw_end(Player.lives);
+            draw_end(Player.lives, Player);
         }
     }
 }
