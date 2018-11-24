@@ -90,7 +90,7 @@ struct _HashTable
 };
 
 
-void* tempVal;
+
 
 
 /****************************************************************************
@@ -242,7 +242,7 @@ void* insertItem(HashTable *hashTable, unsigned int key, MapItem *value)
   int index = hashTable -> hash(key);
 
   if (this_node != NULL) {
-    tempVal = this_node -> next;
+    void* tempVal = this_node -> next;
     this_node -> next = value;
     return (tempVal);
   } else {
