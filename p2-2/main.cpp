@@ -5,7 +5,6 @@
 #include "graphics.h"
 #include "speech.h"
 #include "sprites.h"
-#include "extraFuncs.h"
 #include "update_game.h"
 
 // Functions in this file
@@ -136,7 +135,7 @@ void save_game() {
 }
 
 
-void lostlife()
+void lost_life()
 { // Runs when the player loses a life
     // Actually removes the life from the player
     Player.lives = Player.lives - 1;
@@ -334,7 +333,7 @@ void init_other_map()
     add_wall(map_width() - 1, 0, VERTICAL, map_height());
     pc.printf("Walls done!\r\n");
 
-    add_NPC(6, 10, 8, draw_depression);
+    add_NPC(6, 10, 8, draw_UGA_student);
 
     add_door(6, 11);
 

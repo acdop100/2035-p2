@@ -72,6 +72,12 @@ void draw_door_open(int u, int v)
     uLCD.BLIT(u, v, 11, 11, img);
 }
 
+void draw_UGA_student(int u, int v)
+{
+    *img = UGA_student;
+    uLCD.BLIT(u, v, 11, 11, img);
+}
+
 void draw_depression(int u, int v)
 {
     *img = depression;
