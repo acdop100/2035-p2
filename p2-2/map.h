@@ -1,8 +1,6 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "hash_table.h"
-
 /**
  * A structure to represent the map. The implementation is private.
  */
