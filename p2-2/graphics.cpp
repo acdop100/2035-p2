@@ -1,6 +1,5 @@
 #include "graphics.h"
 #include "map.h"
-#include "globals.h"
 #include "speech.h"
 //#include "sprites.cpp"
 
