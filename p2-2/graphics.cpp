@@ -7,7 +7,6 @@
 #define YELLOW 0xFFFF00
 #define BROWN 0xD2691E
 #define HAIR 0xff182932
-#define BLUE 0x16164e
 #define GOLD 0xf5e01b
 #define SKIN 0xffe796
 #define DIRT BROWN

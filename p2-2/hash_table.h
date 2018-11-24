@@ -38,7 +38,7 @@ typedef unsigned int (*HashFunction)(unsigned int key);
  */
 typedef struct _HashTable HashTable;
 
-
+typedef struct MapItem MapItem;
 /**
  * createHashTable
  *

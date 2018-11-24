@@ -3,7 +3,7 @@
 
 
 int load_game() {
-
+    return(0);
 }
 
 void save_game() {

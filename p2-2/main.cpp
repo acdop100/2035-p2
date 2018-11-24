@@ -79,6 +79,10 @@ int get_action(GameInputs inputs) // Decides game movement and interaction
     {
         return GO_DOWN;
     }
+    else 
+    {
+        return NO_ACTION;
+    }
 }
 
 int get_minor_action(GameInputs inputs) // Decides actions between NPCs
@@ -239,7 +243,7 @@ void draw_game_pause() // Used for when the game is over
     uLCD.BLIT(0, 0, 128, 128, img);
     GameInputs inputs = read_inputs();
     int actions = get_minor_action(inputs);
-    int w;
+    int w = 0;
     while (!w) {
         if (actions == 7) {
             w = GODMODE;
@@ -316,7 +320,7 @@ int main()
     // Initial splash screen
     *img = splash;
     uLCD.BLIT(0, 0, 128, 128, img);
-    int w;
+    int w = 0;
     while (!w) {
         GameInputs inputs = read_inputs();
         int actions = get_minor_action(inputs);
@@ -363,7 +367,7 @@ int main()
         {
             draw_game_end();
         }
-        else if (update = 8){
+        else if (update == 8){
             draw_game_pause();
         }
         else
