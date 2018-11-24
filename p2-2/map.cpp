@@ -218,7 +218,7 @@ void add_plant(int x, int y)
 {
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = GRASS;
-    w1->draw = draw_grass;
+    w1->draw = draw_plant;
     w1->walkable = true;
     w1->data = NULL;
     w1->data2 = NULL;

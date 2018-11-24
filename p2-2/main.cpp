@@ -305,7 +305,7 @@ void init_main_map()
         add_plant(i % map_width(), i / map_width());
 
     }
-    pc.printf("grass added \r\n");
+    pc.printf("Plants added \r\n");
 
     add_wall(0, 0, HORIZONTAL, map_width());
     add_wall(0, map_height() - 1, HORIZONTAL, map_width());

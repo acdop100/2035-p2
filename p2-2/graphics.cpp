@@ -52,9 +52,9 @@ void draw_wall(int u, int v)
 //     uLCD.BLIT(u, v, 11, 11, img);
 // }
 
-void draw_grass(int u, int v)
+void draw_plant(int u, int v)
 {
-    uLCD.BLIT(u, v, 11, 11, &grass);
+    uLCD.BLIT(u, v, 11, 11, &plant);
 }
 
 void draw_door(int u, int v)

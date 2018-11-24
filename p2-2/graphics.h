@@ -27,7 +27,7 @@ void draw_player(int u, int v);
  */
 void draw_nothing(int u, int v);
 void draw_wall(int u, int v);
-void draw_grass(int u, int v);
+void draw_plant(int u, int v);
 void draw_pWills(int u, int v);
 void draw_pSchimmel(int u, int v);
 void draw_depression(int u, int v);

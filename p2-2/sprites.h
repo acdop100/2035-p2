@@ -3,7 +3,7 @@
 
 // Just a nice list of all the different sprites I have
 
-int grass;
+int plant;
 
 int wall;
 
