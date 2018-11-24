@@ -90,7 +90,6 @@ struct _HashTable
 };
 
 
-void *value;
 void* tempVal;
 
 
@@ -164,7 +163,7 @@ static MapItem *findItem(HashTable *hashTable, unsigned int key)
 // Freedom - frees the correct node and corrects the next pointers 
 static void *freedom(MapItem *this_node, HashTable *hashTable, int index) 
 {
-  //value = this_node -> value;
+  //void* value = this_node -> data;
   MapItem* temp = this_node -> next;
 
   MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
@@ -182,7 +181,7 @@ static void *freedom(MapItem *this_node, HashTable *hashTable, int index)
   free(this_node);
   
   this_node = temp;
-  return(value);
+  //return(value);
 }
 
 /****************************************************************************
@@ -273,7 +272,7 @@ void *removeItem(HashTable *hashTable, unsigned int key)
 
   if(this_node != NULL) {
     int index = hashTable -> hash(key);
-    value = freedom(this_node, hashTable, index);
+    void* value = freedom(this_node, hashTable, index);
     return(value);
   } else {
     //printf("Node does not exist for given key, nothing deleted/returned.\n");
