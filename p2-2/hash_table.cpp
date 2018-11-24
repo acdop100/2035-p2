@@ -165,7 +165,7 @@ static MapItem *findItem(HashTable *hashTable, unsigned int key)
 static void *freedom(MapItem *this_node, HashTable *hashTable, int index) 
 {
   //val = this_node -> value;
-  temp = this_node -> next;
+  MapItem* temp = this_node -> next;
 
   MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
   while(check_node != NULL && check_node != this_node && check_node -> next != this_node) {
