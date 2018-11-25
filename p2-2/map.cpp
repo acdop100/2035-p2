@@ -59,7 +59,7 @@ void maps_init(int numBuckets, int width, int height)
 
 Map *get_active_map()
 {
-    // There's only one map
+    //map = active_map;
     return &map;
 }
 

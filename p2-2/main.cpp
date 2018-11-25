@@ -6,6 +6,7 @@
 // Functions in this file
 int godMode = 0;
 
+
 /**
  * Given the game inputs, determine what kind of update needs to happen.
  * Possbile return values are defined below.
@@ -103,25 +104,24 @@ void save_game() {
    }
 }
 
-
-void lost_life(Player Player)
+void lost_life(Player *Player)
 { // Runs when the player loses a life
     // Actually removes the life from the player
-    Player.lives = Player.lives - 1;
+    Player -> lives = Player -> lives - 1;
 
     // Plays lost life sound
     //FILE *wave_file;
     //wave_file = fopen("/sd/roblox_death_sound.wav", "r");
     //waver.play(wave_file);
     //fclose(wave_file);
-    int lives = Player.lives;
+    int lives = Player -> lives;
 
     // Show text
-    uLCD.filled_rectangle(Player.x, Player.y, Player.x + 10, Player.y + 10, 0xFF0000);
-    uLCD.filled_rectangle(Player.x + 1, Player.y + 1, Player.x + 9, Player.y + 9, 0x000000);
-    uLCD.locate(Player.x + 2, Player.y + 2);
+    uLCD.filled_rectangle(Player -> x, Player -> y, Player -> x + 10, Player -> y + 10, 0xFF0000);
+    uLCD.filled_rectangle(Player -> x + 1, Player -> y + 1, Player -> x + 9, Player -> y + 9, 0x000000);
+    uLCD.locate(Player -> x + 2, Player -> y + 2);
     uLCD.printf("You lost a life!");
-    uLCD.locate(Player.x + 6, Player.y + 6);
+    uLCD.locate(Player -> x + 6, Player -> y + 6);
     uLCD.printf("Only %d lives remaining", lives);
     draw_game(true);
 }
@@ -132,7 +132,7 @@ void lost_life(Player Player)
  * bars. Unless init is nonzero, this function will optimize drawing by only 
  * drawing tiles that have changed from the previous frame.
  */
-void draw_game(int init, Player Player)
+void draw_game(int init, Player *Player)
 {
     // Draw game border first
     if (init) draw_border();
@@ -145,12 +145,12 @@ void draw_game(int init, Player Player)
             // Here, we have a given (i,j)
 
             // Compute the current map (x,y) of this tile
-            int x = i + Player.x;
-            int y = j + Player.y;
+            int x = i + Player -> x;
+            int y = j + Player -> y;
 
             // Compute the previous map (px, py) of this tile
-            int px = i + Player.px;
-            int py = j + Player.py;
+            int px = i + Player -> px;
+            int py = j + Player -> py;
 
             // Compute u,v coordinates for drawing
             int u = (i + 5) * 11 + 3;
@@ -199,20 +199,20 @@ void draw_game(int init, Player Player)
     }
 
     // Draw status bars
-    draw_upper_status(Player.x, Player.y);
-    if (Player.has_key == 0)
+    draw_upper_status(Player -> x, Player -> y);
+    if (Player -> has_key == 0)
     {
         char *line = "No sign off yet!";
-        draw_lower_status(line, Player.lives);
+        draw_lower_status(line, Player -> lives);
     }
     else
     {
         char *line = "Player has the sign off!";
-        draw_lower_status(line, Player.lives);
+        draw_lower_status(line, Player -> lives);
     }
 }
 
-void draw_game_end(Player Player) // Used for when the game is over
+void draw_game_end(Player *Player) // Used for when the game is over
 {
     // Iterate over all visible map tiles
     for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
@@ -222,12 +222,12 @@ void draw_game_end(Player Player) // Used for when the game is over
             // Here, we have a given (i,j)
 
             // Compute the current map (x,y) of this tile
-            int x = i + Player.x;
-            int y = j + Player.y;
+            int x = i + Player -> x;
+            int y = j + Player -> y;
 
             // Compute the previous map (px, py) of this tile
-            int px = i + Player.px;
-            int py = j + Player.py;
+            int px = i + Player -> px;
+            int py = j + Player -> py;
 
             // Compute u,v coordinates for drawing
             int u = (i + 5) * 11 + 3;
@@ -235,7 +235,7 @@ void draw_game_end(Player Player) // Used for when the game is over
 
             // Actually draw the tile
 
-            draw_end(Player.lives);
+            draw_end(Player -> lives);
         }
     }
 }
@@ -344,9 +344,9 @@ int main()
     
     // Initialize game state
     set_active_map(0);
-    Player Player;
-    Player.x = Player.y = 5;
-    Player.lives = 3;
+    struct Player *Player;
+    Player -> x = Player -> y = 5;
+    Player -> lives = 3;
 
     // Initial drawing
     draw_game(true);
@@ -365,7 +365,7 @@ int main()
         int actions = get_action(inputs);
 
         int update = update_game(actions, Player);
-
+        
         if (update == 1)
         {
             draw_game_end(Player);

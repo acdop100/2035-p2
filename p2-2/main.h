@@ -7,6 +7,15 @@
 #include "speech.h"
 #include "globals.h"
 
+typedef struct Player
+{
+    int x, y;    // Current locations
+    int px, py;  // Previous locations
+    int has_key; // Does the player have the key (Sign off from Prof. Wills)?
+    int lives;   // Player lives
+    int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
+};
+
 #define NO_ACTION 0
 #define ACTION_BUTTON 1
 #define MENU_BUTTON 2
@@ -24,25 +33,14 @@
 #define GODMODE 4
 
 int get_action(GameInputs inputs);
-int update_game(int action);
 void draw_game(int init);
 void init_main_map();
 int main();
 MapItem *item;
 void init_other_map();
 
-typedef struct Player
-{
-    int x, y;    // Current locations
-    int px, py;  // Previous locations
-    int has_key; // Does the player have the key (Sign off from Prof. Wills)?
-    int lives;   // Player lives
-    int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
-} Player;
 
-
-
-void lost_life(Player Player);
+void lost_life(Player *Player);
 
 int get_action(GameInputs inputs);
 

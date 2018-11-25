@@ -1,7 +1,7 @@
 #ifndef SPEECH_H
 #define SPEECH_H
 
-#include "update_game.h"
+#include "main.h"
 /**
  * Display a speech bubble.
  */
