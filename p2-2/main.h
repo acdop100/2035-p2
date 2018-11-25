@@ -36,7 +36,6 @@ int get_action(GameInputs inputs);
 void draw_game(int init);
 void init_main_map();
 int main();
-MapItem *item;
 void init_other_map();
 
 

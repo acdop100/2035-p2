@@ -176,7 +176,7 @@ void draw_game(int init, Player *Player)
                     {
                         if (init == 4)
                         {
-                            item = get_here(x, y);
+                            MapItem* item = get_here(x, y);
                             item->walkable = true;
                         }
                         draw = curr_item->draw;

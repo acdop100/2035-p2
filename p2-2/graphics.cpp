@@ -1,5 +1,5 @@
 #include "graphics.h"
-#include "speech.h"
+#include "globals.h"
 
 
 #define YELLOW 0xFFFF00

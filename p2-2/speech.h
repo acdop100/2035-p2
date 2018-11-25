@@ -1,7 +1,8 @@
 #ifndef SPEECH_H
 #define SPEECH_H
 
-#include "main.h"
+//#include "main.h"
+
 /**
  * Display a speech bubble.
  */
