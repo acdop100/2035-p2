@@ -122,7 +122,7 @@ void lost_life(Player *Player)
     uLCD.printf("You lost a life!");
     uLCD.locate(Player -> x + 6, Player -> y + 6);
     uLCD.printf("Only %d lives remaining", lives);
-    draw_game(true);
+    draw_game(true, Player);
 }
 
 /**
@@ -239,7 +239,7 @@ void draw_game_end(Player *Player) // Used for when the game is over
     }
 }
 
-void draw_game_pause() // Used for when the game is paused
+void draw_game_pause(Player *Player) // Used for when the game is paused
 {
     draw_pause();
     GameInputs inputs = read_inputs();
@@ -254,10 +254,10 @@ void draw_game_pause() // Used for when the game is paused
             save_game();
             w = NO_RESULT;
         } else {
-            w = 0;
+            w = false;
         }
     }
-   draw_game(w);
+   draw_game(w, Player);
 }
 
 /**
@@ -349,7 +349,7 @@ int main()
     Player -> lives = 3;
 
     // Initial drawing
-    draw_game(true);
+    draw_game(true, Player);
 
     // Main game loop
     while (1)
@@ -371,11 +371,11 @@ int main()
             draw_game_end(Player);
         }
         else if (update == 8){
-            draw_game_pause();
+            draw_game_pause(Player);
         }
         else
         {
-            draw_game(update);
+            draw_game(update, Player);
         }
 
         // 5. Frame delay

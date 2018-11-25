@@ -44,7 +44,4 @@ int get_action(GameInputs inputs);
 
 int get_minor_action(GameInputs inputs);
 
-void draw_game(int init);
-
-
 #endif //MAIN_H
