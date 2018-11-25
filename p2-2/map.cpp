@@ -28,11 +28,9 @@ static int active_map;
  * key information (x, y) into a one-dimensional unsigned integer.
  * This function should uniquely map (x,y) onto the space of unsigned integers.
  */
-static unsigned XY_KEY(int X, int Y)
+unsigned int XY_KEY(int X, int Y)
 {
-
     unsigned int key = (X * 50) + Y; // Get the 1-D coordinate for the HT
-
     return (key);
 }
 
