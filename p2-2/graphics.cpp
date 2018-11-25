@@ -11,8 +11,8 @@
 
 void conv_img(int u, int v, int (image)[1][121])
 {
-    int colors[11*11];
-    for (int i = 0; i < 11*11; i++)
+    int colors[1111];
+    for (int i = 0; i < 1111; i++)
     {
         colors[i] = image[1][i];
     }
@@ -22,8 +22,8 @@ void conv_img(int u, int v, int (image)[1][121])
 
 void conv_img_2(int (image)[1][16384])
 {
-    int colors[128*128];
-    for (int i = 0; i < 128*128; i++)
+    int colors[128128];
+    for (int i = 0; i < 128128; i++)
     {
         colors[i] = image[1][i];
     }
@@ -121,7 +121,7 @@ void draw_pSchimmel(int u, int v)
 
 void draw_end(int status)
 {
-    const char *line1 = "GAME OVER";
+    const char* line1 = "GAME OVER";
     if (!status)
     {
         uLCD.locate(10, 10);
@@ -144,7 +144,7 @@ void draw_upper_status(int x, int y)
     uLCD.printf("X coord = %d, Y coord = %d\n", x, y);
 }
 
-void draw_lower_status(char *line, int lives)
+void draw_lower_status(char* line, int lives)
 {
     // Draw top border of status bar
     uLCD.line(0, 118, 127, 118, GREEN);
