@@ -1,6 +1,4 @@
 #include "speech.h"
-#include "main.h"
-
 
 /**
  * Draw the speech bubble background.
