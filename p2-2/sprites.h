@@ -3,33 +3,33 @@
 
 // Just a nice list of all the different sprites I have
 
-int UGA_student[1][121];
+int UGA_student;
 
-int wall[1][121];
+int wall;
 
-int mainChar[1][121];
+int mainChar;
 
-int plant[1][121];
+int plant;
 
-int pWills[1][121];
+int pWills;
 
-int pSchimmel[1][121];
+int pSchimmel;
 
-int door[1][121];
+int door;
 
-int door_open[1][121];
+int door_open;
 
-int success[1][121];
+int success;
 
-int anxiety[1][121];
+int anxiety;
 
-int depression[1][121];
+int depression;
 
-int failure[1][121];
+int failure;
 
-int pause_screen[1][16384];
+int pause_screen;
 
-int splash[1][16384];
+int splash;
 
 
 #endif //MAP_H
