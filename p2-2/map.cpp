@@ -4,7 +4,7 @@
 #include "hash_table.h"
 #include "main.h"
 
-*MapItem item;
+
 /**
  * The Map structure. This holds a HashTable for all the MapItems, along with
  * values for the width and height of the Map.
@@ -22,6 +22,7 @@ struct Map
  */
 static Map map;
 static int active_map;
+MapItem *item;
 
 
 /**

@@ -5,6 +5,7 @@
 
 // Functions in this file
 int godMode = 0;
+MapItem *item;
 
 /**
  * Given the game inputs, determine what kind of update needs to happen.
@@ -166,7 +167,6 @@ void draw_game(int init, Player Player)
                     continue;
                 }
             }
-            
             else if (x >= 0 && y >= 0 && x < map_width() && y < map_height()) // Current (i,j) in the map
             {
                 MapItem *curr_item = get_here(x, y);
@@ -342,7 +342,7 @@ int main()
     // Initialize the maps
     maps_init(50, 50, 50);
     init_main_map();
-
+    
     // Initialize game state
     set_active_map(0);
     Player Player;

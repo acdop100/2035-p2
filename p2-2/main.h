@@ -7,7 +7,6 @@
 #include "speech.h"
 #include "globals.h"
 
-
 #define NO_ACTION 0
 #define ACTION_BUTTON 1
 #define MENU_BUTTON 2
@@ -23,8 +22,6 @@
 #define FULL_DRAW 2
 #define HALFDRAW 3
 #define GODMODE 4
-
-MapItem *item;
 
 int get_action(GameInputs inputs);
 int update_game(int action);
