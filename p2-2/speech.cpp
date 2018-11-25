@@ -32,9 +32,9 @@ void draw_speech_bubble(Player *Player)
     uLCD.filled_rectangle(Player -> x + 1, Player -> y + 1, Player -> x + 9, Player -> y + 9, 0x000000);
 }
 
-void erase_speech_bubble()
+void erase_speech_bubble(Player *Player)
 {
-    draw_game(true);
+    draw_game(true, Player);
 }
 
 void draw_speech_line_top(const char *line, int which, Player *Player)
