@@ -4,7 +4,6 @@
 #include "hash_table.h"
 #include "main.h"
 
-
 /**
  * The Map structure. This holds a HashTable for all the MapItems, along with
  * values for the width and height of the Map.
@@ -77,7 +76,7 @@ void print_map()
     {
         for (int x = 0; x < map_width(); x++)
         {
-            item = get_here(x, y);
+            MapItem *item = get_here(x, y);
             if (item)
                 pc.printf("%c", lookup[item->type]);
             else
@@ -106,7 +105,7 @@ int map_area()
 
 MapItem *get_north(int x, int y)
 {
-    item = get_here(x, y + 1); // Gets the correct MapItem from the item HashTable
+    MapItem *item = get_here(x, y + 1); // Gets the correct MapItem from the item HashTable
 
     if (!item)
     {
@@ -121,7 +120,7 @@ MapItem *get_north(int x, int y)
 
 MapItem *get_south(int x, int y)
 {
-    item = get_here(x, y - 1);
+    MapItem *item = get_here(x, y - 1);
 
     if (!item)
     {
@@ -136,7 +135,7 @@ MapItem *get_south(int x, int y)
 
 MapItem *get_east(int x, int y)
 {
-    item = get_here(x + 1, y);
+    MapItem *item = get_here(x + 1, y);
 
     if (!item)
     {
@@ -151,7 +150,7 @@ MapItem *get_east(int x, int y)
 
 MapItem *get_west(int x, int y)
 {
-    item = get_here(x - 1, y);
+    MapItem *item = get_here(x - 1, y);
 
     if (!item)
     {
@@ -168,7 +167,7 @@ MapItem *get_here(int x, int y)
 {
     Map* map = get_active_map();
 
-    item = findItem(map -> items, XY_KEY(x, y + 1));
+    MapItem *item = findItem(map -> items, XY_KEY(x, y + 1));
 
     if (!item)
     {
@@ -183,7 +182,7 @@ MapItem *get_here(int x, int y)
 
 void map_erase(int x, int y)
 {
-    item = get_here(x, y);
+    MapItem *item = get_here(x, y);
 
     if (!item)
     {
