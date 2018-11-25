@@ -6,7 +6,7 @@ int update_game(int action, Player Player)
     // Save player previous location before updating
     Player.px = Player.x;
     Player.py = Player.y;
-
+    
     // Do different things based on the each action.
     // You can define functions like "go_up()" that get called for each case.
     switch (action)

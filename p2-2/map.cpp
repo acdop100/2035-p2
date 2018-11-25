@@ -22,7 +22,6 @@ struct Map
  */
 static Map map;
 static int active_map;
-MapItem *item;
 
 
 /**

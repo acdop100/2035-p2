@@ -5,7 +5,6 @@
 
 // Functions in this file
 int godMode = 0;
-MapItem *item;
 
 /**
  * Given the game inputs, determine what kind of update needs to happen.
