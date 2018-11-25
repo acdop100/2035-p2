@@ -19,7 +19,7 @@ struct Map
  * This is a global variable, but can only be access from this file because it
  * is static.
  */
-static Map map;
+Map map;
 static int active_map;
 
 
