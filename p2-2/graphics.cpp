@@ -1,6 +1,6 @@
 #include "graphics.h"
 #include "globals.h"
-#include "sprites.cpp"
+#include "sprites.h"
 
 #define YELLOW 0xFFFF00
 #define BROWN 0xD2691E
@@ -9,27 +9,27 @@
 #define SKIN 0xffe796
 #define DIRT BROWN
 
-void conv_img(int u, int v, int (image)[1][121])
-{
-    int colors[11*11];
-    for (int i = 0; i < 11*11; i++)
-    {
-        colors[i] = image[1][i];
-    }
-    uLCD.BLIT(u, v, 11, 11, colors);
-    wait_us(250); // Recovery time!
-}
+// void conv_img(int u, int v, int (*image)[1][121])
+// {
+//     int colors[11*11];
+//     for (int i = 0; i < 11*11; i++)
+//     {
+//         colors[i] = image[1][i];
+//     }
+//     uLCD.BLIT(u, v, 11, 11, colors);
+//     wait_us(250); // Recovery time!
+// }
 
-void conv_img_2(int (image)[1][16384])
-{
-    int colors[128*128];
-    for (int i = 0; i < 128*128; i++)
-    {
-        colors[i] = image[1][i];
-    }
-    uLCD.BLIT(0, 0, 128, 128, colors);
-    wait_us(250); // Recovery time!
-}
+// void uLCD.BLIT(u, v, 11, 11, int (*image)[1][16384])
+// {
+//     int colors[128*128];
+//     for (int i = 0; i < 128*128; i++)
+//     {
+//         colors[i] = image[1][i];
+//     }
+//     uLCD.BLIT(0, 0, 128, 128, colors);
+//     wait_us(250); // Recovery time!
+// }
 
 void draw_nothing(int u, int v)
 {
@@ -40,24 +40,24 @@ void draw_nothing(int u, int v)
 void draw_pause()
 {
     // Fill a tile with blackness
-    conv_img_2(pause_screen);
+    uLCD.BLIT(0, 0, 128, 128, *pause_screen);
 }
 
 void draw_splash()
 {
     // Fill a tile with blackness
-    conv_img_2(splash);
+    uLCD.BLIT(0, 0, 128, 128, *splash);
 }
 
 void draw_wall(int u, int v)
 {
-    conv_img(u, v, wall);
+    uLCD.BLIT(u, v, 11, 11,  *wall);
     //wait_us(250); // Recovery time!
 }
 
 void draw_success(int u, int v)
 {
-    conv_img(u, v, success);
+    uLCD.BLIT(u, v, 11, 11, *success);
     //wait_us(250); // Recovery time!
 }
 
@@ -69,54 +69,54 @@ void draw_success(int u, int v)
 
 void draw_mainChar(int u, int v)
 {
-    conv_img(u, v, mainChar);
+    uLCD.BLIT(u, v, 11, 11,  *mainChar);
 }
 
 void draw_door(int u, int v)
 {
-    conv_img(u, v, door);
+    uLCD.BLIT(u, v, 11, 11,  *door);
 }
 
 void draw_plant(int u, int v)
 {
-    conv_img(u, v, plant);
+    uLCD.BLIT(u, v, 11, 11,  *plant);
 }
 
 void draw_door_open(int u, int v)
 {
     //uLCD.BLIT(u, v, 11, 11, door_open);
-    conv_img(u, v, door_open);
+    uLCD.BLIT(u, v, 11, 11,  *door_open);
 }
 
 void draw_UGA_student(int u, int v)
 {
-    conv_img(u, v, UGA_student);
+    uLCD.BLIT(u, v, 11, 11,  *UGA_student);
 }
 
 void draw_depression(int u, int v)
 {
-    conv_img(u, v, depression);
+    uLCD.BLIT(u, v, 11, 11,  *depression);
 }
 
 void draw_failure(int u, int v)
 {
-    conv_img(u, v, failure);
+    uLCD.BLIT(u, v, 11, 11,  *failure);
 }
 
 void draw_anxiety(int u, int v)
 {
-    conv_img(u, v, anxiety);
+    uLCD.BLIT(u, v, 11, 11,  *anxiety);
 }
 
 
 void draw_pWills(int u, int v)
 {
-    conv_img(u, v, pWills);
+    uLCD.BLIT(u, v, 11, 11,  *pWills);
 }
 
 void draw_pSchimmel(int u, int v)
 {
-    conv_img(u, v, pSchimmel);
+    uLCD.BLIT(u, v, 11, 11,  *pSchimmel);
 }
 
 void draw_end(int status)
