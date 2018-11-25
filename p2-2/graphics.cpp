@@ -1,6 +1,6 @@
 #include "graphics.h"
 #include "globals.h"
-#include "sprites.h"
+#include "sprites.cpp"
 
 #define YELLOW 0xFFFF00
 #define BROWN 0xD2691E
@@ -11,8 +11,8 @@
 
 void conv_img(int u, int v, int (image)[1][121])
 {
-    int colors[1111];
-    for (int i = 0; i < 1111; i++)
+    int colors[11*11];
+    for (int i = 0; i < 11*11; i++)
     {
         colors[i] = image[1][i];
     }
@@ -22,8 +22,8 @@ void conv_img(int u, int v, int (image)[1][121])
 
 void conv_img_2(int (image)[1][16384])
 {
-    int colors[128128];
-    for (int i = 0; i < 128128; i++)
+    int colors[128*128];
+    for (int i = 0; i < 128*128; i++)
     {
         colors[i] = image[1][i];
     }
