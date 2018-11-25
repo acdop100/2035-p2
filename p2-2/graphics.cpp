@@ -227,19 +227,24 @@ void draw_nothing(int u, int v)
 {
     // Fill a tile with blackness
     uLCD.filled_rectangle(u, v, u + 10, v + 10, BLACK);
+    
 }
 
-// void draw_pause()
-// {
-//     // Fill a tile with blackness
-//     uLCD.BLIT(0, 0, 128, 128, *pause_screen);
-// }
+void draw_pause()
+{
+    // Fill a tile with blackness
+    uLCD.locate(50, 50);
+    const char *line = "game paused";
+    uLCD.printf(line);
+}
 
-// void draw_splash()
-// {
-//     // Fill a tile with blackness
-//     uLCD.BLIT(0, 0, 128, 128, *splash);
-// }
+void draw_splash()
+{
+    // Fill a tile with blackness
+    uLCD.locate(50, 50);
+    const char *line = "game start";
+    uLCD.printf(line);
+}
 
 void draw_wall(int u, int v)
 {

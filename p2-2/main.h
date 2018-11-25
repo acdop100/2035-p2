@@ -32,7 +32,7 @@ typedef struct Player
 #define GODMODE 4
 
 int get_action(GameInputs inputs);
-void draw_game(int init);
+void draw_game(int init, Player *Player);
 void init_main_map();
 int main();
 void init_other_map();
