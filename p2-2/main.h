@@ -4,7 +4,6 @@
 #include "hardware.h"
 #include "map.h"
 #include "graphics.h"
-#include "speech.h"
 #include "globals.h"
 
 typedef struct Player
@@ -14,7 +13,7 @@ typedef struct Player
     int has_key; // Does the player have the key (Sign off from Prof. Wills)?
     int lives;   // Player lives
     int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
-};
+} Player;
 
 #define NO_ACTION 0
 #define ACTION_BUTTON 1

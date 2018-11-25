@@ -6,7 +6,6 @@
 // Functions in this file
 int godMode = 0;
 
-
 /**
  * Given the game inputs, determine what kind of update needs to happen.
  * Possbile return values are defined below.
@@ -321,6 +320,7 @@ int main()
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
+    Player *Player;
     draw_splash();
     int w = 0;
     while (!w) {
@@ -344,7 +344,7 @@ int main()
     
     // Initialize game state
     set_active_map(0);
-    struct Player *Player;
+    
     Player -> x = Player -> y = 5;
     Player -> lives = 3;
 

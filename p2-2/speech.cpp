@@ -1,10 +1,11 @@
 #include "speech.h"
+#include "main.h"
+
 
 /**
  * Draw the speech bubble background.
  */
 static void draw_speech_bubble(Player *Player);
-
 
 /**
  * Erase the speech bubble.
