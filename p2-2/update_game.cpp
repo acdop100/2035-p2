@@ -1,8 +1,8 @@
 #include "update_game.h"
 
-
 int update_game(int action, Player *Player)
 {
+    MapItem *item;
     // Save player previous location before updating
     Player -> px = Player -> x;
     Player -> py = Player -> y;
