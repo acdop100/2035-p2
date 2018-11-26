@@ -11,7 +11,7 @@
 struct Map
 {
     HashTable *items; // HashTable of MapItems
-    int w, h; // Ints for width and height
+    int w, h;         // Ints for width and height
 };
 
 /**
@@ -21,7 +21,8 @@ struct Map
  */
 Map map;
 static int active_map;
-
+static Map *all_maps[]; // Array of all maps generated
+int counter = 0;        // A counter to add a new map to the correct space
 
 /**
  * The first step in HashTable access for the map is turning the two-dimensional
@@ -41,7 +42,7 @@ unsigned int XY_KEY(int X, int Y)
  */
 unsigned map_hash(unsigned key)
 {
-    unsigned int tableKey = key % 50;
+    unsigned int tableKey = key % 50; // 50 buckets
     return (tableKey);
 }
 
@@ -52,17 +53,20 @@ void maps_init(int numBuckets, int width, int height)
     map.items = createHashTable(map_hash, numBuckets);
     map.h = height;
     map.w = width;
+    all_maps[counter] = &map; // Adds map to maps array
+    counter++;                // Increase counter
 }
 
 Map *get_active_map()
 {
-    //map = active_map;
+    map = *all_maps[active_map]; // Get current map from the maps array at current map position
     return &map;
 }
 
 Map *set_active_map(int m)
 {
-    active_map = m;
+    map = *all_maps[m]; // Set the map defined at point m to be active map
+    active_map = m;     // Change active map number
     return &map;
 }
 
@@ -84,6 +88,7 @@ void print_map()
     }
 }
 
+// This section is pretty self - explanatory
 int map_width()
 {
     return (map.w);
@@ -101,6 +106,7 @@ int map_area()
     return (w * h);
 }
 
+// This section is also pretty self - explanatory
 MapItem *get_north(int x, int y)
 {
     MapItem *item = get_here(x, y + 1); // Gets the correct MapItem from the item HashTable
@@ -163,9 +169,9 @@ MapItem *get_west(int x, int y)
 
 MapItem *get_here(int x, int y)
 {
-    Map* map = get_active_map();
+    Map *map = get_active_map();
 
-    MapItem *item = getItem(map -> items, XY_KEY(x, (y + 1)));
+    MapItem *item = getItem(map->items, XY_KEY(x, (y + 1)));    // Use getItem from the HashTable API to get the MapItem at that location
 
     if (!item)
     {

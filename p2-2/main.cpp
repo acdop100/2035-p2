@@ -74,23 +74,8 @@ int get_minor_action(GameInputs inputs) // Decides actions between NPCs
         return NO_ACTION;
     }
 }
-/**
- * Update the game state based on the user action. For example, if the user
- * requests GO_UP, then this function should determine if that is possible by
- * consulting the map, and update the Player position accordingly.
- * 
- * Return values are defined below. FULL_DRAW indicates that for this frame,
- * draw_game should not optimize drawing and should draw every tile, even if
- * the player has not moved.
- */
 
-
-/**
- * The main game state. Must include Player locations and previous locations for
- * drawing to work properly. Other items can be added as needed.
- */
-
-
+// These two functions save/load game data to/from the microSD card
 int load_game() {
     return(0);
 }
@@ -98,13 +83,12 @@ int load_game() {
 void save_game() {
     int b;
     for(b = 0; b < 10; b++){
-    
-      
-   }
+    }
 }
 
+// Runs when the player loses a life
 void lost_life(Player *Player)
-{ // Runs when the player loses a life
+{ 
     // Actually removes the life from the player
     Player -> lives = Player -> lives - 1;
 
@@ -266,6 +250,7 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
  */
 void init_main_map()
 {
+    maps_init(50, 50, 50);
     // "Random" plants
     Map *map = set_active_map(0);
     for (int i = map_width() + 3; i < map_area(); i += 39)
@@ -283,17 +268,15 @@ void init_main_map()
 
     add_NPC(10, 20, 3, draw_pWills);
     add_NPC(100, 100, 4, draw_pSchimmel);
-    add_NPC(75, 60, 5, draw_depression);
-    add_NPC(30, 80, 6, draw_failure);
-    add_NPC(120, 40, 6, draw_anxiety);
 
     add_door(30, 0);
 
     print_map();
 }
 
-void init_other_map()
+void init_other_map() // Used for secondary map
 {
+    maps_init(50, 50, 50);
     add_wall(0, 0, HORIZONTAL, map_width());
     add_wall(0, map_height() - 1, HORIZONTAL, map_width());
     add_wall(0, 0, VERTICAL, map_height());
@@ -301,6 +284,9 @@ void init_other_map()
     pc.printf("Walls done!\r\n");
 
     add_NPC(6, 10, 8, draw_UGA_student);
+    add_NPC(75, 60, 5, draw_depression);
+    add_NPC(30, 80, 6, draw_failure);
+    add_NPC(120, 40, 6, draw_anxiety);
 
     add_door(6, 11);
 
@@ -339,9 +325,9 @@ int main()
     }
 
     // Initialize the maps
-    maps_init(50, 50, 50);
     init_main_map();
-    
+    init_other_map();
+
     // Initialize game state
     set_active_map(0);
     
@@ -386,13 +372,7 @@ int main()
     }
 }
 
-/**
-1) Map.cpp (display something)
-2) Hardware.cpp (use buttons and accelerometer)
-3) Speech.cpp / graphics.cpp (way down the road when things actually work, get creative)
-
-piskelapp.com
-
+/*
 https://os.mbed.com/users/Ivannrush/code/MMA8452_Demo/file/46eab8a51f91/main.cpp/
 https://os.mbed.com/docs/latest/tutorials/windows-serial-driver.html
 */

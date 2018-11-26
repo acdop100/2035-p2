@@ -1,5 +1,11 @@
 #include "update_game.h"
 
+/**
+ * Update the game state based on the user action. For example, if the user
+ * requests GO_UP, then this function should determine if that is possible by
+ * consulting the map, and update the Player position accordingly.
+ */
+
 int update_game(int action, Player *Player)
 {
     MapItem *item;
@@ -279,29 +285,31 @@ int update_game(int action, Player *Player)
                         const char *line1 = "You have the key!";
                         const char *line2 = "DOOR UNLOCKED!";
                         speech(line1, line2, Player);
-                        init_other_map();
                         item = get_north(Player -> x, Player -> y);
                         item -> type = DOOROPEN;
                         item -> draw = draw_door_open;
+                        return FULL_DRAW;
                     }
                     else            // You can't enter...
                     {
                         const char *line1 = "You don't have the key yet!";
                         const char *line2 = "DOOR LOCKED!";
                         speech(line1, line2, Player);
+                        return HALFDRAW;
                     }
                     x == 1;
                 }
                 else if (actions == 8)  // You did nothing
                 { 
                     x == 1;
+                    return HALFDRAW;
                 }
                 else
                 {
                     x == NULL;
                 }
             }
-            return HALFDRAW;
+            
         }else if (item->type == 11) // Door opened
         {
             const char *lines[] = {"You come upon an door!", "It is already open'.", "(BTN3) Enter", "(BTN4) Do nothing"};
@@ -318,12 +326,12 @@ int update_game(int action, Player *Player)
 
                     if ((Player -> x == 6) && (Player -> y == 10))  // You enter Main map
                     {
-                        init_main_map();
+                        set_active_map(0);
                         return FULL_DRAW;
                     }
                     else            // You enter other map
                     {
-                        init_other_map();
+                        set_active_map(1);
                         return FULL_DRAW;
                     }
                     x == 1;
