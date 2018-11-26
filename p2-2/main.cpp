@@ -308,6 +308,7 @@ int main()
     // Initial splash screen
     Player *Player;
     draw_splash();
+    pc.printf("splash screen \r\n");
     int w = 0;
     while (!w) {
         GameInputs inputs = read_inputs();
@@ -325,9 +326,11 @@ int main()
     }
 
     // Initialize the maps
+    pc.printf("Creating maps... \r\n");
     init_main_map();
+    pc.printf("Main map created \r\n");
     init_other_map();
-
+    pc.printf("Secondary map created \r\n");
     // Initialize game state
     set_active_map(0);
     
@@ -335,6 +338,7 @@ int main()
     Player -> lives = 3;
 
     // Initial drawing
+    pc.printf("Drawing game... \r\n");
     draw_game(true, Player);
 
     // Main game loop

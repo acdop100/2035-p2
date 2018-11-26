@@ -27,9 +27,9 @@ DigitalIn button4(p24);
 
 //wave_player waver(&DACout);
 
-PwmOut redpin(p12); // RGB LED
-PwmOut greenpin(p13);
-PwmOut bluepin(p14);
+// PwmOut redpin(p12); // RGB LED
+// PwmOut greenpin(p13);
+// PwmOut bluepin(p14);
 
 // Some hardware also needs to have functions called before it will set up
 // properly. Do that here.
@@ -51,9 +51,9 @@ int hardware_init()
     pc.baud(115200);
 
     // Make LED Red on startup
-    redpin = 1;
-    greenpin = 0;
-    bluepin = 0;
+    // redpin = 1;
+    // greenpin = 0;
+    // bluepin = 0;
 
     //Initialize pushbuttons
     button1.mode(PullUp);

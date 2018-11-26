@@ -21,7 +21,7 @@ struct Map
  */
 Map map;
 static int active_map;
-static Map *all_maps[]; // Array of all maps generated
+static Map *all_maps[2]; // Array of all maps generated
 int counter = 0;        // A counter to add a new map to the correct space
 
 /**
