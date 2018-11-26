@@ -18,8 +18,8 @@ static void erase_speech_bubble(struct Player *Player);
  */
 #define TOP 0
 #define BOTTOM 1
-static void draw_speech_line_top(const char *line, int which);
-static void draw_speech_line_bot(const char *line, int which);
+static void draw_speech_line_top(const char *line, int which, struct Player *Player);
+static void draw_speech_line_bot(const char *line, int which, struct Player *Player);
 
 /**
  * Delay until it is time to scroll.
