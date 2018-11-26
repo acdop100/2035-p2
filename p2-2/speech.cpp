@@ -73,7 +73,7 @@ void speech(const char *line1, const char *line2, Player *Player)
     draw_speech_line_bot(line2, BOTTOM, Player);
     speech_bubble_wait();
 
-    erase_speech_bubble(*Player);
+    erase_speech_bubble(Player);
 }
 
 void long_speech(const char *lines[], int n, Player *Player)
@@ -92,5 +92,5 @@ void long_speech(const char *lines[], int n, Player *Player)
         }
         speech_bubble_wait();
     }
-    erase_speech_bubble(*Player);
+    erase_speech_bubble(Player);
 }
