@@ -160,9 +160,9 @@ static MapItem *findItem(HashTable *hashTable, unsigned int key)
 }
 
 // Freedom - frees the correct node and corrects the next pointers 
-static void *freedom(MapItem *this_node, HashTable *hashTable, int index) 
+static int freedom(MapItem *this_node, HashTable *hashTable, int index) 
 {
-  //void* value = this_node -> data;
+  int value = this_node -> data;
   MapItem* temp = this_node -> next;
 
   MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
@@ -180,7 +180,7 @@ static void *freedom(MapItem *this_node, HashTable *hashTable, int index)
   free(this_node);
   
   this_node = temp;
-  //return(value);
+  return(value);
 }
 
 /****************************************************************************
@@ -265,20 +265,20 @@ int getItem(HashTable *hashTable, unsigned int key)
   }
 }
 
-void *removeItem(HashTable *hashTable, unsigned int key)
-{
-  MapItem *this_node = findItem(hashTable, key);
+// void *removeItem(HashTable *hashTable, unsigned int key)
+// {
+//   MapItem *this_node = findItem(hashTable, key);
 
-  if(this_node != NULL) {
-    int index = hashTable -> hash(key);
-    void* value = freedom(this_node, hashTable, index);
-    return(value);
-  } else {
-    //printf("Node does not exist for given key, nothing deleted/returned.\n");
-    return(0);
-  }
+//   if(this_node != NULL) {
+//     int index = hashTable -> hash(key);
+//     void* value = freedom(this_node, hashTable, index);
+//     return(value);
+//   } else {
+//     //printf("Node does not exist for given key, nothing deleted/returned.\n");
+//     return(0);
+//   }
 
-}
+// }
 
 void deleteItem(HashTable *hashTable, unsigned int key)
 {
