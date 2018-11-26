@@ -198,30 +198,7 @@ void draw_game(int init, Player *Player)
 
 void draw_game_end(Player *Player) // Used for when the game is over
 {
-    // Iterate over all visible map tiles
-    for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
-    {
-        for (int j = -4; j <= 4; j++) // Iterate over one column of tiles
-        {
-            // Here, we have a given (i,j)
-
-            // Compute the current map (x,y) of this tile
-            int x = i + Player -> x;
-            int y = j + Player -> y;
-
-            // Compute the previous map (px, py) of this tile
-            int px = i + Player -> px;
-            int py = j + Player -> py;
-
-            // Compute u,v coordinates for drawing
-            int u = (i + 5) * 11 + 3;
-            int v = (j + 4) * 11 + 15;
-
-            // Actually draw the tile
-
-            draw_end(Player -> lives);
-        }
-    }
+    draw_end(Player -> lives);
 }
 
 void draw_game_pause(Player *Player) // Used for when the game is paused
@@ -303,6 +280,7 @@ void init_other_map() // Used for secondary map
 
 int main()
 {
+    pc.printf("print test \r\n");
     // First things first: initialize hardware
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
