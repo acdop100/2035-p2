@@ -96,6 +96,7 @@ void lost_life(Player *Player)
     FILE *wave_file;
     wave_file = fopen("/sd/roblox_death_sound.wav", "r");
     waver.play(wave_file);
+    fseek(wave_file, 0, SEEK_SET);
     fclose(wave_file);
     int lives = Player -> lives;
 

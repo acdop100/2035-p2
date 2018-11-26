@@ -15,7 +15,7 @@ Serial pc(USBTX, USBRX);       // USB Console (tx, rx)
 MMA8452 acc(p28, p27, 100000); // Accelerometer (sda, sdc, rate)
 double ax, ay, az;
 
-AnalogOut DACout(p20); // AUX output
+AnalogOut DACout(p19); // AUX output
 wave_player waver(&DACout);
 
 SDFileSystem sd(p5, p6, p7, p8, "sd"); // SD Card(mosi, miso, sck, cs)
