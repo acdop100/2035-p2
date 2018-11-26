@@ -49,7 +49,7 @@ typedef struct HashTable
 
   /** The number of buckets in the hash table */
   unsigned int num_buckets;
-};
+} HashTable;
 
 
 

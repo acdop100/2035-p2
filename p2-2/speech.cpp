@@ -8,7 +8,7 @@ static void draw_speech_bubble(Player *Player);
 /**
  * Erase the speech bubble.
  */
-static void erase_speech_bubble();
+static void erase_speech_bubble(struct Player *Player);
 
 
 /**
@@ -73,7 +73,7 @@ void speech(const char *line1, const char *line2, Player *Player)
     draw_speech_line_bot(line2, BOTTOM, Player);
     speech_bubble_wait();
 
-    erase_speech_bubble();
+    erase_speech_bubble(*Player);
 }
 
 void long_speech(const char *lines[], int n, Player *Player)
@@ -92,5 +92,5 @@ void long_speech(const char *lines[], int n, Player *Player)
         }
         speech_bubble_wait();
     }
-    erase_speech_bubble();
+    erase_speech_bubble(*Player);
 }
