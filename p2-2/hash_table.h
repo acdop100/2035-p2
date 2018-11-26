@@ -107,7 +107,7 @@ MapItem* findItem(HashTable* myHashTable, unsigned int key);
  * @param key The key that corresponds to the item.
  * @return the value corresponding to the key, or NULL if the key is not present
  */
-int getItem(HashTable* myHashTable, unsigned int key);
+MapItem *getItem(HashTable* myHashTable, unsigned int key);
 
 /**
  * removeItem

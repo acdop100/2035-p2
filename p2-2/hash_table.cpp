@@ -253,12 +253,12 @@ void* insertItem(HashTable *hashTable, unsigned int key, MapItem *value)
   }
 }
 
-int getItem(HashTable *hashTable, unsigned int key)
+MapItem *getItem(HashTable *hashTable, unsigned int key)
 {
   MapItem *this_node = findItem(hashTable, key);
 
   if(this_node != NULL && this_node -> key == key) {
-    return(this_node -> data);
+    return(this_node);
   } else {
     //printf("Node does not exist for given key, returned NULL.\n");
     return(0);

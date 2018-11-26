@@ -165,7 +165,7 @@ MapItem *get_here(int x, int y)
 {
     Map* map = get_active_map();
 
-    MapItem *item = findItem(map -> items, XY_KEY(x, (y + 1)));
+    MapItem *item = getItem(map -> items, XY_KEY(x, (y + 1)));
 
     if (!item)
     {
