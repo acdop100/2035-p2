@@ -22,7 +22,7 @@ struct Map
 Map map;
 static int active_map;
 static Map *all_maps[2]; // Array of all maps generated
-int counter = 0;        // A counter to add a new map to the correct space
+int counter = 0;         // A counter to add a new map to the correct space
 
 /**
  * The first step in HashTable access for the map is turning the two-dimensional
@@ -171,7 +171,7 @@ MapItem *get_here(int x, int y)
 {
     Map *map = get_active_map();
 
-    MapItem *item = getItem(map->items, XY_KEY(x, (y + 1)));    // Use getItem from the HashTable API to get the MapItem at that location
+    MapItem *item = getItem(map->items, XY_KEY(x, (y + 1))); // Use getItem from the HashTable API to get the MapItem at that location
 
     if (!item)
     {

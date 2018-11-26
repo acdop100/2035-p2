@@ -45,7 +45,7 @@ int get_action(GameInputs inputs) // Decides game movement and interaction
     {
         return GO_DOWN;
     }
-    else 
+    else
     {
         return NO_ACTION;
     }
@@ -76,21 +76,24 @@ int get_minor_action(GameInputs inputs) // Decides actions between NPCs
 }
 
 // These two functions save/load game data to/from the microSD card
-int load_game() {
-    return(0);
+int load_game()
+{
+    return (0);
 }
 
-void save_game() {
+void save_game()
+{
     int b;
-    for(b = 0; b < 10; b++){
+    for (b = 0; b < 10; b++)
+    {
     }
 }
 
 // Runs when the player loses a life
 void lost_life(Player *Player)
-{ 
+{
     // Actually removes the life from the player
-    Player -> lives = Player -> lives - 1;
+    Player->lives = Player->lives - 1;
 
     // Plays lost life sound
     FILE *wave_file;
@@ -98,14 +101,14 @@ void lost_life(Player *Player)
     waver.play(wave_file);
     fseek(wave_file, 0, SEEK_SET);
     fclose(wave_file);
-    int lives = Player -> lives;
+    int lives = Player->lives;
 
     // Show text
-    uLCD.filled_rectangle(Player -> x, Player -> y, Player -> x + 10, Player -> y + 10, 0xFF0000);
-    uLCD.filled_rectangle(Player -> x + 1, Player -> y + 1, Player -> x + 9, Player -> y + 9, 0x000000);
-    uLCD.locate(Player -> x + 2, Player -> y + 2);
+    uLCD.filled_rectangle(Player->x, Player->y, Player->x + 10, Player->y + 10, 0xFF0000);
+    uLCD.filled_rectangle(Player->x + 1, Player->y + 1, Player->x + 9, Player->y + 9, 0x000000);
+    uLCD.locate(Player->x + 2, Player->y + 2);
     uLCD.printf("You lost a life!");
-    uLCD.locate(Player -> x + 6, Player -> y + 6);
+    uLCD.locate(Player->x + 6, Player->y + 6);
     uLCD.printf("Only %d lives remaining", lives);
     draw_game(true, Player);
 }
@@ -119,7 +122,8 @@ void lost_life(Player *Player)
 void draw_game(int init, Player *Player)
 {
     // Draw game border first
-    if (init) draw_border();
+    if (init)
+        draw_border();
 
     // Iterate over all visible map tiles
     for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
@@ -129,12 +133,12 @@ void draw_game(int init, Player *Player)
             // Here, we have a given (i,j)
 
             // Compute the current map (x,y) of this tile
-            int x = i + Player -> x;
-            int y = j + Player -> y;
+            int x = i + Player->x;
+            int y = j + Player->y;
 
             // Compute the previous map (px, py) of this tile
-            int px = i + Player -> px;
-            int py = j + Player -> py;
+            int px = i + Player->px;
+            int py = j + Player->py;
 
             // Compute u,v coordinates for drawing
             int u = (i + 5) * 11 + 3;
@@ -160,7 +164,7 @@ void draw_game(int init, Player *Player)
                     {
                         if (init == 4)
                         {
-                            MapItem* item = get_here(x, y);
+                            MapItem *item = get_here(x, y);
                             item->walkable = true;
                         }
                         draw = curr_item->draw;
@@ -183,22 +187,22 @@ void draw_game(int init, Player *Player)
     }
 
     // Draw status bars
-    draw_upper_status(Player -> x, Player -> y);
-    if (Player -> has_key == 0)
+    draw_upper_status(Player->x, Player->y);
+    if (Player->has_key == 0)
     {
         char *line = "No sign off yet!";
-        draw_lower_status(line, Player -> lives);
+        draw_lower_status(line, Player->lives);
     }
     else
     {
         char *line = "Player has the sign off!";
-        draw_lower_status(line, Player -> lives);
+        draw_lower_status(line, Player->lives);
     }
 }
 
 void draw_game_end(Player *Player) // Used for when the game is over
 {
-    draw_end(Player -> lives);
+    draw_end(Player->lives);
 }
 
 void draw_game_pause(Player *Player) // Used for when the game is paused
@@ -207,26 +211,34 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
     GameInputs inputs = read_inputs();
     int actions = get_minor_action(inputs);
     int w = 0;
-    while (!w) {
-        if (actions == 7) {
+    while (!w)
+    {
+        if (actions == 7)
+        {
             w = GODMODE;
-        } else if (actions == 8) {
+        }
+        else if (actions == 8)
+        {
             w = NO_RESULT;
-        } else if (actions == 1) {
+        }
+        else if (actions == 1)
+        {
             save_game();
             w = NO_RESULT;
-        } else {
+        }
+        else
+        {
             w = false;
         }
     }
-   draw_game(w, Player);
+    draw_game(w, Player);
 }
 
 /**
  * Initialize the main world map. Add walls around the edges, interior chambers,
  * and plants in the background so you can see motion.
  */
-void init_main_map()
+void init_main_map(int count)
 {
     maps_init(50, 50, 50);
     // "Random" plants
@@ -234,7 +246,6 @@ void init_main_map()
     for (int i = map_width() + 3; i < map_area(); i += 39)
     {
         add_plant(i % map_width(), i / map_width());
-
     }
     pc.printf("Plants added \r\n");
 
@@ -244,30 +255,20 @@ void init_main_map()
     add_wall(map_width() - 1, 0, VERTICAL, map_height());
     pc.printf("Walls done!\r\n");
 
-    add_NPC(10, 20, 3, draw_pWills);
-    add_NPC(100, 100, 4, draw_pSchimmel);
-
-    add_door(30, 0);
-
-    print_map();
-}
-
-void init_other_map() // Used for secondary map
-{
-    maps_init(50, 50, 50);
-    add_wall(0, 0, HORIZONTAL, map_width());
-    add_wall(0, map_height() - 1, HORIZONTAL, map_width());
-    add_wall(0, 0, VERTICAL, map_height());
-    add_wall(map_width() - 1, 0, VERTICAL, map_height());
-    pc.printf("Walls done!\r\n");
-
-    add_NPC(6, 10, 8, draw_UGA_student);
-    add_NPC(75, 60, 5, draw_depression);
-    add_NPC(30, 80, 6, draw_failure);
-    add_NPC(120, 40, 6, draw_anxiety);
-
-    add_door(6, 11);
-
+    if (count == 0)
+    {
+        add_NPC(10, 20, 3, draw_pWills);
+        add_NPC(100, 100, 4, draw_pSchimmel);
+        add_door(30, 0);
+    }
+    else if (count == 1)
+    {
+        add_NPC(6, 10, 8, draw_UGA_student);
+        add_NPC(75, 60, 5, draw_depression);
+        add_NPC(30, 80, 6, draw_failure);
+        add_NPC(120, 40, 6, draw_anxiety);
+        add_door(6, 11);
+    }
     print_map();
 }
 
@@ -289,32 +290,42 @@ int main()
     draw_splash();
     pc.printf("splash screen \r\n");
     int w = 0;
-    while (!w) {
+    while (!w)
+    {
         GameInputs inputs = read_inputs();
         int actions = get_minor_action(inputs);
-        if (actions == 7) {
+        if (actions == 7)
+        {
             w = GODMODE;
-        } else if (actions == 8) {
+        }
+        else if (actions == 8)
+        {
             w = NO_RESULT;
-        } else if (actions == 1) {
+        }
+        else if (actions == 1)
+        {
             load_game();
             w = NO_RESULT;
-        } else {
+        }
+        else
+        {
             w = 0;
         }
     }
 
     // Initialize the maps
+    int count = 0;
     pc.printf("Creating maps... \r\n");
-    init_main_map();
+    init_main_map(count);
+    count++;
     pc.printf("Main map created \r\n");
-    init_other_map();
+    init_main_map(count);
     pc.printf("Secondary map created \r\n");
     // Initialize game state
     set_active_map(0);
-    
-    Player -> x = Player -> y = 5;
-    Player -> lives = 3;
+
+    Player->x = Player->y = 5;
+    Player->lives = 3;
 
     // Initial drawing
     pc.printf("Drawing game... \r\n");
@@ -334,12 +345,13 @@ int main()
         int actions = get_action(inputs);
 
         int update = update_game(actions, Player);
-        
+
         if (update == 1)
         {
             draw_game_end(Player);
         }
-        else if (update == 8){
+        else if (update == 8)
+        {
             draw_game_pause(Player);
         }
         else
