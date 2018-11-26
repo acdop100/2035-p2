@@ -10,11 +10,11 @@
 #include "wave_player.h"
 #include "MMA8452.h"
 #include "uLCD_4DGL.h"
-//#include "SDFileSystem.h"
+#include "SDFileSystem.h"
 
 // Declare the hardware interface objects
 extern uLCD_4DGL uLCD;      // LCD Screen
-//extern SDFileSystem sd;     // SD Card
+extern SDFileSystem sd;     // SD Card
 extern Serial pc;           // USB Console output
 extern MMA8452 acc;         // Accelerometer
 extern DigitalIn button1;   // Pushbuttons

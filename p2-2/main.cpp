@@ -109,10 +109,10 @@ void lost_life(Player *Player)
     Player -> lives = Player -> lives - 1;
 
     // Plays lost life sound
-    //FILE *wave_file;
-    //wave_file = fopen("/sd/roblox_death_sound.wav", "r");
-    //waver.play(wave_file);
-    //fclose(wave_file);
+    FILE *wave_file;
+    wave_file = fopen("/sd/roblox_death_sound.wav", "r");
+    waver.play(wave_file);
+    fclose(wave_file);
     int lives = Player -> lives;
 
     // Show text
