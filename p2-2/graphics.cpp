@@ -333,14 +333,6 @@ void draw_pause()
     uLCD.printf(line);
 }
 
-void draw_splash()
-{
-    // Fill a tile with blackness
-    uLCD.locate(50, 50);
-    const char *line = "game start";
-    uLCD.printf(line);
-}
-
 void draw_wall(int u, int v)
 {
     uLCD.BLIT(u, v, 11, 11,  *wall);

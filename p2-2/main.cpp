@@ -96,12 +96,12 @@ void lost_life(Player *Player)
     Player->lives = Player->lives - 1;
 
     // Plays lost life sound
-    FILE *wave_file;
-    wave_file = fopen("/sd/roblox_death_sound.wav", "r");
-    waver.play(wave_file);
-    fseek(wave_file, 0, SEEK_SET);
-    fclose(wave_file);
-    int lives = Player->lives;
+    // FILE *wave_file;
+    // wave_file = fopen("/sd/roblox_death_sound.wav", "r");
+    // waver.play(wave_file);
+    // fseek(wave_file, 0, SEEK_SET);
+    // fclose(wave_file);
+    // int lives = Player->lives;
 
     // Show text
     uLCD.filled_rectangle(Player->x, Player->y, Player->x + 10, Player->y + 10, 0xFF0000);
@@ -122,7 +122,7 @@ void lost_life(Player *Player)
 void draw_game(int init, Player *Player)
 {
     // Draw game border first
-    if (init)
+    if (init == 1)
         draw_border();
 
     // Iterate over all visible map tiles
@@ -146,7 +146,7 @@ void draw_game(int init, Player *Player)
 
             // Figure out what to draw
             DrawFunc draw = NULL;
-            if (init)
+            if (init == 1)
             { // Only draw these on init
                 if (i == 0 && j == 0)
                 {
@@ -164,8 +164,7 @@ void draw_game(int init, Player *Player)
                     {
                         if (init == 4)
                         {
-                            MapItem *item = get_here(x, y);
-                            item->walkable = true;
+                            curr_item->walkable = true;
                         }
                         draw = curr_item->draw;
                     }
@@ -281,35 +280,35 @@ void init_main_map(int count)
 
 int main()
 {
-    pc.printf("print test \r\n");
-    
     // First things first: initialize hardware
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
     Player *Player;
-    draw_splash();
-    pc.printf("splash screen \r\n");
-    int w = 1;
-    while (w == 1)
+    int w = 0;
+    while (w == 0)
     {
+        pc.printf("splash screen \r\n");
         uLCD.locate(5, 5);
-        uLCD.color(BLUE);
-        uLCD.printf("hello");
+        uLCD.printf("Press btn 1 to start");
+        uLCD.locate(5, 15);
+        uLCD.printf("Press btn 3 to star in Godmode");
+        uLCD.locate(5, 25);
+        uLCD.printf("Press btn 4 to load save");
         GameInputs inputs = read_inputs();
         int actions = get_minor_action(inputs);
         if (actions == 7)
         {
             w = GODMODE;
         }
-        else if (actions == 8)
-        {
-            w = NO_RESULT;
-        }
         else if (actions == 1)
         {
+            w = 1;
+        }
+        else if (actions == 8)
+        {
             load_game();
-            w = NO_RESULT;
+            w = 1;
         }
         else
         {
@@ -333,16 +332,16 @@ int main()
 
     // Initial drawing
     pc.printf("Drawing game... \r\n");
-    draw_game(true, Player);
+    draw_game(1, Player);
 
+    pc.printf("Entering main game loop... \r\n");
     // Main game loop
     while (1)
     {
         // Timer to measure game update speed
+        
         Timer t;
         t.start();
-
-        // Actually do the game update:
 
         GameInputs inputs = read_inputs();
 

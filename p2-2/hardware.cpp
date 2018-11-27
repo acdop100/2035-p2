@@ -2,7 +2,6 @@
 // "extern" means "this is instantiated somewhere, but here's what the name
 // means.
 #include "globals.h"
-//#include "SDFileSystem.h"
 #include "hardware.h"
 
 // We need to actually instantiate all of the globals (i.e. declare them once
@@ -15,8 +14,8 @@ Serial pc(USBTX, USBRX);       // USB Console (tx, rx)
 MMA8452 acc(p28, p27, 100000); // Accelerometer (sda, sdc, rate)
 double ax, ay, az;
 
-AnalogOut DACout(p19); // AUX output
-wave_player waver(&DACout);
+//AnalogOut DACout(p19); // AUX output
+//wave_player waver(&DACout);
 
 SDFileSystem sd(p5, p6, p7, p8, "sd"); // SD Card(mosi, miso, sck, cs)
 
@@ -24,12 +23,6 @@ DigitalIn button1(p21); // Pushbuttons (pin)
 DigitalIn button2(p22);
 DigitalIn button3(p23);
 DigitalIn button4(p24);
-
-//wave_player waver(&DACout);
-
-// PwmOut redpin(p12); // RGB LED
-// PwmOut greenpin(p13);
-// PwmOut bluepin(p14);
 
 // Some hardware also needs to have functions called before it will set up
 // properly. Do that here.
@@ -39,21 +32,21 @@ int hardware_init()
     FILE *file;
     // Access sounds file on SD card
 
-    file = fopen("/sd/temp_data.txt", "w");
+    file = fopen("/sd/save_data.txt", "w");
     if (file == NULL)
     {
         error("ERROR: Could not open file!\n\r");
         return -1;
+    } 
+    else 
+    {
+        pc.printf("SD card initialized");
     }
-
+    
     // Crank up the speed
     uLCD.baudrate(3000000);
     pc.baud(115200);
 
-    // Make LED Red on startup
-    // redpin = 1;
-    // greenpin = 0;
-    // bluepin = 0;
 
     //Initialize pushbuttons
     button1.mode(PullUp);
