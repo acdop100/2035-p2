@@ -44,7 +44,6 @@ typedef struct MapItem{
      * might use it to store game state (have I given the player the key yet?).
      */
     int data;
-    int data2;
     
     int key;
 

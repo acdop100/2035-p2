@@ -38,15 +38,11 @@ int hardware_init()
         error("ERROR: Could not open file!\n\r");
         return -1;
     } 
-    else 
-    {
-        pc.printf("SD card initialized");
-    }
-    
+
     // Crank up the speed
     uLCD.baudrate(3000000);
     pc.baud(115200);
-
+    
 
     //Initialize pushbuttons
     button1.mode(PullUp);
@@ -61,7 +57,7 @@ GameInputs read_inputs()
 {
     // Read accelerometer values
     acc.readXYZGravity(&ax, &ay, &az);
-    pc.printf("x:%lf   y:%lf z:%lf\r\n", ax, ay, az);
+    //pc.printf("x:%lf   y:%lf z:%lf\r\n", ax, ay, az);
 
     GameInputs newInputs; // Initialize new input struct
 

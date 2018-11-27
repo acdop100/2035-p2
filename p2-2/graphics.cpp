@@ -405,15 +405,16 @@ void draw_pSchimmel(int u, int v)
 
 void draw_end(int status)
 {
-    const char* line1 = "GAME OVER";
+    uLCD.locate(5, 5);
+    uLCD.printf("GAME OVER");
     if (!status)
     {
-        uLCD.locate(10, 10);
+        uLCD.locate(10, 5);
         uLCD.printf("YOU LOST");
     }
     else
     {
-        uLCD.locate(10, 10);
+        uLCD.locate(10, 5);
         uLCD.printf("YOU WIN");
     }
 }
@@ -425,7 +426,7 @@ void draw_upper_status(int x, int y)
 
     // Add other status info drawing code here
     uLCD.locate(0, 0);
-    uLCD.printf("X coord = %d, Y coord = %d\n", x, y);
+    uLCD.printf("X = %d, Y = %d\n", x, y);
 }
 
 void draw_lower_status(char* line, int lives)
@@ -434,9 +435,9 @@ void draw_lower_status(char* line, int lives)
     uLCD.line(0, 118, 127, 118, GREEN);
 
     // Add other status info drawing code here
-    uLCD.locate(0, 122);
+    uLCD.locate(0, 15);
     uLCD.printf(line); // Information on whether the player has the key (sign off) yet
-    uLCD.locate(90, 122);
+    uLCD.locate(9, 15);
     uLCD.printf("Lives: %d", lives); // Information on whether the player has the key (sign off) yet
 }
 
@@ -447,4 +448,3 @@ void draw_border()
     uLCD.filled_rectangle(0, 114, 127, 117, WHITE);  // Bottom
     uLCD.filled_rectangle(124, 14, 127, 117, WHITE); // Right
 }
-

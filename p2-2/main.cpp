@@ -101,7 +101,7 @@ void lost_life(Player *Player)
     // waver.play(wave_file);
     // fseek(wave_file, 0, SEEK_SET);
     // fclose(wave_file);
-    // int lives = Player->lives;
+    int lives = Player->lives;
 
     // Show text
     uLCD.filled_rectangle(Player->x, Player->y, Player->x + 10, Player->y + 10, 0xFF0000);
@@ -189,12 +189,12 @@ void draw_game(int init, Player *Player)
     draw_upper_status(Player->x, Player->y);
     if (Player->has_key == 0)
     {
-        char *line = "No sign off yet!";
+        char *line = "Not done";
         draw_lower_status(line, Player->lives);
     }
     else
     {
-        char *line = "Player has the sign off!";
+        char *line = "done!";
         draw_lower_status(line, Player->lives);
     }
 }
@@ -239,36 +239,58 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
  */
 void init_main_map(int count)
 {
-    maps_init(50, 50, 50);
-    // "Random" plants
-    Map *map = set_active_map(0);
-    for (int i = map_width() + 3; i < map_area(); i += 39)
-    {
-        add_plant(i % map_width(), i / map_width());
-    }
-    pc.printf("Plants added \r\n");
-
-    add_wall(0, 0, HORIZONTAL, map_width());
-    add_wall(0, map_height() - 1, HORIZONTAL, map_width());
-    add_wall(0, 0, VERTICAL, map_height());
-    add_wall(map_width() - 1, 0, VERTICAL, map_height());
-    pc.printf("Walls done!\r\n");
-
     if (count == 0)
     {
-        add_NPC(10, 20, 3, draw_pWills);
-        add_NPC(100, 100, 4, draw_pSchimmel);
-        add_door(30, 0);
+        maps_init(10, 50, 50);
+
+        Map *map = set_active_map(count);
+        add_wall(0, 0, HORIZONTAL, map_width(), count);
+        add_wall(0, map_height() - 1, HORIZONTAL, map_width(), count);
+        add_wall(0, 0, VERTICAL, map_height(), count);
+        add_wall(map_width() - 1, 0, VERTICAL, map_height(), count);
+        pc.printf("Walls done!\r\n");
+        
+        // "Random" plants
+        for (int i = map_width() + 3; i < map_area(); i += 75)
+        {
+            add_plant(i % map_width(), i / map_width(), count);
+        }
+        pc.printf("Plants added \r\n");
+        
+        add_NPC(10, 20, 3, draw_pWills, count);
+        pc.printf("Wills added \r\n");
+        add_NPC(100, 100, 4, draw_pSchimmel, count);
+        pc.printf("Schimmel added \r\n");
+        add_door(30, 0, count);
+        pc.printf("Door added \r\n");
+        
     }
     else if (count == 1)
     {
-        add_NPC(6, 10, 8, draw_UGA_student);
-        add_NPC(75, 60, 5, draw_depression);
-        add_NPC(30, 80, 6, draw_failure);
-        add_NPC(120, 40, 6, draw_anxiety);
-        add_door(6, 11);
+        maps_init(10, 10, 10);
+
+        Map *map = set_active_map(count);
+        pc.printf("Making walls\r\n");
+        add_wall(0, 0, HORIZONTAL, map_width(), count);
+        add_wall(0, map_height() - 1, HORIZONTAL, map_width(), count);
+        add_wall(0, 0, VERTICAL, map_height(), count);
+        add_wall(map_width() - 1, 0, VERTICAL, map_height(), count);
+        pc.printf("Walls done!\r\n");
+        
+        // "Random" plants
+        for (int i = map_width() + 3; i < map_area(); i += 75)
+        {
+            add_plant(i % map_width(), i / map_width(), count);
+        }
+        pc.printf("Plants added \r\n");
+        
+        add_NPC(6, 10, 8, draw_UGA_student, count);
+        add_NPC(75, 60, 5, draw_depression, count);
+        add_NPC(30, 80, 6, draw_failure, count);
+        add_NPC(120, 40, 6, draw_anxiety, count);
+        add_door(6, 11, count);
     }
-    print_map();
+    //print_map();
 }
 
 /**
@@ -284,24 +306,26 @@ int main()
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
-    Player *Player;
+    Player Player1;
+    Player *Player = &Player1;
     int w = 0;
+    uLCD.locate(0, 2);
+    uLCD.printf("btn 2 - start");
+    uLCD.locate(0, 7);
+    uLCD.printf("btn 3 - Godmode");
+    uLCD.locate(0, 12);
+    uLCD.printf("btn 4 - load save");
     while (w == 0)
     {
-        pc.printf("splash screen \r\n");
-        uLCD.locate(5, 5);
-        uLCD.printf("Press btn 1 to start");
-        uLCD.locate(5, 15);
-        uLCD.printf("Press btn 3 to star in Godmode");
-        uLCD.locate(5, 25);
-        uLCD.printf("Press btn 4 to load save");
         GameInputs inputs = read_inputs();
+        pc.printf("button 2 pressed: %d \r\n", inputs.b2);
         int actions = get_minor_action(inputs);
+        pc.printf("Action: %d \r\n", actions);
         if (actions == 7)
         {
             w = GODMODE;
         }
-        else if (actions == 1)
+        else if (actions == 2)
         {
             w = 1;
         }
@@ -318,18 +342,18 @@ int main()
 
     // Initialize the maps
     int count = 0;
-    pc.printf("Creating maps... \r\n");
     init_main_map(count);
     count++;
     pc.printf("Main map created \r\n");
-    init_main_map(count);
-    pc.printf("Secondary map created \r\n");
+    //init_main_map(count);
+    //pc.printf("Secondary map created \r\n");
     // Initialize game state
     set_active_map(0);
 
     Player->x = Player->y = 5;
     Player->lives = 3;
-
+    Player->has_key = 0;
+    
     // Initial drawing
     pc.printf("Drawing game... \r\n");
     draw_game(1, Player);
@@ -348,7 +372,7 @@ int main()
         int actions = get_action(inputs);
 
         int update = update_game(actions, Player);
-
+        pc.printf("update: %d \r\n", update);
         if (update == 1)
         {
             draw_game_end(Player);
@@ -369,6 +393,7 @@ int main()
             wait_ms(100 - dt);
     }
 }
+
 
 /*
 https://os.mbed.com/users/Ivannrush/code/MMA8452_Demo/file/46eab8a51f91/main.cpp/

@@ -6,6 +6,8 @@
  * consulting the map, and update the Player position accordingly.
  */
 
+int county = 0;
+
 int update_game(int action, Player *Player)
 {
     MapItem *item;
@@ -41,12 +43,12 @@ int update_game(int action, Player *Player)
 
             if (item->data == 0)
             { // Talking to the NPC before finishing the quest
-                if (item->data2 == 0)
+                if (county == 0)
                 { // You haven't started the quest
                     const char *line1 = "You want to pass this Class?";
                     const char *line2 = "Bring me a project worthy of an A!";
                     speech(line1, line2, Player);
-                    item->data2 = 1;
+                    county++;
                     return HALFDRAW;
                 }
                 else
@@ -59,26 +61,19 @@ int update_game(int action, Player *Player)
             }
             else
             {
-                if (item->data2 == 1)
+                if (county == 1)
                 { // You have just finished the quest
                     const char *line1 = "Hey now, this isn't too bad!";
                     const char *line2 = "Here is my signiture. Now you need Schimmel's.";
                     speech(line1, line2, Player);
-                    item->data2 = 2;
+                    county++;
                     Player->has_key = 1;
                     return HALFDRAW;
                 }
-                else if (item->data2 == 2)
+                else
                 { // You have finished the quest, but have not gone through the door
                     const char *line1 = "What are you waitnig for?";
                     const char *line2 = "Get Schimmel's signiture!";
-                    speech(line1, line2, Player);
-                    return HALFDRAW;
-                }
-                else
-                { // You have finished the quest and have gone through the door
-                    const char *line1 = "Congrats on finishing my tasks!";
-                    const char *line2 = "Here's my sig, now get out of here!";
                     speech(line1, line2, Player);
                     return HALFDRAW;
                 }
@@ -91,7 +86,7 @@ int update_game(int action, Player *Player)
 
             if ((Player->failures_resolve == 0) && (Player->UGA_tears == 0))
             { // Talking to the NPC before finishing the quest
-                if (item->data2 == 0)
+                if (item->data == 0)
                 { // You haven't started the quest
                     const char *line1 = "You want to pass this Class? Bring me Prof.";
                     const char *line2 = "Will's signiture for me to even consider it!";
@@ -101,14 +96,14 @@ int update_game(int action, Player *Player)
             }
             else if ((Player->failures_resolve == 1) && (Player->UGA_tears == 1))
             {
-                if (item->data2 == 0) // You have just finished the first quest
+                if (item->data == 0) // You have just finished the first quest
                 {
                     const char *lines[] = {"Finally, what took you so long?", "Well, you may have proven yourself to", "Professor Wills, but not me!", "I need my own proof that you derve to pass."};
                     long_speech(&lines[4], 4, Player);
-                    item->data2 = 0;
+                    item->data = 1;
                     return NO_RESULT;
                 }
-                else if (item->data2 == 1) // You have finished the first quest, and already talked to Schimmel
+                else if (item->data == 1) // You have finished the first quest, and already talked to Schimmel
                 {
                     if ((Player->depressions_scythe == 0) && (Player->future_anxiety == 0))
                     {
