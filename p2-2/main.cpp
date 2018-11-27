@@ -282,6 +282,7 @@ void init_main_map(int count)
 int main()
 {
     pc.printf("print test \r\n");
+    
     // First things first: initialize hardware
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
@@ -289,9 +290,12 @@ int main()
     Player *Player;
     draw_splash();
     pc.printf("splash screen \r\n");
-    int w = 0;
-    while (!w)
+    int w = 1;
+    while (w == 1)
     {
+        uLCD.locate(5, 5);
+        uLCD.color(BLUE);
+        uLCD.printf("hello");
         GameInputs inputs = read_inputs();
         int actions = get_minor_action(inputs);
         if (actions == 7)
