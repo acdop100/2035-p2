@@ -12,6 +12,7 @@ typedef struct Player
     int px, py;  // Previous locations
     int has_key; // Does the player have the key (Sign off from Prof. Wills)?
     int lives;   // Player lives
+    int data, data2;
     int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
 } Player;
 
@@ -26,17 +27,18 @@ typedef struct Player
 #define BUTTON4 8
 
 #define NO_RESULT 0
-#define GAME_OVER 1
-#define FULL_DRAW 2
-#define HALFDRAW 3
-#define GODMODE 4
+#define GAME_OVER 3
+#define FULL_DRAW 1
 
 int get_action(GameInputs inputs);
+
 void draw_game(int init, Player *Player);
 void init_main_map();
 int main();
 void init_other_map();
 
+int load_game(Player *Player);
+void save_game(Player *Player);
 
 void lost_life(Player *Player);
 

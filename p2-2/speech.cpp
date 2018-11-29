@@ -28,8 +28,8 @@ static void speech_bubble_wait();
 
 void draw_speech_bubble(Player *Player)
 {
-    uLCD.filled_rectangle(Player -> x, Player -> y, Player -> x + 10, Player -> y + 10, 0xFF0000);
-    uLCD.filled_rectangle(Player -> x + 1, Player -> y + 1, Player -> x + 9, Player -> y + 9, 0x000000);
+    uLCD.filled_rectangle(3, 3, 12,12, 0xFF0000);
+    uLCD.filled_rectangle(4, 4, 11, 11, 0x000000);
 }
 
 void erase_speech_bubble(Player *Player)
@@ -39,12 +39,12 @@ void erase_speech_bubble(Player *Player)
 
 void draw_speech_line_top(const char *line, int which, Player *Player)
 {
-    uLCD.locate(Player -> x + 2, Player -> y + 2);
+    uLCD.locate(5, 5);
     uLCD.printf(line);
 }
 void draw_speech_line_bot(const char *line, int which, Player *Player)
 {
-    uLCD.locate(Player -> x + 6, Player -> y + 6);
+    uLCD.locate(7, 7);
     uLCD.printf(line);
 }
 

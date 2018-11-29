@@ -13,19 +13,19 @@ int godMode = 0;
 
 int get_action(GameInputs inputs) // Decides game movement and interaction
 {
-    if (inputs.b1 == 1)
+    if (inputs.b1 == 0)
     {
         return MENU_BUTTON;
     }
-    else if (inputs.b2 == 1)
+    else if (inputs.b2 == 0)
     {
         return ACTION_BUTTON;
     }
-    else if (inputs.b3 == 1)
+    else if (inputs.b3 == 0)
     {
         return BUTTON3;
     }
-    else if (inputs.b4 == 1)
+    else if (inputs.b4 == 0)
     {
         return BUTTON4;
     }
@@ -51,42 +51,54 @@ int get_action(GameInputs inputs) // Decides game movement and interaction
     }
 }
 
-int get_minor_action(GameInputs inputs) // Decides actions between NPCs
+// These two functions save/load game data to/from the microSD card
+int load_game(Player* Player)
 {
-    if (inputs.b1 == 1)
-    {
-        return MENU_BUTTON;
-    }
-    else if (inputs.b2 == 1)
-    {
-        return ACTION_BUTTON;
-    }
-    else if (inputs.b3 == 1)
-    {
-        return BUTTON3;
-    }
-    else if (inputs.b4 == 1)
-    {
-        return BUTTON4;
+    FILE *file;
+    file = fopen("/sd/save_file.txt", "r");
+    c=fgetc(file);
+    if (!feof(file))
+    {                        
+           Player -> x = fgetc(file);
+           Player -> y = fgetc(file);
+           Player -> px = fgetc(file);
+           Player -> py = fgetc(file);
+           Player -> has_key = fgetc(file);
+           Player -> lives = fgetc(file);
+           Player -> data = fgetc(file);
+           Player -> data2 = fgetc(file);
+           Player -> depressions_scythe = fgetc(file);
+           Player -> failures_resolve = fgetc(file);        
+           Player -> UGA_tears = fgetc(file);
+           Player -> future_anxiety = fgetc(file);                            
     }
     else
     {
-        return NO_ACTION;
+        uLCD.locate(2, 10);
+        uLCD.printf("No save found");
     }
+    fclose(file);
 }
 
-// These two functions save/load game data to/from the microSD card
-int load_game()
+void save_game(Player* Player)
 {
-    return (0);
-}
-
-void save_game()
-{
-    int b;
-    for (b = 0; b < 10; b++)
-    {
-    }
+    FILE *file;
+    file = fopen("/sd/save_file.txt", "w");
+    fprintf(file, "%d\n", Player -> x);
+    fprintf(file, "%d\n", Player -> y);
+    fprintf(file, "%d\n", Player -> px);
+    fprintf(file, "%d\n", Player -> py);
+    fprintf(file, "%d\n", Player -> has_key);
+    fprintf(file, "%d\n", Player -> lives);
+    fprintf(file, "%d\n", Player -> data);
+    fprintf(file, "%d\n", Player -> data2);
+    fprintf(file, "%d\n", Player -> depressions_scythe);
+    fprintf(file, "%d\n", Player -> failures_resolve);
+    fprintf(file, "%d\n", Player -> UGA_tears);
+    fprintf(file, "%d\n", Player -> future_anxiety);
+    fclose(file);
+    uLCD.locate(2, 10);
+    uLCD.printf("Game saved");
 }
 
 // Runs when the player loses a life
@@ -96,20 +108,15 @@ void lost_life(Player *Player)
     Player->lives = Player->lives - 1;
 
     // Plays lost life sound
-    // FILE *wave_file;
-    // wave_file = fopen("/sd/roblox_death_sound.wav", "r");
-    // waver.play(wave_file);
-    // fseek(wave_file, 0, SEEK_SET);
-    // fclose(wave_file);
+    FILE *wave_file;
+    wave_file = fopen("/sd/roblox_death_sound.wav", "r");
+   // waver.play(wave_file);
+    //fseek(wave_file, 0, SEEK_SET);
+    fclose(wave_file);
     int lives = Player->lives;
 
     // Show text
-    uLCD.filled_rectangle(Player->x, Player->y, Player->x + 10, Player->y + 10, 0xFF0000);
-    uLCD.filled_rectangle(Player->x + 1, Player->y + 1, Player->x + 9, Player->y + 9, 0x000000);
-    uLCD.locate(Player->x + 2, Player->y + 2);
-    uLCD.printf("You lost a life!");
-    uLCD.locate(Player->x + 6, Player->y + 6);
-    uLCD.printf("Only %d lives remaining", lives);
+    speech("You lost a life", "Be more Careful!", Player);
     draw_game(true, Player);
 }
 
@@ -122,7 +129,7 @@ void lost_life(Player *Player)
 void draw_game(int init, Player *Player)
 {
     // Draw game border first
-    if (init == 1)
+    if (init)
         draw_border();
 
     // Iterate over all visible map tiles
@@ -162,9 +169,10 @@ void draw_game(int init, Player *Player)
                 {
                     if (curr_item) // There's something here! Draw it
                     {
-                        if (init == 4)
+                        if (godMode == 1)
                         {
-                            curr_item->walkable = true;
+                            MapItem *item = get_here(x, y);
+                            item->walkable = true;
                         }
                         draw = curr_item->draw;
                     }
@@ -174,7 +182,7 @@ void draw_game(int init, Player *Player)
                     }
                 }
             }
-            else if (init == 2) // If doing a full draw, but we're out of bounds, draw the walls.
+            else if (init == 1) // If doing a full draw, but we're out of bounds, draw the walls.
             {
                 draw = draw_wall;
             }
@@ -189,24 +197,24 @@ void draw_game(int init, Player *Player)
     draw_upper_status(Player->x, Player->y);
     if (Player->has_key == 0)
     {
-        char *line = "Not done";
+        char *line = "No sign off yet!";
         draw_lower_status(line, Player->lives);
     }
     else
     {
-        char *line = "done!";
+        char *line = "Player has the sign off!";
         draw_lower_status(line, Player->lives);
     }
 }
 
-void draw_game_end(Player *Player) // Used for when the game is over
-{
-    draw_end(Player->lives);
-}
-
 void draw_game_pause(Player *Player) // Used for when the game is paused
 {
-    draw_pause();
+    uLCD.locate(2, 4);
+    uLCD.printf("b2 - Continue");
+    uLCD.locate(2, 7);
+    uLCD.printf("b3 - Godmode");
+    uLCD.locate(2, 10);
+    uLCD.printf("b4 - Save game");
     GameInputs inputs = read_inputs();
     int actions = get_minor_action(inputs);
     int w = 0;
@@ -214,23 +222,27 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
     {
         if (actions == 7)
         {
-            w = GODMODE;
+            w = 1;
+            godMode = 1;
+            draw_game(1, Player);
         }
         else if (actions == 8)
         {
-            w = NO_RESULT;
+            w = 1;
+            draw_game(0, Player);
         }
-        else if (actions == 1)
+        else if (actions == 0)
         {
             save_game();
-            w = NO_RESULT;
+            w = 1;
+            draw_game(0, Player);
         }
         else
         {
             w = false;
         }
     }
-    draw_game(w, Player);
+    
 }
 
 /**
@@ -239,58 +251,65 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
  */
 void init_main_map(int count)
 {
+    maps_init(50, 50, 50);
+    // "Random" plants
+    Map *map = set_active_map(0);
+    for (int i = map_width() + 3; i < map_area(); i += 39)
+    {
+        add_plant(i % map_width(), i / map_width());
+    }
+    pc.printf("Plants added \r\n");
+
+    add_wall(0, 0, HORIZONTAL, map_width());
+    add_wall(0, map_height() - 1, HORIZONTAL, map_width());
+    add_wall(0, 0, VERTICAL, map_height());
+    add_wall(map_width() - 1, 0, VERTICAL, map_height());
+    pc.printf("Walls done!\r\n");
+
     if (count == 0)
     {
-        maps_init(10, 50, 50);
-
-        Map *map = set_active_map(count);
-        add_wall(0, 0, HORIZONTAL, map_width(), count);
-        add_wall(0, map_height() - 1, HORIZONTAL, map_width(), count);
-        add_wall(0, 0, VERTICAL, map_height(), count);
-        add_wall(map_width() - 1, 0, VERTICAL, map_height(), count);
-        pc.printf("Walls done!\r\n");
-        
+        maps_init(50, 50, 50);
         // "Random" plants
-        for (int i = map_width() + 3; i < map_area(); i += 75)
+        Map *map = set_active_map(0);
+        for (int i = map_width() + 3; i < map_area(); i += 39)
         {
-            add_plant(i % map_width(), i / map_width(), count);
+            add_plant(i % map_width(), i / map_width());
         }
         pc.printf("Plants added \r\n");
-        
-        add_NPC(10, 20, 3, draw_pWills, count);
-        pc.printf("Wills added \r\n");
-        add_NPC(100, 100, 4, draw_pSchimmel, count);
-        pc.printf("Schimmel added \r\n");
-        add_door(30, 0, count);
-        pc.printf("Door added \r\n");
-        
+
+        add_wall(0, 0, HORIZONTAL, map_width());
+        add_wall(0, map_height() - 1, HORIZONTAL, map_width());
+        add_wall(0, 0, VERTICAL, map_height());
+        add_wall(map_width() - 1, 0, VERTICAL, map_height());
+        pc.printf("Walls done!\r\n");
+        add_NPC(10, 20, 3, draw_pWills);
+        add_NPC(100, 100, 4, draw_pSchimmel);
+        add_door(30, 0);
     }
-    else if (count == 1)
+    else if (count == 0)
     {
-        maps_init(10, 10, 10);
-
-        Map *map = set_active_map(count);
-        pc.printf("Making walls\r\n");
-        add_wall(0, 0, HORIZONTAL, map_width(), count);
-        add_wall(0, map_height() - 1, HORIZONTAL, map_width(), count);
-        add_wall(0, 0, VERTICAL, map_height(), count);
-        add_wall(map_width() - 1, 0, VERTICAL, map_height(), count);
-        pc.printf("Walls done!\r\n");
-        
+        maps_init(50, 50, 50);
         // "Random" plants
-        for (int i = map_width() + 3; i < map_area(); i += 75)
+        Map *map = set_active_map(0);
+        for (int i = map_width() + 3; i < map_area(); i += 39)
         {
-            add_plant(i % map_width(), i / map_width(), count);
+            add_plant(i % map_width(), i / map_width());
         }
         pc.printf("Plants added \r\n");
-        
-        add_NPC(6, 10, 8, draw_UGA_student, count);
-        add_NPC(75, 60, 5, draw_depression, count);
-        add_NPC(30, 80, 6, draw_failure, count);
-        add_NPC(120, 40, 6, draw_anxiety, count);
-        add_door(6, 11, count);
+
+        add_wall(0, 0, HORIZONTAL, map_width());
+        add_wall(0, map_height() - 1, HORIZONTAL, map_width());
+        add_wall(0, 0, VERTICAL, map_height());
+        add_wall(map_width() - 1, 0, VERTICAL, map_height());
+        pc.printf("Walls done!\r\n");
+
+        add_NPC(6, 10, 8, draw_UGA_student);
+        add_NPC(75, 60, 5, draw_depression);
+        add_NPC(30, 80, 6, draw_failure);
+        add_NPC(120, 40, 6, draw_anxiety);
+        add_door(6, 11);
     }
-    //print_map();
+    print_map();
 }
 
 /**
@@ -301,37 +320,52 @@ void init_main_map(int count)
  */
 
 int main()
-{
+{    
     // First things first: initialize hardware
     ASSERT_P(hardware_init() == ERROR_NONE, "Hardware init failed!");
 
     // Initial splash screen
-    Player Player1;
-    Player *Player = &Player1;
-    int w = 0;
-    uLCD.locate(0, 2);
-    uLCD.printf("btn 2 - start");
-    uLCD.locate(0, 7);
-    uLCD.printf("btn 3 - Godmode");
-    uLCD.locate(0, 12);
-    uLCD.printf("btn 4 - load save");
+    Player player1;
+    Player *Player = player1;
+    
+    // Initialize the maps
+    int count = 0;
+    pc.printf("Creating maps... \r\n");
+    init_main_map(count);
+    count++;
+    pc.printf("Main map created \r\n");
+    //init_main_map(count);
+    pc.printf("Secondary map created \r\n");
+    // Initialize game state
+    set_active_map(0);
+
+    Player->x = Player->y = 5;
+    Player->lives = 3;
+
+    pc.printf("splash screen \r\n");
+    uLCD.locate(2, 4);
+    uLCD.printf("b2 - Start");
+    uLCD.locate(2, 7);
+    uLCD.printf("b3 - Godmode");
+    uLCD.locate(2, 10);
+    uLCD.printf("b4 - Load save");
+    int w = 1;
     while (w == 0)
     {
         GameInputs inputs = read_inputs();
-        pc.printf("button 2 pressed: %d \r\n", inputs.b2);
         int actions = get_minor_action(inputs);
-        pc.printf("Action: %d \r\n", actions);
         if (actions == 7)
         {
-            w = GODMODE;
-        }
-        else if (actions == 2)
-        {
             w = 1;
+            godMode = 1;
         }
         else if (actions == 8)
         {
-            load_game();
+            w = 1;
+        }
+        else if (actions == 1)
+        {
+            load_game(Player);
             w = 1;
         }
         else
@@ -340,42 +374,27 @@ int main()
         }
     }
 
-    // Initialize the maps
-    int count = 0;
-    init_main_map(count);
-    count++;
-    pc.printf("Main map created \r\n");
-    //init_main_map(count);
-    //pc.printf("Secondary map created \r\n");
-    // Initialize game state
-    set_active_map(0);
-
-    Player->x = Player->y = 5;
-    Player->lives = 3;
-    Player->has_key = 0;
-    
     // Initial drawing
-    pc.printf("Drawing game... \r\n");
-    draw_game(1, Player);
+    draw_game(true, Player);
 
-    pc.printf("Entering main game loop... \r\n");
     // Main game loop
     while (1)
     {
         // Timer to measure game update speed
-        
         Timer t;
         t.start();
+
+        // Actually do the game update:
 
         GameInputs inputs = read_inputs();
 
         int actions = get_action(inputs);
 
         int update = update_game(actions, Player);
-        pc.printf("update: %d \r\n", update);
+
         if (update == 1)
         {
-            draw_game_end(Player);
+            draw_end(Player->lives);
         }
         else if (update == 8)
         {
@@ -393,7 +412,6 @@ int main()
             wait_ms(100 - dt);
     }
 }
-
 
 /*
 https://os.mbed.com/users/Ivannrush/code/MMA8452_Demo/file/46eab8a51f91/main.cpp/

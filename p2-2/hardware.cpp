@@ -19,10 +19,10 @@ double ax, ay, az;
 
 SDFileSystem sd(p5, p6, p7, p8, "sd"); // SD Card(mosi, miso, sck, cs)
 
-DigitalIn button1(p21); // Pushbuttons (pin)
-DigitalIn button2(p22);
-DigitalIn button3(p23);
-DigitalIn button4(p24);
+DigitalIn button1(p24); // Pushbuttons (pin)
+DigitalIn button2(p23);
+DigitalIn button3(p22);
+DigitalIn button4(p21);
 
 // Some hardware also needs to have functions called before it will set up
 // properly. Do that here.
@@ -59,12 +59,18 @@ GameInputs read_inputs()
     acc.readXYZGravity(&ax, &ay, &az);
     //pc.printf("x:%lf   y:%lf z:%lf\r\n", ax, ay, az);
 
-    GameInputs newInputs; // Initialize new input struct
+    GameInputs newInputs = {.b1 = 0, .b2 = 0, .b3 = 0, .b4 = 0}; // Initialize new input struct
 
-    newInputs.b1 = button1;
-    newInputs.b2 = button2;
-    newInputs.b3 = button3;
-    newInputs.b4 = button4;
+    
+
+    newInputs.b1 = button1.read();
+    wait(.001);
+    newInputs.b2 = button2.read();
+    wait(.001);
+    newInputs.b3 = button3.read();
+    wait(.001);
+    newInputs.b4 = button4.read();
+    wait(.001);
 
     newInputs.ax = ax;
     newInputs.ay = ay;

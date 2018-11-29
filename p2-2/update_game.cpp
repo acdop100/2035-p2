@@ -6,8 +6,6 @@
  * consulting the map, and update the Player position accordingly.
  */
 
-int county = 0;
-
 int update_game(int action, Player *Player)
 {
     MapItem *item;
@@ -41,41 +39,48 @@ int update_game(int action, Player *Player)
         {
             pc.printf("Talking to Prof. Wills \n");
 
-            if (item->data == 0)
+            if (Player->data == 0)
             { // Talking to the NPC before finishing the quest
-                if (county == 0)
+                if (Player->data2 == 0)
                 { // You haven't started the quest
                     const char *line1 = "You want to pass this Class?";
                     const char *line2 = "Bring me a project worthy of an A!";
                     speech(line1, line2, Player);
-                    county++;
-                    return HALFDRAW;
+                    Player->data2 = 1;
+                    return FULL_DRAW;
                 }
                 else
                 { // You haven't completed the after it was given quest
                     const char *line1 = "Oof, sorry. You don't have a good";
                     const char *line2 = "project yet. Come back when you do.";
                     speech(line1, line2, Player);
-                    return HALFDRAW;
+                    return FULL_DRAW;
                 }
             }
             else
             {
-                if (county == 1)
+                if (Player->data2 == 1)
                 { // You have just finished the quest
                     const char *line1 = "Hey now, this isn't too bad!";
                     const char *line2 = "Here is my signiture. Now you need Schimmel's.";
                     speech(line1, line2, Player);
-                    county++;
+                    Player->data2 = 2;
                     Player->has_key = 1;
-                    return HALFDRAW;
+                    return FULL_DRAW;
                 }
-                else
+                else if (Player->data2 == 2)
                 { // You have finished the quest, but have not gone through the door
                     const char *line1 = "What are you waitnig for?";
                     const char *line2 = "Get Schimmel's signiture!";
                     speech(line1, line2, Player);
-                    return HALFDRAW;
+                    return FULL_DRAW;
+                }
+                else
+                { // You have finished the quest and have gone through the door
+                    const char *line1 = "Congrats on finishing my tasks!";
+                    const char *line2 = "Here's my sig, now get out of here!";
+                    speech(line1, line2, Player);
+                    return FULL_DRAW;
                 }
             }
             return NO_RESULT;
@@ -86,24 +91,24 @@ int update_game(int action, Player *Player)
 
             if ((Player->failures_resolve == 0) && (Player->UGA_tears == 0))
             { // Talking to the NPC before finishing the quest
-                if (item->data == 0)
+                if (Player->data2 == 0)
                 { // You haven't started the quest
                     const char *line1 = "You want to pass this Class? Bring me Prof.";
                     const char *line2 = "Will's signiture for me to even consider it!";
                     speech(line1, line2, Player);
-                    return HALFDRAW;
+                    return FULL_DRAW;
                 }
             }
             else if ((Player->failures_resolve == 1) && (Player->UGA_tears == 1))
             {
-                if (item->data == 0) // You have just finished the first quest
+                if (Player->data2 == 0) // You have just finished the first quest
                 {
                     const char *lines[] = {"Finally, what took you so long?", "Well, you may have proven yourself to", "Professor Wills, but not me!", "I need my own proof that you derve to pass."};
                     long_speech(&lines[4], 4, Player);
-                    item->data = 1;
+                    Player->data2 = 0;
                     return NO_RESULT;
                 }
-                else if (item->data == 1) // You have finished the first quest, and already talked to Schimmel
+                else if (Player->data2 == 1) // You have finished the first quest, and already talked to Schimmel
                 {
                     if ((Player->depressions_scythe == 0) && (Player->future_anxiety == 0))
                     {
@@ -133,7 +138,7 @@ int update_game(int action, Player *Player)
                 const char *line1 = "HAHAHA, You don't have a good";
                 const char *line2 = "project yet! Come back when you do!";
                 speech(line1, line2, Player);
-                return HALFDRAW;
+                return FULL_DRAW;
             }
         }
         else if (item->type == 5) // F project
@@ -165,7 +170,7 @@ int update_game(int action, Player *Player)
                     x == NULL;
                 }
             }
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         else if (item->type == 6) // UGA Student
         {
@@ -197,7 +202,7 @@ int update_game(int action, Player *Player)
                     x == NULL;
                 }
             }
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         else if (item->type == 7) // Future anxiety
         {
@@ -228,7 +233,7 @@ int update_game(int action, Player *Player)
                     x == NULL;
                 }
             }
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         else if (item->type == 8) // Crippling depression
         {
@@ -260,7 +265,7 @@ int update_game(int action, Player *Player)
                     x == NULL;
                 }
             }
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         else if (item->type == 9) // Door
         {
@@ -290,14 +295,14 @@ int update_game(int action, Player *Player)
                         const char *line1 = "You don't have the key yet!";
                         const char *line2 = "DOOR LOCKED!";
                         speech(line1, line2, Player);
-                        return HALFDRAW;
+                        return FULL_DRAW;
                     }
                     x == 1;
                 }
                 else if (actions == 8) // You did nothing
                 {
                     x == 1;
-                    return HALFDRAW;
+                    return FULL_DRAW;
                 }
                 else
                 {
@@ -340,7 +345,7 @@ int update_game(int action, Player *Player)
                     x == NULL;
                 }
             }
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         break;
 
@@ -354,7 +359,7 @@ int update_game(int action, Player *Player)
         else
         {
             Player->y = Player->y + 1;
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         break;
 
@@ -368,7 +373,7 @@ int update_game(int action, Player *Player)
         else
         {
             Player->x = Player->x - 1;
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         break;
 
@@ -382,7 +387,7 @@ int update_game(int action, Player *Player)
         else
         {
             Player->y = Player->y - 1;
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         break;
 
@@ -396,7 +401,7 @@ int update_game(int action, Player *Player)
         else
         {
             Player->x = Player->x + 1;
-            return HALFDRAW;
+            return FULL_DRAW;
         }
         break;
 

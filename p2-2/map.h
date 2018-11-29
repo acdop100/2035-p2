@@ -1,6 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 
+
 /**
  * A structure to represent the map. The implementation is private.
  */
@@ -43,23 +44,14 @@ typedef struct MapItem{
      * a WALL probably doesn't need to use this (it can be NULL), where an NPC
      * might use it to store game state (have I given the player the key yet?).
      */
-    int data;
-    
-    int key;
-
     MapItem* next;
-
-
+    int key;
+    
 } MapItem;
 
 typedef MapItem *temp; 
 typedef void *value;
 typedef void* tempVal;
-
-typedef struct {
-    int tm;
-    int tx, ty;
-} StairsData;
 
 // MapItem types
 // Define more of these!
@@ -163,17 +155,17 @@ void map_erase(int x, int y);
  * If there are already items in the map that collide with this line, they are
  * erased.
  */
-void add_wall(int x, int y, int dir, int len);
+void add_wall(int x, int y, int dir, int len, int count);
 
 /**
  * Add a PLANT item at (x,y). If there is already a MapItem at (x,y), erase it
  * before adding the plant.
  */
-void add_plant(int x, int y);
+void add_plant(int x, int y, int count);
 
-void add_door(int x, int y);
+void add_door(int x, int y, int count);
 
-void add_NPC(int x, int y, int type, DrawFunc draw);
+void add_NPC(int x, int y, int type, DrawFunc draw, int count);
 
 
 #endif //MAP_H

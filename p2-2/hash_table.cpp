@@ -88,9 +88,28 @@ struct _HashTable
   unsigned int num_buckets;
 };
 
+MapItem *tmp;
+void *val;
+void *tmpVal;
 
+/**
+ * This structure represents a hash table entry.
+ * Use "MapItem" instead when you are creating a new variable. [See top comments]
+ */
+struct _MapItem
+{
+  /** The key for the hash table entry */
+  unsigned int key;
 
+  /** The value associated with this hash table entry */
+  void *value;
 
+  /**
+  * A pointer pointing to the next hash table entry
+  * NULL means there is no next entry (i.e. this is the tail)
+  */
+  MapItem *next;
+};
 
 /****************************************************************************
 * Private Functions
@@ -110,31 +129,16 @@ struct _HashTable
 * @return The pointer to the hash table entry
 */
 
-//node = hashTable -> buckets[hashTable -> hash(key)]
+//node = hashTable -> buckets[hashTable -> hash(key)];
 
-static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key, void* value)
+
+static MapItem *createMapItem(unsigned int key, void *value)
 {
-  MapItem *this_node = hashTable -> buckets[index];
-  if(this_node != NULL) {
-    if(this_node != NULL && this_node -> next != NULL) {
-      this_node = this_node -> next;
-    }
-    MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
-    this_node -> next = next_node;
-    
-    //next_node -> data = value;
-    next_node -> key = key; // stores the values
-    next_node -> next = NULL;
-    return(next_node);
+  MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
 
-  } else {
-    MapItem *next_node = (MapItem *)malloc(sizeof(MapItem));
-
-    //next_node -> data = value;
-    next_node -> key = key; // stores the values
-    next_node -> next = NULL;
-    return(next_node);
-  }
+  next_node->key = key; // stores the values
+  next_node->next = NULL;
+  return (next_node);
 }
 
 /**
@@ -148,39 +152,43 @@ static MapItem *createMapItem(HashTable *hashTable, int index, unsigned int key,
 * @return The pointer to the hash table entry, or NULL if key does not exist
 */
 
+
 static MapItem *findItem(HashTable *hashTable, unsigned int key)
 {
-  int index = hashTable -> hash(key);
-  MapItem *this_node = hashTable -> buckets[index];
-  
-  while(this_node != NULL && this_node -> key != key) {
-    this_node = this_node -> next;
+  int index = hashTable->hash(key);
+  MapItem *this_node = hashTable->buckets[index];
+
+  while (this_node != NULL && this_node->key != key)
+  {
+    this_node = this_node->next;
   }
-  return(this_node);
+  return (this_node);
 }
 
-// Freedom - frees the correct node and corrects the next pointers 
-static int freedom(MapItem *this_node, HashTable *hashTable, int index) 
+// Freedom - frees the correct node and corrects the next pointers
+static void *freedom(MapItem *this_node, HashTable *hashTable, int index)
 {
-  int value = this_node -> data;
-  MapItem* temp = this_node -> next;
+  //next_node = this_node->next;
 
-  MapItem *check_node = hashTable -> buckets[index]; // Create new node to index with bucket with
-  while(check_node != NULL && check_node != this_node && check_node -> next != this_node) {
-    check_node = check_node -> next;
+  MapItem *check_node = hashTable->buckets[index]; // Create new node to index with bucket with
+  while (check_node != NULL && check_node != this_node && check_node->next != this_node)
+  {
+    check_node = check_node->next;
   }
 
-  if (check_node == this_node) {
+  if (check_node == this_node)
+  {
     hashTable->buckets[index] = this_node->next;
-    printf("removing head thing\n");
-  } else if (this_node -> next != NULL) {
-    check_node -> next = check_node -> next -> next;
   }
-  
+  else if (check_node -> next == this_node)
+  {
+    check_node->next = check_node->next->next;
+  }
+
   free(this_node);
-  
-  this_node = temp;
-  return(value);
+
+  this_node = tmp;
+  return (NULL);
 }
 
 /****************************************************************************
@@ -219,73 +227,88 @@ HashTable *createHashTable(HashFunction hashFunction, unsigned int numBuckets)
   return newTable;
 }
 
+// Done?
 void destroyHashTable(HashTable *hashTable)
 {
   int count = 0;
-  MapItem *this_node = hashTable -> buckets[count];
-  
-  while(count <= hashTable -> num_buckets){
-    while (this_node != NULL) {
+  MapItem *this_node = hashTable->buckets[count];
+
+  while (count <= hashTable->num_buckets)
+  {
+    while (this_node != NULL)
+    {
       //printf("going to free now\n");
-      MapItem *temp = this_node->next;
+      MapItem *tmp = this_node->next;
       freedom(this_node, hashTable, count);
-      this_node = temp;
+      this_node = tmp;
     }
     count++;
   }
+  free(hashTable);
 }
 
-void* insertItem(HashTable *hashTable, unsigned int key, MapItem *value)
+
+void *insertItem(HashTable *hashTable, unsigned int key, void *value)
 {
   MapItem *this_node = findItem(hashTable, key);
-  int index = hashTable -> hash(key);
-
-  if (this_node != NULL) {
-    void* tempVal = this_node -> next;
-    this_node -> next = value;
-    return (tempVal);
-  } else {
+  if (this_node != NULL)
+  {
+    return NULL;
+  }
+  else
+  {
+    int index = hashTable->hash(key);
     //printf("Node does not exist for given key, creating node.\n");
-    
-    hashTable -> buckets[index] = createMapItem(hashTable, index, key, value);
-
-    return(0);
+    MapItem *curr = hashTable->buckets[index];
+    hashTable->buckets[index] = createMapItem(key, value);
+    hashTable->buckets[index]->next = curr;
+    return NULL;
   }
 }
+
 
 MapItem *getItem(HashTable *hashTable, unsigned int key)
 {
   MapItem *this_node = findItem(hashTable, key);
 
-  if(this_node != NULL && this_node -> key == key) {
-    return(this_node);
-  } else {
+  if (this_node != NULL && this_node->key == key)
+  {
+    return (this_node);
+  }
+  else
+  {
     //printf("Node does not exist for given key, returned NULL.\n");
-    return(0);
+    return NULL;
   }
 }
 
-// void *removeItem(HashTable *hashTable, unsigned int key)
-// {
-//   MapItem *this_node = findItem(hashTable, key);
 
-//   if(this_node != NULL) {
-//     int index = hashTable -> hash(key);
-//     void* value = freedom(this_node, hashTable, index);
-//     return(value);
-//   } else {
-//     //printf("Node does not exist for given key, nothing deleted/returned.\n");
-//     return(0);
-//   }
+void *removeItem(HashTable *hashTable, unsigned int key)
+{
+  MapItem *this_node = findItem(hashTable, key);
+  int index = hashTable->hash(key);
+  if (this_node != NULL)
+  {
+    //MapItem *curr = hashTable->buckets[index] -> next;
+    tmpVal = freedom(this_node, hashTable, index);
+    //hashTable->buckets[index] -> next = curr;
+    return(tmpVal);
+  }
+  else
+  {
+    //printf("Node does not exist for given key, creating node.\n");
+    return NULL;
+  }
+}
 
-// }
 
 void deleteItem(HashTable *hashTable, unsigned int key)
 {
   MapItem *this_node = findItem(hashTable, key);
-  
-  if(this_node != NULL) {
-    int index = hashTable -> hash(key);
-    freedom(this_node, hashTable, index);
+  int index = hashTable->hash(key);
+  if (this_node != NULL)
+  {
+    tmpVal = freedom(this_node, hashTable, index);
   }
 }
+  
