@@ -18,7 +18,7 @@ int update_game(int action, Player *Player)
     switch (action)
     {
     case MENU_BUTTON:
-        return GODMODE;
+        return(2);
         break;
 
     case ACTION_BUTTON:

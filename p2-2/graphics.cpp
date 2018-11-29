@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include "globals.h"
+#include "map.h"
 
 #define YELLOW 0xFFFF00
 #define BROWN 0xD2691E

@@ -52,11 +52,10 @@ int get_action(GameInputs inputs) // Decides game movement and interaction
 }
 
 // These two functions save/load game data to/from the microSD card
-int load_game(Player* Player)
+void load_game(Player* Player)
 {
     FILE *file;
     file = fopen("/sd/save_file.txt", "r");
-    c=fgetc(file);
     if (!feof(file))
     {                        
            Player -> x = fgetc(file);
@@ -113,7 +112,6 @@ void lost_life(Player *Player)
    // waver.play(wave_file);
     //fseek(wave_file, 0, SEEK_SET);
     fclose(wave_file);
-    int lives = Player->lives;
 
     // Show text
     speech("You lost a life", "Be more Careful!", Player);
@@ -233,7 +231,7 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
         }
         else if (actions == 0)
         {
-            save_game();
+            save_game(Player);
             w = 1;
             draw_game(0, Player);
         }
@@ -396,7 +394,7 @@ int main()
         {
             draw_end(Player->lives);
         }
-        else if (update == 8)
+        else if (update == 2)
         {
             draw_game_pause(Player);
         }
