@@ -155,17 +155,17 @@ void map_erase(int x, int y);
  * If there are already items in the map that collide with this line, they are
  * erased.
  */
-void add_wall(int x, int y, int dir, int len, int count);
+void add_wall(int x, int y, int dir, int len);
 
 /**
  * Add a PLANT item at (x,y). If there is already a MapItem at (x,y), erase it
  * before adding the plant.
  */
-void add_plant(int x, int y, int count);
+void add_plant(int x, int y);
 
-void add_door(int x, int y, int count);
+void add_door(int x, int y);
 
-void add_NPC(int x, int y, int type, DrawFunc draw, int count);
+void add_NPC(int x, int y, int type, DrawFunc draw);
 
 
 #endif //MAP_H

@@ -199,7 +199,7 @@ void map_erase(int x, int y)
     }
 }
 
-void add_wall(int x, int y, int dir, int len, int count)
+void add_wall(int x, int y, int dir, int len)
 {
     for (int i = 0; i < len; i++)
     {
@@ -216,7 +216,7 @@ void add_wall(int x, int y, int dir, int len, int count)
     }
 }
 
-void add_plant(int x, int y, int count)
+void add_plant(int x, int y)
 {
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = GRASS;
@@ -229,7 +229,7 @@ void add_plant(int x, int y, int count)
         free(val); // If something is already there, free it
 }
 
-void add_door(int x, int y, int count)
+void add_door(int x, int y)
 {
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = DOOR;
@@ -242,7 +242,7 @@ void add_door(int x, int y, int count)
         free(val); // If something is already there, free it
 }
 
-void add_NPC(int x, int y, int type, DrawFunc draw, int count)
+void add_NPC(int x, int y, int type, DrawFunc draw)
 {
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = type;
