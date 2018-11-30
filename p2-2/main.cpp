@@ -324,7 +324,7 @@ int main()
 
     // Initial splash screen
     Player player1;
-    Player *Player = player1;
+    Player *Player = &player1;
     
     // Initialize the maps
     int count = 0;
