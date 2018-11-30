@@ -40,7 +40,7 @@ unsigned int XY_KEY(int X, int Y)
  * unsigned key (the output of XY_KEY) and turns it into a hash value (some
  * small non-negative integer).
  */
-unsigned map_hash(unsigned key)
+unsigned int map_hash(unsigned key)
 {
     unsigned int tableKey = key % 50; // 50 buckets
     return (tableKey);
@@ -207,7 +207,7 @@ void add_wall(int x, int y, int dir, int len)
         w1->type = WALL;
         w1->draw = draw_wall;
         
-        unsigned key = (dir == HORIZONTAL) ? XY_KEY(x + i, y) : XY_KEY(x, y + i);        
+        unsigned int key = (dir == HORIZONTAL) ? XY_KEY(x + i, y) : XY_KEY(x, y + i);        
         void *val = insertItem(get_active_map()->items, key, w1);
         
         w1->key = map_hash(XY_KEY(x, y));
