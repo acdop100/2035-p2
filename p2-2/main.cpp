@@ -169,8 +169,7 @@ void draw_game(int init, Player *Player)
                     {
                         if (godMode == 1)
                         {
-                            MapItem *item = get_here(x, y);
-                            item->walkable = true;
+                            curr_item->walkable = true;
                         }
                         draw = curr_item->draw;
                     }
@@ -195,52 +194,14 @@ void draw_game(int init, Player *Player)
     draw_upper_status(Player->x, Player->y);
     if (Player->has_key == 0)
     {
-        char *line = "No sign off yet!";
+        char *line = "No key!";
         draw_lower_status(line, Player->lives);
     }
     else
     {
-        char *line = "Player has the sign off!";
+        char *line = "Have key!";
         draw_lower_status(line, Player->lives);
     }
-}
-
-void draw_game_pause(Player *Player) // Used for when the game is paused
-{
-    uLCD.locate(2, 4);
-    uLCD.printf("b2 - Continue");
-    uLCD.locate(2, 7);
-    uLCD.printf("b3 - Godmode");
-    uLCD.locate(2, 10);
-    uLCD.printf("b4 - Save game");
-    GameInputs inputs = read_inputs();
-    int actions = get_action(inputs);
-    int w = 0;
-    while (!w)
-    {
-        if (actions == 7)
-        {
-            w = 1;
-            godMode = 1;
-            draw_game(1, Player);
-        }
-        else if (actions == 8)
-        {
-            w = 1;
-            draw_game(0, Player);
-        }
-        else if (actions == 0)
-        {
-            save_game(Player);
-            w = 1;
-            draw_game(0, Player);
-        }
-        else
-        {
-            w = false;
-        }
-    }
-    
 }
 
 /**
@@ -249,20 +210,7 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
  */
 void init_main_map(int count)
 {
-    maps_init(50, 50, 50);
-    // "Random" plants
-    Map *map = set_active_map(0);
-    for (int i = map_width() + 3; i < map_area(); i += 39)
-    {
-        add_plant(i % map_width(), i / map_width());
-    }
-    pc.printf("Plants added \r\n");
-
-    add_wall(0, 0, HORIZONTAL, map_width());
-    add_wall(0, map_height() - 1, HORIZONTAL, map_width());
-    add_wall(0, 0, VERTICAL, map_height());
-    add_wall(map_width() - 1, 0, VERTICAL, map_height());
-    pc.printf("Walls done!\r\n");
+    
 
     if (count == 0)
     {
@@ -274,14 +222,15 @@ void init_main_map(int count)
             add_plant(i % map_width(), i / map_width());
         }
         pc.printf("Plants added \r\n");
-
+    
         add_wall(0, 0, HORIZONTAL, map_width());
         add_wall(0, map_height() - 1, HORIZONTAL, map_width());
         add_wall(0, 0, VERTICAL, map_height());
         add_wall(map_width() - 1, 0, VERTICAL, map_height());
         pc.printf("Walls done!\r\n");
-        add_NPC(10, 20, 3, draw_pWills);
-        add_NPC(100, 100, 4, draw_pSchimmel);
+        
+        add_NPC(10, 50, 3, draw_pWills);
+        add_NPC(5, 10, 4, draw_pSchimmel);
         add_door(30, 0);
     }
     else if (count == 1)
@@ -294,13 +243,13 @@ void init_main_map(int count)
         {
             add_plant(i % map_width(), i / map_width());
         }
-        pc.printf("Plants added \r\n");
+        pc.printf("Plants added 2\r\n");
 
         add_wall(0, 0, HORIZONTAL, map_width());
         add_wall(0, map_height() - 1, HORIZONTAL, map_width());
         add_wall(0, 0, VERTICAL, map_height());
         add_wall(map_width() - 1, 0, VERTICAL, map_height());
-        pc.printf("Walls done!\r\n");
+        pc.printf("Walls done! 2\r\n");
 
         add_NPC(6, 10, 8, draw_UGA_student);
         add_NPC(4, 8, 5, draw_depression);
@@ -308,7 +257,7 @@ void init_main_map(int count)
         add_NPC(14, 6, 6, draw_anxiety);
         add_door(6, 10);
     }
-    print_map();
+    //print_map();
 }
 
 /**
@@ -331,38 +280,40 @@ int main()
     int count = 0;
     pc.printf("Creating maps... \r\n");
     init_main_map(count);
-    count++;
     pc.printf("Main map created \r\n");
+    count++;
     //init_main_map(count);
-    pc.printf("Secondary map created \r\n");
+    //pc.printf("Secondary map created \r\n");
     // Initialize game state
     set_active_map(0);
 
     Player->x = Player->y = 5;
     Player->lives = 3;
+    Player->has_key = 0;
 
-    pc.printf("splash screen \r\n");
     uLCD.locate(2, 4);
-    uLCD.printf("b2 - Start");
+    uLCD.printf("b1 - Start");
     uLCD.locate(2, 7);
     uLCD.printf("b3 - Godmode");
     uLCD.locate(2, 10);
     uLCD.printf("b4 - Load save");
-    int w = 1;
+    int w = 0;
     while (w == 0)
     {
         GameInputs inputs = read_inputs();
+        //pc.printf("button 2: %d \r\n", inputs.b2);
         int actions = get_action(inputs);
+        
         if (actions == 7)
         {
             w = 1;
             godMode = 1;
         }
-        else if (actions == 8)
+        else if (actions == 1)
         {
             w = 1;
         }
-        else if (actions == 1)
+        else if (actions == 8)
         {
             load_game(Player);
             w = 1;
@@ -374,8 +325,9 @@ int main()
     }
 
     // Initial drawing
+    wait_us(250);
+    uLCD.filled_rectangle(0, 0, 128, 128, 0x000000);
     draw_game(true, Player);
-
     // Main game loop
     while (1)
     {
@@ -384,20 +336,57 @@ int main()
         t.start();
 
         // Actually do the game update:
-
+        pc.printf("Main loop\r\n");
         GameInputs inputs = read_inputs();
 
         int actions = get_action(inputs);
-
+        pc.printf("action: %d\r\n", actions);
         int update = update_game(actions, Player);
-
+        pc.printf("update: %d\r\n", update);
         if (update == 1)
         {
             draw_end(Player->lives);
         }
         else if (update == 2)
         {
-            draw_game_pause(Player);
+            wait_us(250);
+            uLCD.filled_rectangle(0, 0, 128, 128, 0x000000);
+            pc.printf("splash screen \r\n");
+            uLCD.locate(2, 4);
+            uLCD.printf("b1 - Continue");
+            uLCD.locate(2, 7);
+            uLCD.printf("b3 - Godmode");
+            uLCD.locate(2, 10);
+            uLCD.printf("b4 - Save game");
+
+            int w = 0;
+            while (w == 0)
+            {
+                GameInputs inputs = read_inputs();
+                int actions = get_action(inputs);
+                if (actions == 7)
+                {
+                    w = 1;
+                    godMode = 1;
+                }
+                else if (actions == 1)
+                {
+                    w = 1;
+                    wait_us(250);
+                }
+                else if (actions == 8)
+                {
+                    save_game(Player);
+                    w = 1;
+                }
+                else
+                {
+                    w = 0;
+                }
+            }
+            uLCD.filled_rectangle(0, 0, 128, 128, 0x000000);
+            wait_us(250);
+            draw_game(1, Player);
         }
         else
         {

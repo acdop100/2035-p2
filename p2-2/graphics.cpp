@@ -9,28 +9,6 @@
 #define SKIN 0xffe796
 #define DIRT BROWN
 
-// void conv_img(int u, int v, int (*image)[1][121])
-// {
-//     int colors[11*11];
-//     for (int i = 0; i < 11*11; i++)
-//     {
-//         colors[i] = image[1][i];
-//     }
-//     uLCD.BLIT(u, v, 11, 11, colors);
-//     wait_us(250); // Recovery time!
-// }
-
-// void uLCD.BLIT(u, v, 11, 11, int (*image)[1][16384])
-// {
-//     int colors[128*128];
-//     for (int i = 0; i < 128*128; i++)
-//     {
-//         colors[i] = image[1][i];
-//     }
-//     uLCD.BLIT(0, 0, 128, 128, colors);
-//     wait_us(250); // Recovery time!
-// }
-
 int mainChar[1][121] = {
 {
 0x00000000, 0x00000000, 0x00000000, 0x322918, 0x322918, 0x322918, 0x322918, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 
@@ -330,7 +308,7 @@ void draw_nothing(int u, int v)
 void draw_pause()
 {
     // Fill a tile with blackness
-    uLCD.locate(50, 50);
+    uLCD.locate(5, 5);
     const char *line = "game paused";
     uLCD.printf(line);
 }
@@ -401,16 +379,17 @@ void draw_pSchimmel(int u, int v)
 
 void draw_end(int status)
 {
+    uLCD.filled_rectangle(0, 0, 128, 128, 0x000000);
     uLCD.locate(5, 5);
     uLCD.printf("GAME OVER");
     if (!status)
     {
-        uLCD.locate(10, 5);
+        uLCD.locate(5, 10);
         uLCD.printf("YOU LOST");
     }
     else
     {
-        uLCD.locate(10, 5);
+        uLCD.locate(5, 10);
         uLCD.printf("YOU WIN");
     }
 }
@@ -421,7 +400,7 @@ void draw_upper_status(int x, int y)
     uLCD.line(0, 9, 127, 9, GREEN);
 
     // Add other status info drawing code here
-    uLCD.locate(2, 0);
+    uLCD.locate(3, 0);
     uLCD.printf("X = %d, Y = %d\n", x, y);
 }
 

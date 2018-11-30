@@ -19,9 +19,11 @@ int update_game(int action, Player *Player)
     {
     case MENU_BUTTON:
         return(2);
+        pc.printf("Menu update\r\n");
         break;
 
     case ACTION_BUTTON:
+        pc.printf("Action update\r\n");
         item = get_west(Player->x, Player->y);
         if (item == NULL)
         {
@@ -35,6 +37,7 @@ int update_game(int action, Player *Player)
         {
             item = get_north(Player->x, Player->y);
         }
+        pc.printf("Item type: %d\r\n", item->type);
         if (item->type == 3) // Prof. Wills
         {
             pc.printf("Talking to Prof. Wills \n");
