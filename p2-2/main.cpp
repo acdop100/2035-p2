@@ -266,7 +266,7 @@ void init_main_map(int count)
 
     if (count == 0)
     {
-        maps_init(50, 50, 50);
+        maps_init(20, 50, 50);
         // "Random" plants
         Map *map = set_active_map(0);
         for (int i = map_width() + 3; i < map_area(); i += 39)
@@ -284,11 +284,12 @@ void init_main_map(int count)
         add_NPC(100, 100, 4, draw_pSchimmel);
         add_door(30, 0);
     }
-    else if (count == 0)
+    else if (count == 1)
     {
-        maps_init(50, 50, 50);
+        maps_init(20, 50, 50);
+        Map *map = set_active_map(1);
+        
         // "Random" plants
-        Map *map = set_active_map(0);
         for (int i = map_width() + 3; i < map_area(); i += 39)
         {
             add_plant(i % map_width(), i / map_width());
@@ -302,10 +303,10 @@ void init_main_map(int count)
         pc.printf("Walls done!\r\n");
 
         add_NPC(6, 10, 8, draw_UGA_student);
-        add_NPC(75, 60, 5, draw_depression);
-        add_NPC(30, 80, 6, draw_failure);
-        add_NPC(120, 40, 6, draw_anxiety);
-        add_door(6, 11);
+        add_NPC(4, 8, 5, draw_depression);
+        add_NPC(1, 12, 7, draw_failure);
+        add_NPC(14, 6, 6, draw_anxiety);
+        add_door(6, 10);
     }
     print_map();
 }

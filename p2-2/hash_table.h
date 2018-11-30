@@ -10,7 +10,6 @@
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 
-#include "map.h"
 /****************************************************************************
  * Forward Declarations
  *
@@ -37,29 +36,24 @@ typedef unsigned int (*HashFunction)(unsigned int key);
  * In other words, "HashTable" is an alternative name for "struct _HashTable".
  * "HashTable" can be used to create a new struct variable.
  */
+typedef struct _HashTable HashTable;
 
-typedef struct HashTable
-{
-  /** The array of pointers to the head of a singly linked list, whose nodes
-      are MapItem objects */
-  MapItem **buckets;
-
-  /** The hash function pointer */
-  HashFunction hash;
-
-  /** The number of buckets in the hash table */
-  unsigned int num_buckets;
-} HashTable;
-
-
+/**
+ * This defines a type that is a _HashTableEntry struct. The definition for
+ * _HashTableEntry is implemented in hash_table.c.
+ *
+ * In other words, "HashTableEntry" is an alternative name for "struct _HashTableEntry".
+ * "HashTableEntry" can be used to create a new struct variable.
+ */
+typedef struct _HashTableEntry HashTableEntry;
 
 /**
  * createHashTable
  *
  * Creates a hash table by allocating memory for it on the heap. Initialize num_buckets
  * and hash based on function arguments. Allocate memory for buckets as an array of
- * pointers to MapItem objects based on the number of buckets available.
- * Each bucket contains a singly linked list, whose nodes are MapItem objects.
+ * pointers to HashTableEntry objects based on the number of buckets available.
+ * Each bucket contains a singly linked list, whose nodes are HashTableEntry objects.
  *
  * @param myHashFunc The pointer to the custom hash function.
  * @param numBuckets The number of buckets available in the hash table.
@@ -70,7 +64,7 @@ HashTable* createHashTable(HashFunction myHashFunc, unsigned int numBuckets);
 /**
  * destroyHashTable
  *
- * Destroy the hash table. The nodes (MapItem objects) of singly linked
+ * Destroy the hash table. The nodes (HashTableEntry objects) of singly linked
  * list, the values stored on the linked list, the buckets, and the hashtable
  * itself are freed from the heap. In other words, free all the allocated memory
  * on heap that is associated with heap, including the values that users store in
@@ -92,11 +86,7 @@ void destroyHashTable(HashTable* myHashTable);
  * @param value The value to be stored in the hash table.
  * @return old value if it is overwritten, or NULL if not replaced
  */
-void* insertItem(HashTable* myHashTable, unsigned int key, MapItem *value);
-
-
-
-MapItem* findItem(HashTable* myHashTable, unsigned int key);
+void* insertItem(HashTable* myHashTable, unsigned int key, void* value);
 
 /**
  * getItem
@@ -107,7 +97,7 @@ MapItem* findItem(HashTable* myHashTable, unsigned int key);
  * @param key The key that corresponds to the item.
  * @return the value corresponding to the key, or NULL if the key is not present
  */
-MapItem *getItem(HashTable* myHashTable, unsigned int key);
+void* getItem(HashTable* myHashTable, unsigned int key);
 
 /**
  * removeItem

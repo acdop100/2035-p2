@@ -347,7 +347,7 @@ int update_game(int action, Player *Player)
         }
         else
         {
-            Player->y = Player->y + 1;
+            Player->y = Player->y - 1;
             return FULL_DRAW;
         }
         break;
@@ -375,7 +375,7 @@ int update_game(int action, Player *Player)
         }
         else
         {
-            Player->y = Player->y - 1;
+            Player->y = Player->y + 1;
             return FULL_DRAW;
         }
         break;

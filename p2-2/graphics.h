@@ -4,7 +4,7 @@
 /**
  * Draws the player. This depends on the player state, so it is not a DrawFunc.
  */
-void draw_player(int u, int v);
+//void draw_player(int u, int v);
 
 /**
  * DrawFunc functions. 

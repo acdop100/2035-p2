@@ -42,7 +42,7 @@ unsigned int XY_KEY(int X, int Y)
  */
 unsigned int map_hash(unsigned key)
 {
-    unsigned int tableKey = key % 50; // 50 buckets
+    unsigned int tableKey = key % 20; // 20 buckets
     return (tableKey);
 }
 
@@ -228,6 +228,7 @@ void add_plant(int x, int y)
     if (val)
         free(val); // If something is already there, free it
 }
+
 
 void add_door(int x, int y)
 {
