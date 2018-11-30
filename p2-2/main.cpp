@@ -214,7 +214,7 @@ void draw_game_pause(Player *Player) // Used for when the game is paused
     uLCD.locate(2, 10);
     uLCD.printf("b4 - Save game");
     GameInputs inputs = read_inputs();
-    int actions = get_minor_action(inputs);
+    int actions = get_action(inputs);
     int w = 0;
     while (!w)
     {
@@ -351,7 +351,7 @@ int main()
     while (w == 0)
     {
         GameInputs inputs = read_inputs();
-        int actions = get_minor_action(inputs);
+        int actions = get_action(inputs);
         if (actions == 7)
         {
             w = 1;

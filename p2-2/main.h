@@ -14,7 +14,7 @@ typedef struct Player
     int lives;   // Player lives
     int data, data2;
     int depressions_scythe, failures_resolve, UGA_tears, future_anxiety; // Items to advance in the story
-};
+}Player;
 
 #define NO_ACTION 0
 #define ACTION_BUTTON 1
@@ -44,6 +44,6 @@ void lost_life(Player *Player);
 
 int get_action(GameInputs inputs);
 
-int get_minor_action(GameInputs inputs);
+int get_action(GameInputs inputs);
 
 #endif //MAIN_H

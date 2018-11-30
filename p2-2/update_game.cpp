@@ -138,7 +138,7 @@ int update_game(int action, Player *Player)
             long_speech(&lines[8], 8, Player);
 
             GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
+            int actions = get_action(inputs);
             int x = NULL;
             while (!x)
             {
@@ -169,7 +169,7 @@ int update_game(int action, Player *Player)
             long_speech(&lines[8], 8, Player);
 
             GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
+            int actions = get_action(inputs);
             int x = NULL;
             while (!x)
             {
@@ -200,7 +200,7 @@ int update_game(int action, Player *Player)
             long_speech(&lines[8], 8, Player);
 
             GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
+            int actions = get_action(inputs);
             int x = NULL;
             while (!x)
             {
@@ -231,7 +231,7 @@ int update_game(int action, Player *Player)
             long_speech(&lines[8], 8, Player);
 
             GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
+            int actions = get_action(inputs);
             int x = NULL;
             while (!x)
             {
@@ -262,7 +262,7 @@ int update_game(int action, Player *Player)
             long_speech(&lines[4], 4, Player);
 
             GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
+            int actions = get_action(inputs);
             int x = NULL;
             while (!x)
             {
@@ -305,7 +305,7 @@ int update_game(int action, Player *Player)
             long_speech(&lines[4], 4, Player);
 
             GameInputs inputs = read_inputs();
-            int actions = get_minor_action(inputs);
+            int actions = get_action(inputs);
             int x = NULL;
             while (!x)
             {

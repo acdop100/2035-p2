@@ -54,7 +54,7 @@ void speech_bubble_wait()
     while (!w)
     {
         GameInputs inputs = read_inputs();
-        int actions = get_minor_action(inputs);
+        int actions = get_action(inputs);
         if (actions == 1)
         {
             w = 1;
