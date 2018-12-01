@@ -4,8 +4,8 @@
 #include "update_game.h"
 
 // Functions in this file
-int godMode = 0;
-
+int godMode;
+int NPCcount;
 /**
  * Given the game inputs, determine what kind of update needs to happen.
  * Possbile return values are defined below.
@@ -58,18 +58,20 @@ void load_game(Player* Player)
     file = fopen("/sd/save_file.txt", "r");
     if (!feof(file))
     {                        
-           Player -> x = fgetc(file);
-           Player -> y = fgetc(file);
-           Player -> px = fgetc(file);
-           Player -> py = fgetc(file);
-           Player -> has_key = fgetc(file);
-           Player -> lives = fgetc(file);
-           Player -> data = fgetc(file);
-           Player -> data2 = fgetc(file);
-           Player -> depressions_scythe = fgetc(file);
-           Player -> failures_resolve = fgetc(file);        
-           Player -> UGA_tears = fgetc(file);
-           Player -> future_anxiety = fgetc(file);                            
+        Player -> x = fgetc(file);
+        Player -> y = fgetc(file);
+        Player -> px = fgetc(file);
+        Player -> py = fgetc(file);
+        Player -> has_key = fgetc(file);
+        Player -> lives = fgetc(file);
+        Player -> data = fgetc(file);
+        Player -> data2 = fgetc(file);
+        Player -> depressions_scythe = fgetc(file);
+        Player -> failures_resolve = fgetc(file);        
+        Player -> UGA_tears = fgetc(file);
+        Player -> future_anxiety = fgetc(file); 
+        uLCD.locate(2, 10);
+        uLCD.printf("Save loaded!  ");                           
     }
     else
     {
@@ -97,7 +99,7 @@ void save_game(Player* Player)
     fprintf(file, "%d\n", Player -> future_anxiety);
     fclose(file);
     uLCD.locate(2, 10);
-    uLCD.printf("Game saved");
+    uLCD.printf("Game saved!    ");
 }
 
 // Runs when the player loses a life
@@ -127,9 +129,9 @@ void lost_life(Player *Player)
 void draw_game(int init, Player *Player)
 {
     // Draw game border first
-    if (init)
-        draw_border();
-
+    if (init) draw_border();
+    
+    
     // Iterate over all visible map tiles
     for (int i = -5; i <= 5; i++) // Iterate over columns of tiles
     {
@@ -163,6 +165,17 @@ void draw_game(int init, Player *Player)
             {
                 MapItem *curr_item = get_here(x, y);
                 MapItem *prev_item = get_here(px, py);
+                
+                if ((NPCcount == 10) && (curr_item->type > 5))
+                {
+                    move_NPC(x, y, curr_item, NPCcount);
+                }
+                else 
+                {
+                    NPCcount++;
+                }    
+                
+                
                 if (init || curr_item != prev_item) // Only draw if they're different
                 {
                     if (curr_item) // There's something here! Draw it
@@ -192,14 +205,14 @@ void draw_game(int init, Player *Player)
 
     // Draw status bars
     draw_upper_status(Player->x, Player->y);
-    if (Player->has_key == 0)
+    if (godMode == 0)
     {
-        char *line = "No key!";
+        char *line = "Normal";
         draw_lower_status(line, Player->lives);
     }
     else
     {
-        char *line = "Have key!";
+        char *line = "GODMODE";
         draw_lower_status(line, Player->lives);
     }
 }
@@ -210,8 +223,6 @@ void draw_game(int init, Player *Player)
  */
 void init_main_map(int count)
 {
-    
-
     if (count == 0)
     {
         maps_init(20, 50, 50);
@@ -276,6 +287,7 @@ int main()
     Player player1;
     Player *Player = &player1;
     
+    NPCcount = 0;
     // Initialize the maps
     int count = 0;
     pc.printf("Creating maps... \r\n");
@@ -312,11 +324,14 @@ int main()
         else if (actions == 1)
         {
             w = 1;
+            godMode = 0;
         }
         else if (actions == 8)
         {
             load_game(Player);
+            wait_us(3000);
             w = 1;
+            godMode = 0;
         }
         else
         {
@@ -367,16 +382,22 @@ int main()
                 if (actions == 7)
                 {
                     w = 1;
-                    godMode = 1;
+                    if (godMode == 0) 
+                    {
+                        godMode = 1;
+                    }
+                    else {
+                        godMode = 0;
+                    }
                 }
                 else if (actions == 1)
                 {
                     w = 1;
-                    wait_us(250);
                 }
                 else if (actions == 8)
                 {
                     save_game(Player);
+                    wait_us(3000);
                     w = 1;
                 }
                 else

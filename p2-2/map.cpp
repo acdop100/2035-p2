@@ -109,8 +109,7 @@ int map_area()
 // This section is also pretty self - explanatory
 MapItem *get_north(int x, int y)
 {
-    MapItem *item = get_here(x, y + 1); // Gets the correct MapItem from the item HashTable
-
+    MapItem *item = get_here(x, y - 1); // Gets the correct MapItem from the item HashTable
     if (!item)
     {
         pc.printf("North location does not exist (Index OOB)\r\n"); // If the MapItem doesn't exist, it returns this
@@ -118,13 +117,14 @@ MapItem *get_north(int x, int y)
     }
     else
     {
+        pc.printf("North not null. \n");
         return (item);
     }
 }
 
 MapItem *get_south(int x, int y)
 {
-    MapItem *item = get_here(x, y - 1);
+    MapItem *item = get_here(x, y + 1);
 
     if (!item)
     {
@@ -171,8 +171,10 @@ MapItem *get_here(int x, int y)
 {
     Map *map = get_active_map();
 
-    MapItem *item = getItem(map->items, map_hash(XY_KEY(x, y))); // Use getItem from the HashTable API to get the MapItem at that location
-
+    void *item2 = getItem(map->items, map_hash(XY_KEY(x, y))); // Use getItem from the HashTable API to get the MapItem at that location
+    
+    MapItem* item = (MapItem *)item2;
+    
     if (!item)
     {
         pc.printf("location at (%d, %d) does not exist\r\n", x, y);
@@ -195,6 +197,7 @@ void map_erase(int x, int y)
     else
     {
         item->draw = draw_nothing;
+        item->type = NOTHING;
         item->walkable = 1;
     }
 }
@@ -206,13 +209,12 @@ void add_wall(int x, int y, int dir, int len)
         MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
         w1->type = WALL;
         w1->draw = draw_wall;
+        w1->walkable = 0;
         
         unsigned int key = (dir == HORIZONTAL) ? XY_KEY(x + i, y) : XY_KEY(x, y + i);        
         void *val = insertItem(get_active_map()->items, key, w1);
         
-        w1->key = map_hash(XY_KEY(x, y));
-        if (val) free(val); // If something is already there, free it
-        
+        //if (val) free(val); // If something is already there, free it
     }
 }
 
@@ -221,12 +223,10 @@ void add_plant(int x, int y)
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = GRASS;
     w1->draw = draw_plant;
-    w1->walkable = true;
+    w1->walkable = 1;
     
     void *val = insertItem(get_active_map()->items, map_hash(XY_KEY(x, y)), w1);
-    w1->key = map_hash(XY_KEY(x, y));
-    if (val)
-        free(val); // If something is already there, free it
+    //if (val) free(val); // If something is already there, free it
 }
 
 
@@ -235,12 +235,11 @@ void add_door(int x, int y)
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = DOOR;
     w1->draw = draw_door;
-    w1->walkable = false;
+    w1->walkable = 0;
     
-    w1->key = map_hash(XY_KEY(x, y));
-    void *val = insertItem(get_active_map()->items, map_hash(XY_KEY(x, y)), w1);
-    if (val)
-        free(val); // If something is already there, free it
+    unsigned int key = map_hash(XY_KEY(x, y));
+    void *val = insertItem(get_active_map()->items, key, w1);
+    //if (val)free(val); // If something is already there, free it
 }
 
 void add_NPC(int x, int y, int type, DrawFunc draw)
@@ -248,9 +247,19 @@ void add_NPC(int x, int y, int type, DrawFunc draw)
     MapItem *w1 = (MapItem *)malloc(sizeof(MapItem));
     w1->type = type;
     w1->draw = draw;
-    w1->walkable = false;
-    w1->key = map_hash(XY_KEY(x, y));
+    w1->walkable = 0;
     void *val = insertItem(get_active_map()->items, map_hash(XY_KEY(x, y)), w1);
-    if (val)
-        free(val); // If something is already there, free it
+    //if (val)free(val); // If something is already there, free it
+}
+
+void move_NPC(int x, int y, MapItem *item, int NPCcount)
+{
+    map_erase(x, y);
+    if (NPCcount % 2 == 0){
+        void *val = insertItem(get_active_map()->items, map_hash(XY_KEY(x+1, y)), item);
+    }
+    else
+    {
+        void *val = insertItem(get_active_map()->items, map_hash(XY_KEY(x-1, y)), item);
+    }
 }

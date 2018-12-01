@@ -11,32 +11,32 @@ _T_  Walls block character motion
 
 _T_  Omnipotent mode button walks through walls
 
-_T_  The first Map must be bigger than the screen (at least 50*50 tiles)
+_Y_  The first Map must be bigger than the screen (at least 50*50 tiles)
 
 _T_  Stairs/ladders/portals/the door go between the first and the second Map
 
 _T_  Quest works (key & door work)
 
-_T_  Display Game Over when quest complete
+_Y_  Display Game Over when quest complete
 
-_T_  Status bar shows player coordinates
+_Y_  Status bar shows player coordinates
 
 _T_  Speech bubbles used in quest
 
-_T_  Art include at least one sprite
+_Y_  Art include at least one sprite
 
 
 EXTRA FEATURES
 
-_T_  Start page
+_Y_  Start page
 
 _Y_  Sound effects or background music
 
 ___  Different modes of locomotion
 
-___  Animation for interactions with things in the Map
+_T_  Animation for interactions with things in the Map
 
-_T_  Include a Game Menu for configuring the game
+_Y_  Include a Game Menu for configuring the game
 
 _Y_  Multiple lives and the possibility to lose
 
@@ -44,11 +44,11 @@ _Y_  Additional items that can be collected
 
 ___  Manipulate map/move objects
 
-___  Mobile (walking) NPCs
+_T_  Mobile (walking) NPCs
 
-___  Player plays against an intelligent opponent in a game 
+_T_  Player plays against an intelligent opponent in a game 
 
-___  Save the game (persistent)
+_Y_  Save the game (persistent)
 
 _T_  Multiple quests (>=2) / extra characters relevant to the quest(s) (>=5)
 

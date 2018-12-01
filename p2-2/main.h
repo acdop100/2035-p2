@@ -42,8 +42,4 @@ void save_game(Player *Player);
 
 void lost_life(Player *Player);
 
-int get_action(GameInputs inputs);
-
-int get_action(GameInputs inputs);
-
 #endif //MAIN_H

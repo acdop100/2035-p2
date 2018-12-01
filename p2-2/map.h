@@ -44,8 +44,6 @@ typedef struct MapItem{
      * a WALL probably doesn't need to use this (it can be NULL), where an NPC
      * might use it to store game state (have I given the player the key yet?).
      */
-    MapItem* next;
-    int key;
     
 } MapItem;
 
@@ -58,15 +56,15 @@ typedef void* tempVal;
 #define WALL    0
 #define TREE    1
 #define GRASS   2
-#define PWILLS  3
-#define PSCHIM  4
-#define ENEMEY1 5
+#define DOOR    3
+#define NOTHING 4
+#define DOOROPEN 5
 #define ENEMEY2 6
 #define ENEMEY3 7
 #define ENEMEY4 8
-#define DOOR 9
-#define NOTHING 10
-#define DOOROPEN 11
+#define PWILLS  9
+#define PSCHIM  10
+#define ENEMEY1 11
 
 /**
  * Initializes the internal structures for all maps. This does not populate
@@ -167,5 +165,6 @@ void add_door(int x, int y);
 
 void add_NPC(int x, int y, int type, DrawFunc draw);
 
+void move_NPC(int x, int y, MapItem *item, int NPCcount);
 
 #endif //MAP_H

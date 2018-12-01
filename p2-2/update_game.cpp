@@ -18,9 +18,8 @@ int update_game(int action, Player *Player)
     switch (action)
     {
     case MENU_BUTTON:
-        return(2);
         pc.printf("Menu update\r\n");
-        break;
+        return(2);
 
     case ACTION_BUTTON:
         pc.printf("Action update\r\n");
@@ -81,7 +80,6 @@ int update_game(int action, Player *Player)
                     return FULL_DRAW;
                 }
             }
-            return NO_RESULT;
         }
         else if (item->type == 4) // Prof. Schimmel
         {
@@ -142,26 +140,26 @@ int update_game(int action, Player *Player)
 
             GameInputs inputs = read_inputs();
             int actions = get_action(inputs);
-            int x = NULL;
-            while (!x)
+            int x = 0;
+            while (x == 0)
             {
                 if (actions == 7)
                 { // You went to office hours!
                     const char *lines[] = {"...", "   ", "Hmm, it looks like you just", "missed a semicolon here.", "Since it was a dumb mistake,", "i'll regrade it. Cheers!", "YOU HAVE RECIEVED", "FAILURE'S RESOLVE", "FAILURE'S RESOLVE WAS", "ADDED TO YOUR BAG"};
                     long_speech(&lines[10], 10, Player);
                     Player->failures_resolve = 1;
-                    x == 1;
+                    x = 1;
                 }
                 else if (actions == 8)
                 { // You told yourself it was fine
                     const char *lines[] = {"Time passes. The end", "of the semester is here.", "The project brought your", "final grade down to a 68", "You didn't pass the class", "with the minimum grade!", "Fat L's for days.", "Too bad, so sad."};
                     long_speech(&lines[8], 8, Player);
                     lost_life(Player);
-                    x == 1;
+                    x = 1;
                 }
                 else
                 {
-                    x == NULL;
+                    x = 0;
                 }
             }
             return FULL_DRAW;
@@ -173,26 +171,26 @@ int update_game(int action, Player *Player)
 
             GameInputs inputs = read_inputs();
             int actions = get_action(inputs);
-            int x = NULL;
-            while (!x)
+            int x = 0;
+            while (x == 0)
             {
                 if (actions == 7) // You roasted the student!
                 {
                     const char *lines[] = {"You roasted him about", "UGA's engineering program!", "...", "It's super effective!", "UGA STUDENT'S TEARS WERE", "ADDED TO YOUR BAG"};
                     long_speech(&lines[6], 6, Player);
                     Player->UGA_tears = 1;
-                    x == 1;
+                    x = 1;
                 }
-                else if (actions == 8) // You decided to listen to him (???)
+                else if (actions == 8) // You decided to listen to him?
                 {
                     const char *lines[] = {"Why did you even", "choose this option?", "You end dying of", "boredom, too bad!"};
                     long_speech(&lines[4], 4, Player);
                     lost_life(Player);
-                    x == 1;
+                    x = 1;
                 }
                 else
                 {
-                    x == NULL;
+                    x = 0;
                 }
             }
             return FULL_DRAW;
@@ -204,26 +202,26 @@ int update_game(int action, Player *Player)
 
             GameInputs inputs = read_inputs();
             int actions = get_action(inputs);
-            int x = NULL;
-            while (!x)
+            int x = 0;
+            while (x == 0)
             {
                 if (actions == 7)
                 { // You chose right!
                     const char *lines[] = {"With help from friends", "and family, you realized", "you really weren't", "doing that bad", "Tech is tough, but", "anxiety is tougher!",  "ANXIETY'S TRAP WAS", "ADDED TO YOUR BAG"};
                     long_speech(&lines[8], 8, Player);
                     Player->future_anxiety = 1;
-                    x == 1;
+                    x = 1;
                 }
                 else if (actions == 8)
                 { // You told yourself you sucked
                     const char *lines[] = {"You became so worried", "about the future,", "You forgot to", "enjoy your life!", "Sounds like a lost", "life to be, buddy."};
                     long_speech(&lines[6], 6, Player);
                     lost_life(Player);
-                    x == 1;
+                    x = 1;
                 }
                 else
                 {
-                    x == NULL;
+                    x = 0;
                 }
             }
             return FULL_DRAW;
@@ -235,26 +233,26 @@ int update_game(int action, Player *Player)
 
             GameInputs inputs = read_inputs();
             int actions = get_action(inputs);
-            int x = NULL;
-            while (!x)
+            int x = 0;
+            while (x == 0)
             {
                 if (actions == 7) // You fought depression!
                 {
                     const char *lines[] = {"You got the help you", "needed to not drop out.", "Prof. Wills will admire", "your strength, congrats!", "YOU HAVE RECIEVED", "DEPRESSION'S SCYTHE", "DEPRESSION'S SCYTHE WAS", "ADDED TO YOUR BAG"};
                     long_speech(&lines[8], 8, Player);
                     Player->depressions_scythe = 1;
-                    x == 1;
+                    x = 1;
                 }
                 else if (actions == 8) // You lost to depression...
                 {
                     const char *lines[] = {"Even STAMP's meager mental", "health offerings couldn't help", "You end up not even ", "finishing the project!"};
                     long_speech(&lines[4], 4, Player);
                     lost_life(Player);
-                    x == 1;
+                    x = 1;
                 }
                 else
                 {
-                    x == NULL;
+                    x = 0;
                 }
             }
             return FULL_DRAW;
@@ -266,8 +264,8 @@ int update_game(int action, Player *Player)
 
             GameInputs inputs = read_inputs();
             int actions = get_action(inputs);
-            int x = NULL;
-            while (!x)
+            int x = 0;
+            while (x == 0)
             {
                 if (actions == 7) // You want to enter
                 {
@@ -280,6 +278,7 @@ int update_game(int action, Player *Player)
                         item = get_north(Player->x, Player->y);
                         item->type = DOOROPEN;
                         item->draw = draw_door_open;
+                        x = 1;
                         return FULL_DRAW;
                     }
                     else // You can't enter...
@@ -287,18 +286,19 @@ int update_game(int action, Player *Player)
                         const char *line1 = "You don't have the key yet!";
                         const char *line2 = "DOOR LOCKED!";
                         speech(line1, line2, Player);
+                        x = 1;
                         return FULL_DRAW;
                     }
-                    x == 1;
+                    
                 }
                 else if (actions == 8) // You did nothing
                 {
-                    x == 1;
+                    x = 1;
                     return FULL_DRAW;
                 }
                 else
                 {
-                    x == NULL;
+                    x = 0;
                 }
             }
         }
@@ -309,13 +309,13 @@ int update_game(int action, Player *Player)
 
             GameInputs inputs = read_inputs();
             int actions = get_action(inputs);
-            int x = NULL;
-            while (!x)
+            int x = 0;
+            while (x == 0)
             {
                 if (actions == 7) // You want to enter
                 {
                     Map *map = get_active_map();
-
+                    x = 1;
                     if ((Player->x == 6) && (Player->y == 10)) // You enter Main map
                     {
                         set_active_map(0);
@@ -326,24 +326,25 @@ int update_game(int action, Player *Player)
                         set_active_map(1);
                         return FULL_DRAW;
                     }
-                    x == 1;
                 }
                 else if (actions == 8) // You did nothing
                 {
-                    x == 1;
+                    x = 1;
+                    return FULL_DRAW;
                 }
                 else
                 {
-                    x == NULL;
+                    x = 0;
+                    return FULL_DRAW;
                 }
             }
-            return FULL_DRAW;
         }
-        break;
 
     case GO_UP:
         item = get_north(Player->x, Player->y);
-        if (item->walkable == false)
+        pc.printf("Going NORTH  \n");
+        pc.printf("item->walkable = %d\n", item->walkable);
+        if (item->walkable == 0)
         {
             pc.printf("Hit wall, cannot walk. \n");
             return NO_RESULT;
@@ -353,11 +354,11 @@ int update_game(int action, Player *Player)
             Player->y = Player->y - 1;
             return FULL_DRAW;
         }
-        break;
 
     case GO_LEFT:
+        pc.printf("Going LEFT \n");
         item = get_west(Player->x, Player->y);
-        if (item->walkable == false)
+        if (item->walkable == 0)
         {
             pc.printf("Hit wall, cannot walk. \n");
             return NO_RESULT;
@@ -367,11 +368,11 @@ int update_game(int action, Player *Player)
             Player->x = Player->x - 1;
             return FULL_DRAW;
         }
-        break;
 
     case GO_DOWN:
+        pc.printf("Going DOWN \n");
         item = get_south(Player->x, Player->y);
-        if (item->walkable == false)
+        if (item->walkable == 0)
         {
             pc.printf("Hit wall, cannot walk. \n");
             return NO_RESULT;
@@ -381,11 +382,10 @@ int update_game(int action, Player *Player)
             Player->y = Player->y + 1;
             return FULL_DRAW;
         }
-        break;
-
     case GO_RIGHT:
+        pc.printf("Going RIGHT \n");
         item = get_east(Player->x, Player->y);
-        if (item->walkable == false)
+        if (item->walkable == 0)
         {
             pc.printf("Hit wall, cannot walk. \n");
             return NO_RESULT;
@@ -395,10 +395,9 @@ int update_game(int action, Player *Player)
             Player->x = Player->x + 1;
             return FULL_DRAW;
         }
-        break;
 
     default:
         return NO_RESULT;
-        break;
     }
 }
+      
